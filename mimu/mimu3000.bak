@@ -1,0 +1,243 @@
+EESchema Schematic File Version 2
+LIBS:custom
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:mimu3000-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L ATTINY13A-SSU U1
+U 1 1 5E29D77C
+P 4450 3900
+F 0 "U1" H 3650 4300 50  0000 C CNN
+F 1 "ATTINY13A-SSU" H 5100 3500 50  0000 C CNN
+F 2 "Housings_SOIC:SOIC-8_3.9x4.9mm_Pitch1.27mm" H 5050 3900 50  0001 C CIN
+F 3 "" H 3650 4250 50  0001 C CNN
+	1    4450 3900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5650 4400 6100 4400
+Wire Wire Line
+	3450 3750 3250 3750
+Wire Wire Line
+	3250 3750 3250 3350
+Wire Wire Line
+	3250 3350 5900 3350
+Wire Wire Line
+	5900 4200 6100 4200
+$Comp
+L Battery BT1
+U 1 1 5E29E400
+P 2350 3750
+F 0 "BT1" H 2450 3850 50  0000 L CNN
+F 1 "Battery" H 2450 3750 50  0000 L CNN
+F 2 "" V 2350 3810 50  0001 C CNN
+F 3 "" V 2350 3810 50  0001 C CNN
+	1    2350 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5650 4150 5650 4550
+Wire Wire Line
+	2350 4550 2350 3950
+Wire Wire Line
+	2350 3550 2350 3050
+Wire Wire Line
+	2350 3050 5450 3050
+Wire Wire Line
+	5450 3050 5450 3650
+$Comp
+L XLR3 J1
+U 1 1 5E29E533
+P 7400 3200
+F 0 "J1" H 7550 3450 50  0000 C CNN
+F 1 "XLR3" H 7600 2950 50  0000 C CNN
+F 2 "" H 7400 3200 50  0001 C CNN
+F 3 "" H 7400 3200 50  0001 C CNN
+	1    7400 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L XLR3 J2
+U 1 1 5E29E552
+P 8150 4350
+F 0 "J2" H 8300 4600 50  0000 C CNN
+F 1 "XLR3" H 8350 4100 50  0000 C CNN
+F 2 "" H 8150 4350 50  0001 C CNN
+F 3 "" H 8150 4350 50  0001 C CNN
+	1    8150 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L R R1
+U 1 1 5E29E9BB
+P 5900 3550
+F 0 "R1" V 5980 3550 50  0000 C CNN
+F 1 "25R" V 5900 3550 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5830 3550 50  0001 C CNN
+F 3 "" H 5900 3550 50  0001 C CNN
+	1    5900 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 3700 5900 4200
+Wire Wire Line
+	5900 3350 5900 3400
+Wire Wire Line
+	7050 3200 7050 2750
+Wire Wire Line
+	5650 4550 2350 4550
+$Comp
+L R R4
+U 1 1 5E29EEF8
+P 7750 3700
+F 0 "R4" V 7830 3700 50  0000 C CNN
+F 1 "150R" V 7750 3700 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7680 3700 50  0001 C CNN
+F 3 "" H 7750 3700 50  0001 C CNN
+	1    7750 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R3
+U 1 1 5E29F09E
+P 7400 3700
+F 0 "R3" V 7480 3700 50  0000 C CNN
+F 1 "150R" V 7400 3700 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7330 3700 50  0001 C CNN
+F 3 "" H 7400 3700 50  0001 C CNN
+	1    7400 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7750 3200 7750 3550
+Wire Wire Line
+	7400 3850 7400 4350
+Wire Wire Line
+	7400 4350 7800 4350
+Wire Wire Line
+	7750 5100 7750 3850
+Wire Wire Line
+	7750 4700 8150 4700
+Wire Wire Line
+	8150 4000 8150 2750
+Connection ~ 8150 2750
+Wire Wire Line
+	8150 2750 7050 2750
+$Comp
+L R R2
+U 1 1 5E29F630
+P 6900 4300
+F 0 "R2" V 6980 4300 50  0000 C CNN
+F 1 "10K" V 6900 4300 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6830 4300 50  0001 C CNN
+F 3 "" H 6900 4300 50  0001 C CNN
+	1    6900 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 4000 7400 4000
+Wire Wire Line
+	6900 4000 6900 4150
+Wire Wire Line
+	6900 4450 6900 4700
+Connection ~ 5650 4400
+Wire Wire Line
+	5650 4150 5450 4150
+Connection ~ 7400 4000
+Connection ~ 6900 4000
+Connection ~ 6900 4600
+Wire Wire Line
+	6900 4600 6400 4600
+$Comp
+L C C2
+U 1 1 5E29FB0C
+P 6900 4850
+F 0 "C2" H 6925 4950 50  0000 L CNN
+F 1 "0.1µ" H 6925 4750 50  0000 L CNN
+F 2 "" H 6938 4700 50  0001 C CNN
+F 3 "" H 6900 4850 50  0001 C CNN
+	1    6900 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C1
+U 1 1 5E29FB77
+P 6400 4850
+F 0 "C1" H 6425 4950 50  0000 L CNN
+F 1 "1000µ" H 6425 4750 50  0000 L CNN
+F 2 "" H 6438 4700 50  0001 C CNN
+F 3 "" H 6400 4850 50  0001 C CNN
+	1    6400 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6400 4600 6400 4700
+Wire Wire Line
+	6400 5000 6400 5100
+Wire Wire Line
+	6400 5100 7750 5100
+Wire Wire Line
+	6900 5100 6900 5000
+Connection ~ 7750 4700
+Connection ~ 6900 5100
+$Comp
+L H11F1M U?
+U 1 1 5E2A0546
+P 6250 4300
+F 0 "U?" H 6300 4650 50  0000 L CNN
+F 1 "H11F1M" H 6300 4550 50  0000 L CNN
+F 2 "" H 6200 4300 50  0001 C CNN
+F 3 "" H 6200 4300 50  0001 C CNN
+	1    6250 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6650 4000 6650 4200
+Wire Wire Line
+	6650 4200 6400 4200
+Connection ~ 6650 4000
+$EndSCHEMATC

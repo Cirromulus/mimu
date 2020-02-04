@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name mimu3000-rescue)(type Legacy)(uri ${KIPRJMOD}/mimu3000-rescue.lib)(options "")(descr ""))
+  (lib (name custom)(type Legacy)(uri ${KIPRJMOD}/custom.lib)(options "")(descr ""))
+)
