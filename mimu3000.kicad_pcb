@@ -465,6 +465,11 @@
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
+    (model ${KISYS3DMOD}/Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x02_P2.54mm_Vertical.step
+      (offset (xyz 0 -2.5 2.5))
+      (scale (xyz 1 1 0.8))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (module Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical (layer F.Cu) (tedit 59FED5CC) (tstamp 5E2B640F)
@@ -505,6 +510,11 @@
     (model ${KISYS3DMOD}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x03_P2.54mm_Vertical.wrl
       (at (xyz 0 0 0))
       (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
+    (model ${KISYS3DMOD}/Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x02_P2.54mm_Vertical.step
+      (offset (xyz 0 -2.5 2.5))
+      (scale (xyz 1 1 0.8))
       (rotate (xyz 0 0 0))
     )
   )
