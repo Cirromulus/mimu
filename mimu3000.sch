@@ -57,17 +57,13 @@ Wire Wire Line
 Wire Wire Line
 	8150 2750 7050 2750
 Wire Wire Line
-	5650 4150 5500 4150
+	5650 4150 5550 4150
 Connection ~ 7400 4000
 Connection ~ 7750 4700
 Wire Wire Line
 	6650 4000 6650 4200
 Wire Wire Line
-	6650 4200 6500 4200
-Wire Wire Line
 	7400 4000 6650 4000
-Wire Wire Line
-	6500 4400 6650 4400
 Wire Wire Line
 	6650 4400 6650 4700
 Wire Wire Line
@@ -141,9 +137,9 @@ L custom:H11F1M U2
 U 1 1 5E2A0546
 P 6250 4300
 F 0 "U2" H 6300 4650 50  0000 L CNN
-F 1 "H11F1M" H 6300 4550 50  0000 L CNN
-F 2 "Package_DIP:DIP-6_W7.62mm" H 6200 4300 50  0001 C CNN
-F 3 "https://www.mouser.com/datasheet/2/149/h11f1m-185284.pdf" H 6200 4300 50  0001 C CNN
+F 1 "AQY211EH" H 6300 4550 50  0000 L CNN
+F 2 "Package_DIP:DIP-4_W7.62mm" H 6200 4300 50  0001 C CNN
+F 3 "doc/semi_eng_ge1a_aqy21_e.pdf" H 6200 4300 50  0001 C CNN
 	1    6250 4300
 	1    0    0    -1  
 $EndComp
@@ -173,23 +169,15 @@ Wire Wire Line
 $Comp
 L Device:R_POT RV1
 U 1 1 5E2BA12E
-P 5500 3900
-F 0 "RV1" H 5431 3946 50  0000 R CNN
-F 1 "R_POT" H 5431 3855 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Alps_RK09Y11_Single_Horizontal" H 5500 3900 50  0001 C CNN
-F 3 "~" H 5500 3900 50  0001 C CNN
-	1    5500 3900
+P 5550 3900
+F 0 "RV1" H 5481 3946 50  0000 R CNN
+F 1 "R_POT" H 5481 3855 50  0000 R CNN
+F 2 "Potentiometer_THT:Potentiometer_Alps_RK09Y11_Single_Horizontal" H 5550 3900 50  0001 C CNN
+F 3 "~" H 5550 3900 50  0001 C CNN
+	1    5550 3900
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5500 4150 5500 4050
-Connection ~ 5500 4150
-Wire Wire Line
-	5500 4150 5450 4150
-Wire Wire Line
-	5500 3750 5500 3650
-Wire Wire Line
-	5500 3650 5450 3650
+Connection ~ 5550 4150
 Connection ~ 5450 3650
 Wire Wire Line
 	5650 3900 5700 3900
@@ -205,8 +193,8 @@ $Comp
 L Device:LED D1
 U 1 1 5E2C9905
 P 2450 3900
-F 0 "D1" V 2489 3783 50  0000 R CNN
-F 1 "LED" V 2398 3783 50  0000 R CNN
+F 0 "D1" V 2350 4050 50  0000 R CNN
+F 1 "LED" V 2250 4050 50  0000 R CNN
 F 2 "LED_THT:LED_D3.0mm" H 2450 3900 50  0001 C CNN
 F 3 "~" H 2450 3900 50  0001 C CNN
 	1    2450 3900
@@ -330,4 +318,17 @@ Wire Wire Line
 	3650 2200 1800 2200
 Wire Wire Line
 	1800 2200 1800 3850
+Wire Wire Line
+	6500 4200 6650 4200
+Wire Wire Line
+	6500 4400 6650 4400
+Connection ~ 5700 3900
+Wire Wire Line
+	5550 4050 5550 4150
+Wire Wire Line
+	5450 4150 5550 4150
+Wire Wire Line
+	5550 3750 5550 3650
+Wire Wire Line
+	5450 3650 5550 3650
 $EndSCHEMATC

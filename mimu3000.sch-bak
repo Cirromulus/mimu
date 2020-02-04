@@ -27,10 +27,10 @@ $EndComp
 Wire Wire Line
 	5450 3050 5450 3650
 $Comp
-L Connector:XLR3 OUTPUT
+L Connector:XLR3 OUTPUT1
 U 1 1 5E29E552
 P 8150 4350
-F 0 "OUTPUT" H 8150 4600 50  0000 C CNN
+F 0 "OUTPUT1" H 8150 4600 50  0000 C CNN
 F 1 "XLR3" H 8350 4100 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 8150 4350 50  0001 C CNN
 F 3 "" H 8150 4350 50  0001 C CNN
@@ -110,10 +110,10 @@ F 3 "~" V 2000 3910 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L custom:Conn_TOF J1
+L custom:Conn_TOF SENS1
 U 1 1 5E2CBB84
 P 2800 4050
-F 0 "J1" H 2718 3625 50  0000 C CNN
+F 0 "SENS1" H 2718 3625 50  0000 C CNN
 F 1 "Sens" H 2718 3716 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 2800 4050 50  0001 C CNN
 F 3 "~" H 2800 4050 50  0001 C CNN
@@ -148,10 +148,10 @@ F 3 "https://www.mouser.com/datasheet/2/149/h11f1m-185284.pdf" H 6200 4300 50  0
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:XLR3 INPUT
+L Connector:XLR3 INPUT1
 U 1 1 5E29E533
 P 7400 3200
-F 0 "INPUT" H 7400 3450 50  0000 C CNN
+F 0 "INPUT1" H 7400 3450 50  0000 C CNN
 F 1 "XLR3" H 7600 2950 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 7400 3200 50  0001 C CNN
 F 3 "" H 7400 3200 50  0001 C CNN
@@ -239,10 +239,10 @@ $EndComp
 Wire Wire Line
 	3450 3250 3450 3650
 $Comp
-L Connector:AVR-ISP-6 ISP
+L Connector:AVR-ISP-6 ISP1
 U 1 1 5E2B28C5
 P 1300 3950
-F 0 "ISP" H 971 4046 50  0000 R CNN
+F 0 "ISP1" H 971 4046 50  0000 R CNN
 F 1 "AVR-ISP-6" H 971 3955 50  0000 R CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" V 1050 4000 50  0001 C CNN
 F 3 " ~" H 25  3400 50  0001 C CNN
