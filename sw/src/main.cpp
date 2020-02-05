@@ -22,8 +22,8 @@ void setup() {
 
 void loop() {
     // put your main code here, to run repeatedly:
-    uint16_t dist = sensor.readRangeSingleMillimeters());
-    if (sensor.timeoutOccurred()) {
-
+    uint16_t dist = sensor.readRangeSingleMillimeters();
+    if (!sensor.timeoutOccurred()) {
+        uint8_t i = dist;
     }
 }
