@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>D:\Seafile\Dokumente\kicad\mimu3000\mimu3000.sch</source>
+    <date>23.01.2020 19:54:54</date>
+    <tool>Eeschema 4.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>mimu3000.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="U1">
+      <value>ATTINY13A-SSU</value>
+      <footprint>Housings_SOIC:SOIC-8_3.9x4.9mm_Pitch1.27mm</footprint>
+      <libsource lib="atmel" part="ATTINY13A-SSU"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29D77C</tstamp>
+    </comp>
+    <comp ref="BT1">
+      <value>Battery</value>
+      <libsource lib="device" part="Battery"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29E400</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>XLR3</value>
+      <libsource lib="conn" part="XLR3"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29E533</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>XLR3</value>
+      <libsource lib="conn" part="XLR3"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29E552</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>25R</value>
+      <footprint>Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29E9BB</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>150R</value>
+      <footprint>Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29EEF8</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>150R</value>
+      <footprint>Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29F09E</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>10K</value>
+      <footprint>Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29F630</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>0.1µ</value>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29FB0C</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>1000µ</value>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E29FB77</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>H11F1M</value>
+      <libsource lib="custom" part="H11F1M"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5E2A0546</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="atmel" part="ATTINY13-20SSU">
+      <aliases>
+        <alias>ATTINY13A-SSU</alias>
+      </aliases>
+      <description>SO8, 1k Flash, 64B SRAM, 64B EEPROM, Debug Wire</description>
+      <docs>http://www.atmel.com/Images/doc2535.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ATTINY13-20SSU</field>
+        <field name="Footprint">Housings_SOIC:SOIC-8_3.9x4.9mm_Pitch1.27mm</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PB5(~RESET~/ADC0/PCINT5/dW)" type="BiDi"/>
+        <pin num="2" name="PB3(CLKI/ADC3/PCINT3)" type="BiDi"/>
+        <pin num="3" name="PB4(ADC2/PCINT4)" type="BiDi"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="PB0(MOSI/AIN0/OC0A/PCINT0)" type="BiDi"/>
+        <pin num="6" name="PB1(MISO/AIN1/OC0B/INT0/PCINT1)" type="BiDi"/>
+        <pin num="7" name="PB2(SCK/ADC1/T0/PCINT2)" type="BiDi"/>
+        <pin num="8" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="Battery">
+      <description>Battery (multiple cells)</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">BT</field>
+        <field name="Value">Battery</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="custom" part="H11F1M">
+      <description>H11F1M Photo FET Optocoupler</description>
+      <docs>https://www.onsemi.com/pub/Collateral/H11F3M-D.pdf</docs>
+      <footprints>
+        <fp>DIP*W7.62mm*</fp>
+        <fp>DIP*W10.16mm*</fp>
+        <fp>DIP*W9.53mm*SMD*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">H11F1M</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+        <pin num="3" name="~" type="power_in"/>
+        <pin num="4" name="~" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="XLR3">
+      <description>3 pins</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">XLR3</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+        <pin num="3" name="~" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="conn">
+      <uri>D:\Program Files\KiCad\share\kicad\library\conn.lib</uri>
+    </library>
+    <library logical="atmel">
+      <uri>D:\Program Files\KiCad\share\kicad\library\atmel.lib</uri>
+    </library>
+    <library logical="device">
+      <uri>D:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="custom">
+      <uri>D:\Seafile\Dokumente\kicad\mimu3000\custom.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(C1-Pad1)">
+      <node ref="C1" pin="1"/>
+      <node ref="C2" pin="1"/>
+      <node ref="R2" pin="2"/>
+    </net>
+    <net code="2" name="Net-(BT1-Pad2)">
+      <node ref="U1" pin="4"/>
+      <node ref="BT1" pin="2"/>
+    </net>
+    <net code="3" name="Net-(J1-Pad1)">
+      <node ref="J1" pin="1"/>
+      <node ref="J2" pin="1"/>
+    </net>
+    <net code="4" name="Net-(J2-Pad3)">
+      <node ref="J2" pin="3"/>
+      <node ref="R3" pin="2"/>
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="5" name="Net-(U2-Pad4)">
+      <node ref="U2" pin="4"/>
+    </net>
+    <net code="6" name="Net-(U2-Pad3)">
+      <node ref="U2" pin="3"/>
+    </net>
+    <net code="7" name="Net-(U2-Pad2)">
+      <node ref="U2" pin="2"/>
+    </net>
+    <net code="8" name="Net-(U2-Pad1)">
+      <node ref="U2" pin="1"/>
+    </net>
+    <net code="9" name="Net-(C1-Pad2)">
+      <node ref="C1" pin="2"/>
+      <node ref="J2" pin="2"/>
+      <node ref="C2" pin="2"/>
+      <node ref="R4" pin="2"/>
+    </net>
+    <net code="10" name="Net-(J1-Pad2)">
+      <node ref="J1" pin="2"/>
+      <node ref="R4" pin="1"/>
+    </net>
+    <net code="11" name="Net-(R1-Pad1)">
+      <node ref="R1" pin="1"/>
+      <node ref="U1" pin="6"/>
+    </net>
+    <net code="12" name="Net-(BT1-Pad1)">
+      <node ref="U1" pin="8"/>
+      <node ref="BT1" pin="1"/>
+    </net>
+    <net code="13" name="Net-(U1-Pad7)">
+      <node ref="U1" pin="7"/>
+    </net>
+    <net code="14" name="Net-(U1-Pad5)">
+      <node ref="U1" pin="5"/>
+    </net>
+    <net code="15" name="Net-(U1-Pad3)">
+      <node ref="U1" pin="3"/>
+    </net>
+    <net code="16" name="Net-(U1-Pad2)">
+      <node ref="U1" pin="2"/>
+    </net>
+    <net code="17" name="Net-(R1-Pad2)">
+      <node ref="R1" pin="2"/>
+    </net>
+    <net code="18" name="Net-(J1-Pad3)">
+      <node ref="J1" pin="3"/>
+      <node ref="R3" pin="1"/>
+    </net>
+    <net code="19" name="Net-(U1-Pad1)">
+      <node ref="U1" pin="1"/>
+    </net>
+  </nets>
+</export>
