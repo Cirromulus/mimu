@@ -4,7 +4,6 @@
 VL53L0X sensor;
 
 void setup() {
-
     sensor.setTimeout(500);
     if (!sensor.init())
     {
@@ -18,12 +17,13 @@ void setup() {
 
     // increase timing budget to 200 ms
     sensor.setMeasurementTimingBudget(200000);
+
+    pinMode(13, OUTPUT);
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
     uint16_t dist = sensor.readRangeSingleMillimeters();
     if (!sensor.timeoutOccurred()) {
-        uint8_t i = dist;
+        digitalWrite(13, dist > 150);
     }
 }
