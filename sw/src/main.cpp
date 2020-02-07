@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <VL53L0X.h>
-#include <Wire.h>
 
 
 static constexpr uint8_t MUTE = 23;
@@ -13,13 +12,9 @@ static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 VL53L0X sensor;
 
 void setup() {
-
-	Wire.begin();
     sensor.setTimeout(500);
-    while (!sensor.init())
-    {
-        delay(10);
-    }
+    while (!sensor.init()){};
+
     // lower the return signal rate limit (default is 0.25 MCPS)
     sensor.setSignalRateLimit(0.1);
     // increase laser pulse periods (defaults are 14 and 10 PCLKs)
@@ -32,14 +27,11 @@ void setup() {
     pinMode(MUTE, OUTPUT);
     pinMode(LED, OUTPUT);
     pinMode(POT, INPUT);
+    sensor.startContinuous(0);
 }
 
 void loop() {
-    uint16_t dist = sensor.readRangeSingleMillimeters();
-    if (sensor.timeoutOccurred()) {
-		dist = MAX_RANGE_MM;
-    }
-    uint8_t over = dist > (analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+	uint8_t over = sensor.readRangeContinuousMillimeters() > (analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
     digitalWrite(MUTE, over);
     digitalWrite(LED, over);
 }
