@@ -407,4 +407,29 @@ Wire Wire Line
 Connection ~ 5550 3150
 Wire Wire Line
 	4950 3400 5900 3400
+$Comp
+L Device:C C?
+U 1 1 5E3D87F9
+P 5300 6050
+F 0 "C?" H 5415 6096 50  0000 L CNN
+F 1 "0.1uF" H 5415 6005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_2512_6332Metric" H 5338 5900 50  0001 C CNN
+F 3 "~" H 5300 6050 50  0001 C CNN
+	1    5300 6050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 5900 5300 5800
+Connection ~ 5300 5800
+$Comp
+L power:GND #PWR?
+U 1 1 5E3DA51E
+P 5300 6200
+F 0 "#PWR?" H 5300 5950 50  0001 C CNN
+F 1 "GND" H 5305 6027 50  0000 C CNN
+F 2 "" H 5300 6200 50  0001 C CNN
+F 3 "" H 5300 6200 50  0001 C CNN
+	1    5300 6200
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
