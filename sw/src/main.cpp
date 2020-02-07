@@ -1,13 +1,24 @@
 #include <Arduino.h>
 #include <VL53L0X.h>
+#include <Wire.h>
+
+
+static constexpr uint8_t MUTE = 23;
+static constexpr uint8_t POT  = 24;
+static constexpr uint8_t LED  = 25;
+
+static constexpr uint16_t MAX_RANGE_MM = 300;
+static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 
 VL53L0X sensor;
 
 void setup() {
+
+	Wire.begin();
     sensor.setTimeout(500);
-    if (!sensor.init())
+    while (!sensor.init())
     {
-        while (1) {}
+        delay(10);
     }
     // lower the return signal rate limit (default is 0.25 MCPS)
     sensor.setSignalRateLimit(0.1);
@@ -18,12 +29,17 @@ void setup() {
     // increase timing budget to 200 ms
     sensor.setMeasurementTimingBudget(200000);
 
-    pinMode(13, OUTPUT);
+    pinMode(MUTE, OUTPUT);
+    pinMode(LED, OUTPUT);
+    pinMode(POT, INPUT);
 }
 
 void loop() {
     uint16_t dist = sensor.readRangeSingleMillimeters();
-    if (!sensor.timeoutOccurred()) {
-        digitalWrite(13, dist > 150);
+    if (sensor.timeoutOccurred()) {
+		dist = MAX_RANGE_MM;
     }
+    uint8_t over = dist > (analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    digitalWrite(MUTE, over);
+    digitalWrite(LED, over);
 }
