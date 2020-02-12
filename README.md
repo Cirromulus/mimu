@@ -9,7 +9,8 @@ This device is intended to be mounted directly on the back of the mic, sensor fa
 The trigger-distance shall be adjusted with the poti.
 
 ## BOM
+Main Features:
 - ATtiny88 Processor
 - GY-530 IR TOF Distance Sensor (VL53L0X)
 - AQY211EHAX DIP4 Optocoupler
-- Some Resistors and other discrete stuff
+For complete list, see [bom](pcb/mimu3000.csv)
