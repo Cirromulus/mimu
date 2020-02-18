@@ -51,7 +51,7 @@ F 3 "~" V 3050 3160 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L custom:Conn_TOF SENS1
+L custom:Conn_TOF_flipped SENS1
 U 1 1 5E2CBB84
 P 6350 3150
 F 0 "SENS1" H 6268 2725 50  0000 C CNN
@@ -234,8 +234,6 @@ F 3 "" H 3700 6000 50  0001 C CNN
 	1    3700 6000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6650 2700 6650 2950
 $Comp
 L power:GND #PWR011
 U 1 1 5E4388C2
@@ -445,31 +443,21 @@ Wire Wire Line
 	7250 4650 7250 4000
 Wire Wire Line
 	7350 4000 7350 4650
-Text GLabel 6750 3250 2    50   Input ~ 0
+Text GLabel 6850 2950 2    50   Input ~ 0
 SDA
-Text GLabel 6750 3150 2    50   Input ~ 0
+Text GLabel 6850 3050 2    50   Input ~ 0
 SCL
 $Comp
 L power:GND #PWR04
 U 1 1 5E434EA3
-P 6650 3400
-F 0 "#PWR04" H 6650 3150 50  0001 C CNN
-F 1 "GND" H 6655 3227 50  0000 C CNN
-F 2 "" H 6650 3400 50  0001 C CNN
-F 3 "" H 6650 3400 50  0001 C CNN
-	1    6650 3400
+P 6750 3400
+F 0 "#PWR04" H 6750 3150 50  0001 C CNN
+F 1 "GND" H 6755 3227 50  0000 C CNN
+F 2 "" H 6750 3400 50  0001 C CNN
+F 3 "" H 6750 3400 50  0001 C CNN
+	1    6750 3400
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6550 2950 6650 2950
-Wire Wire Line
-	6550 3050 6650 3050
-Wire Wire Line
-	6650 3050 6650 3400
-Wire Wire Line
-	6550 3250 6750 3250
-Wire Wire Line
-	6750 3150 6550 3150
 $Comp
 L Switch:SW_DPDT_x2 SW2
 U 1 1 5E4AD00E
@@ -581,4 +569,16 @@ Wire Wire Line
 Wire Wire Line
 	5500 3050 5800 3050
 Connection ~ 5500 3050
+Wire Wire Line
+	6650 3250 6550 3250
+Wire Wire Line
+	6650 2700 6650 3250
+Wire Wire Line
+	6750 3400 6750 3150
+Wire Wire Line
+	6750 3150 6550 3150
+Wire Wire Line
+	6550 3050 6850 3050
+Wire Wire Line
+	6850 2950 6550 2950
 $EndSCHEMATC

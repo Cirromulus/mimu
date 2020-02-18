@@ -252,6 +252,12 @@ K connector
 F ~
 $ENDCMP
 #
+$CMP Conn_TOF_flipped
+D Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)
+K connector
+F ~
+$ENDCMP
+#
 $CMP FOD420
 D Random Phase Opto-Triac, Vdrm 600V, Ift 0.75mA, Itm 300mA, DIP6
 K Opto-Triac Opto Triac Random Phase

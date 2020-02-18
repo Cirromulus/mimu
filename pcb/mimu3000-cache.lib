@@ -298,11 +298,11 @@ X B 4 200 0 100 L 50 50 2 1 P
 ENDDRAW
 ENDDEF
 #
-# custom_Conn_TOF
+# custom_Conn_TOF_flipped
 #
-DEF custom_Conn_TOF J 0 40 Y Y 1 F N
+DEF custom_Conn_TOF_flipped J 0 40 Y Y 1 F N
 F0 "J" 0 200 50 H V C CNN
-F1 "custom_Conn_TOF" 0 -300 50 H V C CNN
+F1 "custom_Conn_TOF_flipped" 0 -300 50 H V C CNN
 F2 "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical" -100 -350 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -314,10 +314,10 @@ S -50 -95 0 -105 1 1 6 N
 S -50 5 0 -5 1 1 6 N
 S -50 105 0 95 1 1 6 N
 S -50 150 50 -250 1 1 10 f
-X SDA 1 -200 100 150 R 50 50 1 1 B
-X SCL 2 -200 0 150 R 50 50 1 1 B
-X GND 3 -200 -100 150 R 50 50 1 1 W
-X VCC 4 -200 -200 150 R 50 50 1 1 W
+X VCC 1 -200 100 150 R 50 50 1 1 W
+X GND 2 -200 0 150 R 50 50 1 1 W
+X SCL 3 -200 -100 150 R 50 50 1 1 B
+X SDA 4 -200 -200 150 R 50 50 1 1 B
 ENDDRAW
 ENDDEF
 #
