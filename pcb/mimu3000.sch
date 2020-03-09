@@ -56,7 +56,7 @@ U 1 1 5E2CBB84
 P 6350 3150
 F 0 "SENS1" H 6268 2725 50  0000 C CNN
 F 1 "Sens" H 6268 2816 50  0000 C CNN
-F 2 "Connector_PinHeader_2.00mm:PinHeader_1x04_P2.00mm_Horizontal" H 6350 3150 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal" H 6350 3150 50  0001 C CNN
 F 3 "~" H 6350 3150 50  0001 C CNN
 	1    6350 3150
 	-1   0    0    1   
@@ -67,7 +67,7 @@ U 1 1 5E2A0546
 P 4300 2550
 F 0 "U1" H 4350 2900 50  0000 L CNN
 F 1 "AQY211EH" H 4350 2800 50  0000 L CNN
-F 2 "Package_DIP:DIP-4_W7.62mm" H 4250 2550 50  0001 C CNN
+F 2 "custom:DIP-4_bubble_W7.62mm" H 4250 2550 50  0001 C CNN
 F 3 "doc/semi_eng_ge1a_aqy21_e.pdf" H 4250 2550 50  0001 C CNN
 	1    4300 2550
 	1    0    0    -1  
