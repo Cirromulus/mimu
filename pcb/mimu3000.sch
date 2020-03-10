@@ -24,19 +24,6 @@ F 3 "" H 3950 1800 50  0001 C CNN
 	1    3950 1800
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:CP C1
-U 1 1 5E2AE194
-P 3950 2100
-F 0 "C1" H 4068 2146 50  0000 L CNN
-F 1 "47µ" H 4068 2055 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3988 1950 50  0001 C CNN
-F 3 "~" H 3950 2100 50  0001 C CNN
-	1    3950 2100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3950 2250 3950 2450
 Wire Wire Line
 	3950 2450 4000 2450
 $Comp
@@ -95,7 +82,7 @@ U 1 1 5E2BA12E
 P 3700 5450
 F 0 "RV1" H 3631 5496 50  0000 R CNN
 F 1 "1K_POT" H 3631 5405 50  0000 R CNN
-F 2 "custom:Potentiometer_Generic_5mm_Single_Horizontal" H 3700 5450 50  0001 C CNN
+F 2 "Potentiometers:Potentiometer_Bourns_PTV09A-2_Vertical" H 3700 5450 50  0001 C CNN
 F 3 "~" H 3700 5450 50  0001 C CNN
 	1    3700 5450
 	-1   0    0    1   
@@ -477,12 +464,12 @@ Wire Wire Line
 	5250 2750 5500 2750
 Connection ~ 5500 2750
 $Comp
-L Device:CP C4
+L Device:C C4
 U 1 1 5E4B8635
 P 5500 2900
 F 0 "C4" H 5600 2950 50  0000 L CNN
-F 1 "1000uF" H 5350 2650 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 5538 2750 50  0001 C CNN
+F 1 "1uF" H 5350 2650 50  0000 L CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm" H 5538 2750 50  0001 C CNN
 F 3 "~" H 5500 2900 50  0001 C CNN
 	1    5500 2900
 	1    0    0    -1  
@@ -553,22 +540,6 @@ Wire Wire Line
 Connection ~ 4300 5150
 Wire Wire Line
 	4300 5150 4300 5300
-$Comp
-L Device:CP C5
-U 1 1 5E4AE3C7
-P 5800 2900
-F 0 "C5" H 5600 2850 50  0000 L CNN
-F 1 "1000uF" H 5650 3150 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 5838 2750 50  0001 C CNN
-F 3 "~" H 5800 2900 50  0001 C CNN
-	1    5800 2900
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	5800 2750 5500 2750
-Wire Wire Line
-	5500 3050 5800 3050
-Connection ~ 5500 3050
 Wire Wire Line
 	6650 3250 6550 3250
 Wire Wire Line
@@ -581,4 +552,22 @@ Wire Wire Line
 	6550 3050 6850 3050
 Wire Wire Line
 	6850 2950 6550 2950
+Wire Wire Line
+	3950 1950 3950 2450
+$Comp
+L Device:C C1
+U 1 1 5E688126
+P 5800 2900
+F 0 "C1" H 5900 2950 50  0000 L CNN
+F 1 "1uF" H 5650 2650 50  0000 L CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm" H 5838 2750 50  0001 C CNN
+F 3 "~" H 5800 2900 50  0001 C CNN
+	1    5800 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 2750 5500 2750
+Wire Wire Line
+	5500 3050 5800 3050
+Connection ~ 5500 3050
 $EndSCHEMATC
