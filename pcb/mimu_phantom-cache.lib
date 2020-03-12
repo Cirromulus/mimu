@@ -85,31 +85,6 @@ X ~ 3 0 -300 100 U 50 50 0 1 P
 ENDDRAW
 ENDDEF
 #
-# Device_Battery
-#
-DEF Device_Battery BT 0 0 N N 1 F N
-F0 "BT" 100 100 50 H V L CNN
-F1 "Device_Battery" 100 0 50 H V L CNN
-F2 "" 0 60 50 V I C CNN
-F3 "" 0 60 50 V I C CNN
-DRAW
-S -80 -55 80 -65 0 1 0 F
-S -80 70 80 60 0 1 0 F
-S -52 -78 50 -98 0 1 0 F
-S -52 47 50 27 0 1 0 F
-P 2 0 1 0 0 -60 0 -50 N
-P 2 0 1 0 0 -40 0 -30 N
-P 2 0 1 0 0 -20 0 -10 N
-P 2 0 1 0 0 0 0 10 N
-P 2 0 1 0 0 20 0 30 N
-P 2 0 1 0 0 70 0 100 N
-P 2 0 1 10 10 105 50 105 N
-P 2 0 1 10 30 125 30 85 N
-X + 1 0 200 100 D 50 50 1 1 P
-X - 2 0 -200 100 U 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
 # Device_C
 #
 DEF Device_C C 0 10 N Y 1 F N
@@ -260,24 +235,6 @@ X C 6 200 -100 100 L 50 50 2 1 P
 ENDDRAW
 ENDDEF
 #
-# Switch_SW_DPST_x2
-#
-DEF Switch_SW_DPST_x2 SW 0 0 Y N 2 F N
-F0 "SW" 0 125 50 H V C CNN
-F1 "Switch_SW_DPST_x2" 0 -100 50 H V C CNN
-F2 "" 0 0 50 H I C CNN
-F3 "" 0 0 50 H I C CNN
-DRAW
-C -80 0 20 0 0 0 N
-C 80 0 20 0 0 0 N
-P 2 0 0 0 -60 10 60 70 N
-X A 1 -200 0 100 R 50 50 1 1 P
-X B 2 200 0 100 L 50 50 1 1 P
-X A 3 -200 0 100 R 50 50 2 1 P
-X B 4 200 0 100 L 50 50 2 1 P
-ENDDRAW
-ENDDEF
-#
 # custom_Conn_TOF_flipped
 #
 DEF custom_Conn_TOF_flipped J 0 40 Y Y 1 F N
@@ -330,11 +287,11 @@ X ~ 4 250 100 100 L 50 50 1 1 W
 ENDDRAW
 ENDDEF
 #
-# mimu3000-rescue_R
+# mimu_phantom-rescue_R-mimu3000-rescue
 #
-DEF mimu3000-rescue_R R 0 0 N Y 1 F N
+DEF mimu_phantom-rescue_R-mimu3000-rescue R 0 0 N Y 1 F N
 F0 "R" 80 0 50 V V C CNN
-F1 "mimu3000-rescue_R" 0 0 50 V V C CNN
+F1 "mimu_phantom-rescue_R-mimu3000-rescue" 0 0 50 V V C CNN
 F2 "" -70 0 50 V I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
