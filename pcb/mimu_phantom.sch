@@ -86,17 +86,6 @@ F 3 "" H 1100 3300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R_1
-U 1 1 5E6AE12D
-P 4750 3100
-F 0 "R_1" H 4820 3146 50  0000 L CNN
-F 1 "10" H 4820 3055 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4680 3100 50  0001 C CNN
-F 3 "~" H 4750 3100 50  0001 C CNN
-	1    4750 3100
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R_TOP1
 U 1 1 5E6AF9AF
 P 4750 3500
@@ -227,11 +216,6 @@ F 3 "~" H 3700 3100 50  0001 C CNN
 	1    3700 3100
 	1    0    0    -1  
 $EndComp
-Connection ~ 4750 2950
-Wire Wire Line
-	4750 2950 4250 2950
-Wire Wire Line
-	4750 3350 4750 3250
 Wire Wire Line
 	2900 2950 3100 2950
 Connection ~ 3100 2950
@@ -288,17 +272,93 @@ F 3 "" H 4850 2950 50  0001 C CNN
 	1    4850 2950
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	4750 2950 4850 2950
+Text GLabel 1150 1250 1    50   Input ~ 0
+XLR_HOT
+Text GLabel 1400 1250 1    50   Input ~ 0
+XLR_COLD
+Text GLabel 1650 1250 1    50   Input ~ 0
+XLR_GND
 $Comp
-L power:+BATT #PWR01
-U 1 1 5E6A6C96
-P 850 2850
-F 0 "#PWR01" H 850 2700 50  0001 C CNN
-F 1 "+BATT" H 865 3023 50  0000 C CNN
-F 2 "" H 850 2850 50  0001 C CNN
-F 3 "" H 850 2850 50  0001 C CNN
-	1    850  2850
+L power:+BATT #PWR0101
+U 1 1 5E6CDE97
+P 850 2700
+F 0 "#PWR0101" H 850 2550 50  0001 C CNN
+F 1 "+BATT" H 865 2873 50  0000 C CNN
+F 2 "" H 850 2700 50  0001 C CNN
+F 3 "" H 850 2700 50  0001 C CNN
+	1    850  2700
 	1    0    0    -1  
 $EndComp
+$Comp
+L power:+BATT #PWR0102
+U 1 1 5E6CE2D2
+P 900 2000
+F 0 "#PWR0102" H 900 1850 50  0001 C CNN
+F 1 "+BATT" V 915 2127 50  0000 L CNN
+F 2 "" H 900 2000 50  0001 C CNN
+F 3 "" H 900 2000 50  0001 C CNN
+	1    900  2000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	850  2850 850  2700
+$Comp
+L Device:R R3
+U 1 1 5E6CFBA0
+P 1150 1550
+F 0 "R3" H 1000 1600 50  0000 L CNN
+F 1 "6.8Ohm 0.1%" H 600 1500 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1080 1550 50  0001 C CNN
+F 3 "e.g. KOA Speer RS73 High-Precision Flat Chip Resistors" H 1150 1550 50  0001 C CNN
+	1    1150 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 5E6D0E42
+P 1400 1550
+F 0 "R4" H 1470 1596 50  0000 L CNN
+F 1 "6.8Ohm 0.1%" H 1470 1505 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1330 1550 50  0001 C CNN
+F 3 "e.g. KOA Speer RS73 High-Precision Flat Chip Resistors" H 1400 1550 50  0001 C CNN
+	1    1400 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1400 1400 1400 1250
+Wire Wire Line
+	1150 1250 1150 1400
+Wire Wire Line
+	1150 1700 1150 1850
+Wire Wire Line
+	1150 1850 1300 1850
+Wire Wire Line
+	1400 1850 1400 1700
+Wire Wire Line
+	1300 1850 1300 2000
+Wire Wire Line
+	1300 2000 900  2000
+Connection ~ 1300 1850
+Wire Wire Line
+	1300 1850 1400 1850
+$Comp
+L power:GND #PWR0107
+U 1 1 5E6DA84C
+P 1650 1850
+F 0 "#PWR0107" H 1650 1600 50  0001 C CNN
+F 1 "GND" H 1655 1677 50  0000 C CNN
+F 2 "" H 1650 1850 50  0001 C CNN
+F 3 "" H 1650 1850 50  0001 C CNN
+	1    1650 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 1850 1650 1250
+Wire Wire Line
+	4250 2950 4750 2950
+Wire Wire Line
+	4750 2950 4750 3350
+Connection ~ 4750 2950
+Wire Wire Line
+	4750 2950 4850 2950
 $EndSCHEMATC

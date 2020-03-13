@@ -200,9 +200,9 @@ Wire Wire Line
 Wire Wire Line
 	4850 2250 4800 2250
 Wire Wire Line
-	5500 1450 5500 2250
+	5500 1450 5500 1700
 Wire Wire Line
-	4800 1450 4800 2250
+	4800 1450 4800 1850
 Wire Wire Line
 	5150 1850 5650 1850
 $Comp
@@ -524,4 +524,29 @@ F 3 "" H 7650 3900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7650 3900 7650 3950
+Text GLabel 6000 1600 1    50   Input ~ 0
+XLR_HOT
+Text GLabel 6200 1600 1    50   Input ~ 0
+XLR_COLD
+Text GLabel 4550 1800 1    50   Input ~ 0
+XLR_GND
+Wire Wire Line
+	4550 1800 4550 1850
+Wire Wire Line
+	4550 1850 4800 1850
+Connection ~ 4800 1850
+Wire Wire Line
+	4800 1850 4800 2250
+Wire Wire Line
+	6000 1600 6000 1700
+Wire Wire Line
+	6000 1700 5500 1700
+Connection ~ 5500 1700
+Wire Wire Line
+	5500 1700 5500 2250
+Wire Wire Line
+	6200 1600 6200 1850
+Wire Wire Line
+	6200 1850 5650 1850
+Connection ~ 5650 1850
 $EndSCHEMATC
