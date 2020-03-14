@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 6500 2100 3800 1600
+S 6100 2000 3800 1600
 U 5E6CC751
 F0 "Mimu_base" 50
 F1 "mimu_base.sch" 50
@@ -117,8 +117,6 @@ Wire Wire Line
 Connection ~ 1100 3150
 Wire Wire Line
 	1100 3150 1100 3300
-Wire Wire Line
-	1550 2850 2100 2850
 Connection ~ 1550 2850
 $Comp
 L power:GND #PWR04
@@ -361,4 +359,41 @@ Wire Wire Line
 Connection ~ 4750 2950
 Wire Wire Line
 	4750 2950 4850 2950
+$Comp
+L Connector:TestPoint TP1
+U 1 1 5E6D2D69
+P 1300 2000
+F 0 "TP1" H 1242 2026 50  0000 R CNN
+F 1 "TestPoint" H 1242 2117 50  0000 R CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 1500 2000 50  0001 C CNN
+F 3 "~" H 1500 2000 50  0001 C CNN
+	1    1300 2000
+	-1   0    0    1   
+$EndComp
+Connection ~ 1300 2000
+$Comp
+L Connector:TestPoint TP4
+U 1 1 5E6D362C
+P 2950 3700
+F 0 "TP4" V 2750 3850 50  0000 C CNN
+F 1 "TestPoint" V 2850 3750 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 3150 3700 50  0001 C CNN
+F 3 "~" H 3150 3700 50  0001 C CNN
+	1    2950 3700
+	0    -1   -1   0   
+$EndComp
+Connection ~ 2950 3700
+$Comp
+L Connector:TestPoint TP3
+U 1 1 5E6D91F6
+P 4750 2950
+F 0 "TP3" H 4700 3150 50  0000 L CNN
+F 1 "TestPoint" H 4700 3250 50  0000 L CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 4950 2950 50  0001 C CNN
+F 3 "~" H 4950 2950 50  0001 C CNN
+	1    4750 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1550 2850 2100 2850
 $EndSCHEMATC

@@ -244,7 +244,7 @@ Wire Wire Line
 Text GLabel 6950 4150 1    50   Input ~ 0
 POT
 Wire Wire Line
-	3550 5600 3300 5600
+	3550 5600 3400 5600
 Text GLabel 3300 5600 0    50   Input ~ 0
 POT
 Wire Wire Line
@@ -549,4 +549,18 @@ Wire Wire Line
 Wire Wire Line
 	6200 1850 5650 1850
 Connection ~ 5650 1850
+$Comp
+L Connector:TestPoint TP5
+U 1 1 5E6DA51D
+P 3400 5600
+F 0 "TP5" H 3250 5900 50  0000 L CNN
+F 1 "TestPoint" H 3250 5800 50  0000 L CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 3600 5600 50  0001 C CNN
+F 3 "~" H 3600 5600 50  0001 C CNN
+	1    3400 5600
+	1    0    0    -1  
+$EndComp
+Connection ~ 3400 5600
+Wire Wire Line
+	3400 5600 3300 5600
 $EndSCHEMATC
