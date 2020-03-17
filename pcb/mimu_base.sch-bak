@@ -13,22 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Connection ~ 5500 3200
-Wire Wire Line
-	5500 3200 5800 3200
-Wire Wire Line
-	5800 2900 5500 2900
-$Comp
-L Device:C C4
-U 1 1 5E6D36B1
-P 5800 3050
-F 0 "C4" H 5900 3100 50  0000 L CNN
-F 1 "1uF" H 5650 2800 50  0000 L CNN
-F 2 "Capacitor_THT:C_Rect_L7.0mm_W3.5mm_P2.50mm_P5.00mm" H 5838 2900 50  0001 C CNN
-F 3 "~" H 5800 3050 50  0001 C CNN
-	1    5800 3050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3950 2100 3950 2600
 Wire Wire Line
