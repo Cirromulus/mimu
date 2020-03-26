@@ -8,6 +8,7 @@ static constexpr uint16_t MAX_RANGE_MM = 600;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
+static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
 static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
 
 VL53L0X sensor;
@@ -119,7 +120,7 @@ long readVcc_mV() {
 
 bool isBatteryOk()
 {
-	return readVcc_mV() > MIN_VOLTAGE_ALKALINE_mV*NUM_BATTERIES;
+	return readVcc_mV() > WRN_VOLTAGE_ALKALINE_mV*NUM_BATTERIES;
 }
 
 void loop() {
@@ -150,11 +151,12 @@ void loop() {
 
     if(needBatteryCheck && !isBatteryOk())
     {
-    	for(unsigned i = 0; i < 5; i++)
+    	for(unsigned i = 0; i < 4; i++)
     	{
 			digitalWrite(LED, !over);
 			delay(50);
 			digitalWrite(LED, over);
+            delay(50);
     	}
     	needBatteryCheck = false;
     }
