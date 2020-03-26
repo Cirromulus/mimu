@@ -4,7 +4,7 @@
 
 #include <pins.hpp>
 
-static constexpr uint16_t MAX_RANGE_MM = 300;
+static constexpr uint16_t MAX_RANGE_MM = 500;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
@@ -129,7 +129,7 @@ void loop() {
 
     //uint8_t over = sensor.readRangeContinuousMillimeters() > 40; //(analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
     uint16_t distance = sensor.readRangeSingleMillimeters();
-    uint8_t over = distance > 50; //(analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    uint8_t over = distance > (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
 
     if(has_serial) Serial.println(distance);
     if (sensor.timeoutOccurred())
@@ -146,7 +146,7 @@ void loop() {
         return;
     }
 
-    //digitalWrite(MUTE, over);
+    digitalWrite(MUTE, over);
     digitalWrite(LED, over);
 
 
