@@ -41,12 +41,10 @@ void setup() {
     sensor.setTimeout(500);
     while (!sensor.init())
     {
-        /*
         digitalWrite(LED, 1);
         delay(50);
         digitalWrite(LED, 0);
         delay(50);
-        */
         if(has_serial) Serial.println("...");
     };
 
