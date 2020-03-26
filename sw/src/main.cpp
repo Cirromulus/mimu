@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <VL53L0X.h>
 
 #include <pins.hpp>
@@ -15,6 +16,7 @@ void setup() {
     pinMode(MUTE, OUTPUT);
     pinMode(LED, OUTPUT);
     pinMode(POT, INPUT);
+    Wire.begin();
 
     if(has_serial)
     {
