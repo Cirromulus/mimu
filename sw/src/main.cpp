@@ -4,7 +4,7 @@
 
 #include <pins.hpp>
 
-static constexpr uint16_t MAX_RANGE_MM = 500;
+static constexpr uint16_t MAX_RANGE_MM = 600;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
@@ -81,14 +81,13 @@ void setup() {
         Serial.println(sensor.getMeasurementTimingBudget());
     }
 
-    /*
     cli();	//disable interrupts
-    //set timer1 interrupt at 1Hz
+    //set timer1 interrupt
 	TCCR1A = 0;// set entire TCCR1A register to 0
 	TCCR1B = 0;// same for TCCR1B
 	TCNT1  = 0;//initialize counter value to 0
 	// set compare match register for 1/30hz increments
-	OCR1A = (16*10^6) / (1024/30) - 1; 	//(must be <65536)
+	OCR1A = 0x5000; //(20 sec * 1MHz)/1024 = 0x5000
 	// turn on CTC mode
 	TCCR1B |= (1 << WGM12);
 	// Set CS12 and CS10 bits for 1024 prescaler
@@ -96,12 +95,12 @@ void setup() {
 	// enable timer compare interrupt
 	TIMSK1 |= (1 << OCIE1A);
 	sei();	//allow interrupts
-    */
+
 }
 
 static volatile bool needBatteryCheck = false;
 
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz
+ISR(TIMER1_COMPA_vect){
 	needBatteryCheck = true;
 }
 
@@ -149,14 +148,13 @@ void loop() {
     digitalWrite(MUTE, over);
     digitalWrite(LED, over);
 
-
-    if(false && needBatteryCheck && !isBatteryOk())
+    if(needBatteryCheck && !isBatteryOk())
     {
     	for(unsigned i = 0; i < 5; i++)
     	{
-			digitalWrite(LED, 0);
-			delay(500);
-			digitalWrite(LED, 1);
+			digitalWrite(LED, !over);
+			delay(50);
+			digitalWrite(LED, over);
     	}
     	needBatteryCheck = false;
     }
