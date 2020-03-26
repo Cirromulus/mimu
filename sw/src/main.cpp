@@ -1,37 +1,87 @@
 #include <Arduino.h>
 #include <VL53L0X.h>
 
-
-static constexpr uint8_t MUTE = 23;
-static constexpr uint8_t POT  = 24;
-static constexpr uint8_t LED  = 25;
+#include <pins.hpp>
 
 static constexpr uint16_t MAX_RANGE_MM = 300;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
-static constexpr uint8_t NUM_BATTERIES = 3;
+static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
 
 VL53L0X sensor;
 
 void setup() {
-    sensor.setTimeout(500);
-    while (!sensor.init()){};
-
-    // lower the return signal rate limit (default is 0.25 MCPS)
-    sensor.setSignalRateLimit(0.1);
-    // increase laser pulse periods (defaults are 14 and 10 PCLKs)
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
-
-    // increase timing budget to 200 ms
-    sensor.setMeasurementTimingBudget(200000);
-
     pinMode(MUTE, OUTPUT);
     pinMode(LED, OUTPUT);
     pinMode(POT, INPUT);
-    sensor.startContinuous(0);
 
+    if(has_serial)
+    {
+        Serial.begin(115200);
+        while (!Serial) {
+            digitalWrite(LED, 1);
+            delay(250);
+            digitalWrite(LED, 0);
+            delay(25);
+        }
+    }
+    else
+    {
+        digitalWrite(LED, 1);
+        delay(500);
+        digitalWrite(LED, 0);
+    }
+
+
+    if(has_serial) Serial.println("initing Sensor...");
+
+    sensor.setTimeout(500);
+    while (!sensor.init())
+    {
+        /*
+        digitalWrite(LED, 1);
+        delay(50);
+        digitalWrite(LED, 0);
+        delay(50);
+        */
+        if(has_serial) Serial.println("...");
+    };
+
+    if(has_serial) Serial.println("done");
+
+    // lower the return signal rate limit (default is 0.25 MCPS)
+    if(!sensor.setSignalRateLimit(0.1))
+    {
+        if(has_serial) Serial.println("could not set signal rate limit");
+    }
+    // increase laser pulse periods (defaults are 14 and 10 PCLKs)
+    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18))
+    {
+        if(has_serial) Serial.println("could not set VcselPeriodPreRange");
+    }
+
+    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14))
+    {
+        if(has_serial) Serial.println("could not set VcselPeriodFinalRange");
+    }
+    // increase timing budget to 200 ms
+    if(!sensor.setMeasurementTimingBudget(200000))
+    {
+        if(has_serial) Serial.println("could not set MeasurementTimingBudget");
+    }
+    //sensor.startContinuous(0);
+
+    if(has_serial)
+    {
+        Serial.println("Configured Sensor.");
+        Serial.print("SignalRateLimit: ");
+        Serial.println(sensor.getSignalRateLimit());
+        Serial.print("MeasurementTimingBudget: ");
+        Serial.println(sensor.getMeasurementTimingBudget());
+    }
+
+    /*
     cli();	//disable interrupts
     //set timer1 interrupt at 1Hz
 	TCCR1A = 0;// set entire TCCR1A register to 0
@@ -46,15 +96,14 @@ void setup() {
 	// enable timer compare interrupt
 	TIMSK1 |= (1 << OCIE1A);
 	sei();	//allow interrupts
+    */
 }
 
 static volatile bool needBatteryCheck = false;
 
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
-//generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
+ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz
 	needBatteryCheck = true;
 }
-
 
 long readVcc_mV() {
   long result;
@@ -75,10 +124,33 @@ bool isBatteryOk()
 }
 
 void loop() {
-	uint8_t over = sensor.readRangeContinuousMillimeters() > (analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    digitalWrite(MUTE, over);
+
+    if(has_serial) Serial.println("Measuring...");
+
+    //uint8_t over = sensor.readRangeContinuousMillimeters() > 40; //(analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    uint16_t distance = sensor.readRangeSingleMillimeters();
+    uint8_t over = distance > 50; //(analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+
+    if(has_serial) Serial.println(distance);
+    if (sensor.timeoutOccurred())
+    {
+        if(has_serial) Serial.println("Timeout.");
+
+        for(unsigned i = 0; i < 2; i++)
+        {
+            digitalWrite(LED, 1);
+            delay(100);
+            digitalWrite(LED, 0);
+            delay(100);
+        }
+        return;
+    }
+
+    //digitalWrite(MUTE, over);
     digitalWrite(LED, over);
-    if(needBatteryCheck && !isBatteryOk())
+
+
+    if(false && needBatteryCheck && !isBatteryOk())
     {
     	for(unsigned i = 0; i < 5; i++)
     	{
