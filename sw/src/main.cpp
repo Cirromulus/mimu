@@ -4,14 +4,77 @@
 
 #include <pins.hpp>
 
+static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 600;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
 static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
+static constexpr uint8_t  batt_low_num_blinks = 4*2;  //important: needs to be dividable by 2
 
 VL53L0X sensor;
+static volatile uint8_t blink = batt_low_num_blinks;
+static volatile bool needBatteryCheck = false;
+static volatile uint8_t over_threshold = false;
+
+void initBattCheckTimer()
+{
+    cli();	//disable interrupts
+    //set timer1 interrupt
+    TCCR1A = 0;// set entire TCCR1A register to 0
+    TCCR1B = 0;// same for TCCR1B
+    TCNT1  = 0;//initialize counter value to 0
+
+    // turn on CTC mode
+    TCCR1B |= (1 << WGM12);
+    // Set CS12 and CS10 bits for 1024 prescaler
+    TCCR1B |= (1 << CS12) | (1 << CS10);
+
+    // set compare match register
+    OCR1A = static_cast<uint16_t>((20*CPU_FREQ)/1024); //(20 sec * 1MHz)/1024 = 0x5000
+
+    // enable timer compare interrupt
+    TIMSK1 |= (1 << OCIE1A);
+    sei();	//allow interrupts
+}
+
+ISR(TIMER1_COMPA_vect){
+	needBatteryCheck = true;
+}
+
+void initBlinkTimer()
+{
+    cli();	//disable interrupts
+    //set timer1 interrupt
+    TCCR0A = 0;// set entire TCCR1A register to 0
+    TCNT0  = 0;//initialize counter value to 0
+
+    // turn on CTC mode
+    TCCR0A |= (1 << WGM12);
+    // Set CS12 and CS10 bits for 1024 prescaler
+    TCCR0A |= (1 << CS02) | (1 << CS00);
+
+    // set compare match register
+    OCR0A = static_cast<uint8_t>((CPU_FREQ/4)/1024); //(0.25 sec * 1MHz)/1024 = 244
+    Serial.print("OCR0A = ");
+    Serial.println((CPU_FREQ/4)/1024);
+
+
+    // enable timer compare interrupt
+    TIMSK0 |= (1 << OCIE0A);
+    sei();	//allow interrupts
+}
+
+ISR(TIMER0_COMPA_vect){
+    if(blink >= batt_low_num_blinks)
+    {
+        TIMSK0 |= (0 << OCIE0A);        //deactivate Interrupt
+        return;
+    }
+    digitalWrite(LED, over_threshold ^ (blink & 1));
+    blink ++;
+}
 
 void setup() {
     pinMode(MUTE, OUTPUT);
@@ -37,7 +100,7 @@ void setup() {
     }
 
 
-    if(has_serial) Serial.println("initing Sensor...");
+    if(has_serial && Serial) Serial.println("initing Sensor...");
 
     sensor.setTimeout(500);
     while (!sensor.init())
@@ -46,34 +109,30 @@ void setup() {
         delay(50);
         digitalWrite(LED, 0);
         delay(50);
-        if(has_serial) Serial.println("...");
+        if(has_serial && Serial) Serial.println("...");
     };
 
-    if(has_serial) Serial.println("done");
+    if(has_serial && Serial) Serial.println("done");
 
-    // lower the return signal rate limit (default is 0.25 MCPS)
-    if(!sensor.setSignalRateLimit(0.1))
+    if(hi_range)
     {
-        if(has_serial) Serial.println("could not set signal rate limit");
+        // lower the return signal rate limit (default is 0.25 MCPS)
+        sensor.setSignalRateLimit(0.1);
+        // increase laser pulse periods (defaults are 14 and 10 PCLKs)
+        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
+        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
+        // increase timing budget to 200 ms (default is about 33 ms)
+        sensor.setMeasurementTimingBudget(200000);
     }
-    // increase laser pulse periods (defaults are 14 and 10 PCLKs)
-    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18))
+    else
     {
-        if(has_serial) Serial.println("could not set VcselPeriodPreRange");
+        // lower timing budget to 10 ms (default is about 33 ms)
+        sensor.setMeasurementTimingBudget(10000);
     }
 
-    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14))
-    {
-        if(has_serial) Serial.println("could not set VcselPeriodFinalRange");
-    }
-    // increase timing budget to 200 ms
-    if(!sensor.setMeasurementTimingBudget(200000))
-    {
-        if(has_serial) Serial.println("could not set MeasurementTimingBudget");
-    }
-    //sensor.startContinuous(0);
+    sensor.startContinuous(0);
 
-    if(has_serial)
+    if(has_serial && Serial)
     {
         Serial.println("Configured Sensor.");
         Serial.print("SignalRateLimit: ");
@@ -82,27 +141,11 @@ void setup() {
         Serial.println(sensor.getMeasurementTimingBudget());
     }
 
-    cli();	//disable interrupts
-    //set timer1 interrupt
-	TCCR1A = 0;// set entire TCCR1A register to 0
-	TCCR1B = 0;// same for TCCR1B
-	TCNT1  = 0;//initialize counter value to 0
-	// set compare match register for 1/30hz increments
-	OCR1A = 0x5000; //(20 sec * 1MHz)/1024 = 0x5000
-	// turn on CTC mode
-	TCCR1B |= (1 << WGM12);
-	// Set CS12 and CS10 bits for 1024 prescaler
-	TCCR1B |= (1 << CS12) | (1 << CS10);
-	// enable timer compare interrupt
-	TIMSK1 |= (1 << OCIE1A);
-	sei();	//allow interrupts
-
-}
-
-static volatile bool needBatteryCheck = false;
-
-ISR(TIMER1_COMPA_vect){
-	needBatteryCheck = true;
+    if(use_batt_check)
+    {
+        initBattCheckTimer();
+        initBlinkTimer();
+    }
 }
 
 long readVcc_mV() {
@@ -125,16 +168,20 @@ bool isBatteryOk()
 
 void loop() {
 
-    if(has_serial) Serial.println("Measuring...");
+    if(has_serial && Serial) Serial.println("Measuring...");
 
-    //uint8_t over = sensor.readRangeContinuousMillimeters() > 40; //(analogRead(POT) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    uint16_t distance = sensor.readRangeSingleMillimeters();
-    uint8_t over = distance > (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    uint16_t distance = sensor.readRangeContinuousMillimeters();
+    over_threshold = distance > (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
 
-    if(has_serial) Serial.println(distance);
+    if(has_serial && Serial)
+    {
+        Serial.print(distance);
+        Serial.print(" > ");
+        Serial.print((static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ);
+    }
     if (sensor.timeoutOccurred())
     {
-        if(has_serial) Serial.println("Timeout.");
+        if(has_serial && Serial) Serial.println("Timeout.");
 
         for(unsigned i = 0; i < 2; i++)
         {
@@ -146,18 +193,13 @@ void loop() {
         return;
     }
 
-    digitalWrite(MUTE, over);
-    digitalWrite(LED, over);
+    digitalWrite(MUTE, over_threshold);
+    if(blink >= batt_low_num_blinks)    //we are not blinking right now
+        digitalWrite(LED, over_threshold);
 
     if(needBatteryCheck && !isBatteryOk())
     {
-    	for(unsigned i = 0; i < 4; i++)
-    	{
-			digitalWrite(LED, !over);
-			delay(50);
-			digitalWrite(LED, over);
-            delay(50);
-    	}
-    	needBatteryCheck = false;
+    	blink = 0;                      //starts blinking
+        TIMSK0 |= (1 << OCIE0A);        //start blink ISR
     }
 }
