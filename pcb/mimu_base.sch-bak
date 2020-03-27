@@ -257,7 +257,7 @@ L Device:R R1
 U 1 1 5E6D360F
 P 2550 5550
 F 0 "R1" H 2620 5596 50  0000 L CNN
-F 1 "1.2k" H 2620 5505 50  0000 L CNN
+F 1 "333R" H 2620 5505 50  0000 L CNN
 F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2480 5550 50  0001 C CNN
 F 3 "~" H 2550 5550 50  0001 C CNN
 	1    2550 5550
@@ -410,7 +410,7 @@ L mimu_phantom-rescue:R-mimu3000-rescue R2
 U 1 1 5E6D35AA
 P 3950 1950
 F 0 "R2" V 4030 1950 50  0000 C CNN
-F 1 "1.2k" V 3950 1950 50  0000 C CNN
+F 1 "1k" V 3950 1950 50  0000 C CNN
 F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 3880 1950 50  0001 C CNN
 F 3 "" H 3950 1950 50  0001 C CNN
 	1    3950 1950
@@ -547,8 +547,10 @@ $EndComp
 Connection ~ 3400 5600
 Wire Wire Line
 	3400 5600 3300 5600
-Text Notes 2650 5800 0    50   ~ 0
-(5,5V-1.3V)/2.9mA
-Text Notes 3200 1900 0    50   ~ 0
-(5,5V-1,5V)/3mA
+Text Notes 2450 5600 2    50   ~ 0
+(5,5V-1.3V)/8mA = 500R\n(  3V-1.3V)/8mA = 333R
+Text Notes 2850 2050 0    50   ~ 0
+(5,5V-1,5V)/3mA = 1,3k\n(  3V-1,5V)/3mA = 500R
+Text Notes 4000 2700 2    50   ~ 0
+I_Fon = 1.2mA-3mA
 $EndSCHEMATC

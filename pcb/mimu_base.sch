@@ -548,9 +548,9 @@ Connection ~ 3400 5600
 Wire Wire Line
 	3400 5600 3300 5600
 Text Notes 2450 5600 2    50   ~ 0
-(5,5V-1.3V)/8mA = 500R\n(  3V-1.3V)/8mA = 333R
-Text Notes 2850 1850 0    50   ~ 0
-(5,5V-1,5V)/3mA = 1,3k\n(  3V-1,5V)/3mA = 500R
+(4,5V-1.3V)/8mA = 400R\n(  3V-1.3V)/8mA = 333R
+Text Notes 2850 2050 0    50   ~ 0
+(4,5V-1,5V)/3mA = 1k\n(  3V-1,5V)/3mA = 500R
 Text Notes 4000 2700 2    50   ~ 0
 I_Fon = 1.2mA-3mA
 $EndSCHEMATC
