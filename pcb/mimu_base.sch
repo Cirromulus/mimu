@@ -45,43 +45,6 @@ F 3 "" H 4800 5850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4300 5150 4300 5300
-Wire Wire Line
-	4700 2800 4700 3050
-Wire Wire Line
-	4700 3050 4850 3050
-Wire Wire Line
-	5250 3200 5250 3150
-Wire Wire Line
-	5500 3200 5250 3200
-$Comp
-L Device:C C3
-U 1 1 5E6D3680
-P 5500 3050
-F 0 "C3" H 5600 3100 50  0000 L CNN
-F 1 "1uF" H 5350 2800 50  0000 L CNN
-F 2 "Capacitor_THT:C_Rect_L7.0mm_W3.5mm_P2.50mm_P5.00mm" H 5538 2900 50  0001 C CNN
-F 3 "~" H 5500 3050 50  0001 C CNN
-	1    5500 3050
-	1    0    0    -1  
-$EndComp
-Connection ~ 5500 2900
-Wire Wire Line
-	5250 2900 5500 2900
-Wire Wire Line
-	5250 2950 5250 2900
-Wire Wire Line
-	4700 2800 4550 2800
-$Comp
-L Switch:SW_DPDT_x2 SW2
-U 1 1 5E6D3676
-P 5050 3050
-F 0 "SW2" H 5050 3335 50  0000 C CNN
-F 1 "SW_DPDT_x2" H 5050 3244 50  0000 C CNN
-F 2 "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm" H 5050 3050 50  0001 C CNN
-F 3 "~" H 5050 3050 50  0001 C CNN
-	1    5050 3050
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:GND #PWR014
 U 1 1 5E6D3670
@@ -167,39 +130,16 @@ F 3 "~" H 4300 5600 50  0001 C CNN
 	1    4300 5600
 	1    0    0    -1  
 $EndComp
-Connection ~ 5150 2550
 Wire Wire Line
 	4550 2600 5150 2600
 Wire Wire Line
 	5150 2600 5150 2550
 Wire Wire Line
-	5650 2550 5650 1850
-Wire Wire Line
-	5150 2550 5650 2550
-Wire Wire Line
-	5500 2250 5500 2900
-Connection ~ 5500 2250
-Wire Wire Line
-	5450 2250 5500 2250
-Wire Wire Line
-	4850 2250 4800 2250
+	5150 2550 5150 1850
 Wire Wire Line
 	5500 1450 5500 1700
 Wire Wire Line
 	4800 1450 4800 1850
-Wire Wire Line
-	5150 1850 5650 1850
-$Comp
-L Connector:XLR3 OUTPUT1
-U 1 1 5E6D3630
-P 5150 2250
-F 0 "OUTPUT1" H 5150 2500 50  0000 C CNN
-F 1 "XLR3" H 5350 2000 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5150 2250 50  0001 C CNN
-F 3 "" H 5150 2250 50  0001 C CNN
-	1    5150 2250
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3950 3050 3950 2800
 $Comp
@@ -518,21 +458,16 @@ Wire Wire Line
 	4550 1800 4550 1850
 Wire Wire Line
 	4550 1850 4800 1850
-Connection ~ 4800 1850
-Wire Wire Line
-	4800 1850 4800 2250
 Wire Wire Line
 	6000 1600 6000 1700
 Wire Wire Line
 	6000 1700 5500 1700
 Connection ~ 5500 1700
 Wire Wire Line
-	5500 1700 5500 2250
-Wire Wire Line
 	6200 1600 6200 1850
 Wire Wire Line
-	6200 1850 5650 1850
-Connection ~ 5650 1850
+	6200 1850 5150 1850
+Connection ~ 5150 1850
 $Comp
 L Connector:TestPoint TP5
 U 1 1 5E6DA51D
@@ -553,4 +488,8 @@ Text Notes 2850 2050 0    50   ~ 0
 (4,5V-1,5V)/3mA = 1k\n(  3V-1,5V)/3mA = 500R
 Text Notes 4000 2700 2    50   ~ 0
 I_Fon = 1.2mA-3mA
+Wire Wire Line
+	4550 2800 5500 2800
+Wire Wire Line
+	5500 1700 5500 2800
 $EndSCHEMATC
