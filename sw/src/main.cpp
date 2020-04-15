@@ -5,7 +5,7 @@
 #include <pins.hpp>
 
 static constexpr uint32_t CPU_FREQ = F_CPU;
-static constexpr uint16_t MAX_RANGE_MM = 600;
+static constexpr uint16_t MAX_RANGE_MM = 700;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
@@ -171,7 +171,9 @@ void loop() {
     if(has_serial && Serial) Serial.println("Measuring...");
 
     uint16_t distance = sensor.readRangeContinuousMillimeters();
-    over_threshold = distance > (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
+    //this creates an "always on" region at the plus end of the poti
+    over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
 
     if(has_serial && Serial)
     {
