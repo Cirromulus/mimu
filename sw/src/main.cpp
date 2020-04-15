@@ -128,9 +128,11 @@ void setup() {
     {
         // lower timing budget to 10 ms (default is about 33 ms)
         sensor.setMeasurementTimingBudget(10000);
+        //increase SignalRateLimit
+        sensor.setSignalRateLimit(0.5);
     }
 
-    sensor.startContinuous(0);
+    sensor.startContinuous(1);
 
     if(has_serial && Serial)
     {
