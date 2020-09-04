@@ -10,7 +10,7 @@ The trigger-distance is adjustable with the potentiometer.
 
 Two Variants exist: Battery powered (see top image), and an experimental phantom powered version:
 
-![phantom](D:\Reposhit\mimu\render\mimu_phantom.png)
+![phantom](render/mimu_phantom.png)
 
 
 
