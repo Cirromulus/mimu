@@ -1,0 +1,9 @@
+- Wandstärke Verbinder geh B in Mittelsäule
+- Allgemeinen Parameter für Spiel
+- Material- und zeitoptimierung für Druck
+- Fenster weiter runter für ToF
+- Platz für Batteriefach
+- Ringe deutlich breiter -> s. Neutrik ring und fasen
+- Kabeldurchführungen breiter (und rund?)
+- Durchmesser Steckergewinde / innen
+- Evtl LED und anderes umsetzten -> PP 3D Modell -> virtuelle Assembly
