@@ -57,8 +57,11 @@ void initBlinkTimer()
 
     // set compare match register
     OCR0A = static_cast<uint8_t>((CPU_FREQ/4)/1024); //(0.25 sec * 1MHz)/1024 = 244
-    Serial.print("OCR0A = ");
-    Serial.println((CPU_FREQ/4)/1024);
+    if(has_serial && Serial)
+    {
+        Serial.print("OCR0A = ");
+        Serial.println((CPU_FREQ/4)/1024);
+    }
 
 
     // enable timer compare interrupt
@@ -126,13 +129,13 @@ void setup() {
     }
     else
     {
-        // lower timing budget to 10 ms (default is about 33 ms)
-        sensor.setMeasurementTimingBudget(10000);
+        // lower timing budget to absoulte minimum (default is about 33 ms)
+        sensor.setMeasurementTimingBudget(8000);
         //increase SignalRateLimit
         sensor.setSignalRateLimit(0.5);
     }
 
-    sensor.startContinuous(1);
+    sensor.startContinuous(0);
 
     if(has_serial && Serial)
     {
