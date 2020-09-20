@@ -80,9 +80,13 @@ ISR(TIMER0_COMPA_vect){
 }
 
 void setup() {
+    pinMode(J0, OUTPUT);
+    pinMode(J1, OUTPUT);
+    pinMode(J2, OUTPUT);
     pinMode(MUTE, OUTPUT);
     pinMode(LED, OUTPUT);
     pinMode(POT, INPUT);
+
     Wire.begin();
 
     if(has_serial)
@@ -97,14 +101,21 @@ void setup() {
     }
     else
     {
-        digitalWrite(LED, 1);
-        delay(500);
-        digitalWrite(LED, 0);
+        for(uint8_t i = 0; i < 2; i++)
+        {
+            digitalWrite(LED, 1);
+            digitalWrite(J2, 1);
+            delay(100);
+            digitalWrite(LED, 0);
+            digitalWrite(J2, 0);
+            delay(100);
+        }
     }
 
 
     if(has_serial && Serial) Serial.println("initing Sensor...");
 
+    digitalWrite(J0, 1);
     sensor.setTimeout(500);
     while (!sensor.init())
     {
@@ -116,7 +127,9 @@ void setup() {
     };
 
     if(has_serial && Serial) Serial.println("done");
+    digitalWrite(J0, 0);
 
+    digitalWrite(J1, 1);
     if(hi_range)
     {
         // lower the return signal rate limit (default is 0.25 MCPS)
@@ -129,13 +142,17 @@ void setup() {
     }
     else
     {
+        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
+        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
+
         // lower timing budget to absoulte minimum (default is about 33 ms)
-        sensor.setMeasurementTimingBudget(8000);
+        sensor.setMeasurementTimingBudget(10000);
         //increase SignalRateLimit
         sensor.setSignalRateLimit(0.5);
     }
 
-    sensor.startContinuous(0);
+    sensor.startContinuous(1);
+    digitalWrite(J1, 0);
 
     if(has_serial && Serial)
     {
@@ -175,7 +192,9 @@ void loop() {
 
     if(has_serial && Serial) Serial.println("Measuring...");
 
+    digitalWrite(J2, 1);
     uint16_t distance = sensor.readRangeContinuousMillimeters();
+    digitalWrite(J2, 0);
     uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
     //this creates an "always on" region at the plus end of the poti
     over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
