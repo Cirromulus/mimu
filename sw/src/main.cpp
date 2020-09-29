@@ -88,6 +88,7 @@ void setup() {
     pinMode(POT, INPUT);
 
     Wire.begin();
+    Wire.setClock(400000);  // MORE GAIN
 
     if(has_serial)
     {
@@ -116,7 +117,7 @@ void setup() {
     if(has_serial && Serial) Serial.println("initing Sensor...");
 
     digitalWrite(J0, 1);
-    sensor.setTimeout(500);
+    sensor.setTimeout(25);
     while (!sensor.init())
     {
         digitalWrite(LED, 1);
@@ -142,8 +143,11 @@ void setup() {
     }
     else
     {
+        /*
+        // No special increase in speed
         sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
         sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
+        */
 
         // lower timing budget to absoulte minimum (default is about 33 ms)
         sensor.setMeasurementTimingBudget(10000);
@@ -151,7 +155,7 @@ void setup() {
         sensor.setSignalRateLimit(0.5);
     }
 
-    sensor.startContinuous(1);
+    sensor.startContinuous(0);
     digitalWrite(J1, 0);
 
     if(has_serial && Serial)
@@ -209,7 +213,7 @@ void loop() {
     {
         if(has_serial && Serial) Serial.println("Timeout.");
 
-        for(unsigned i = 0; i < 2; i++)
+        for(uint8_t i = 0; i < 2; i++)
         {
             digitalWrite(LED, 1);
             delay(100);
