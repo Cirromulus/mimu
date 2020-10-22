@@ -6,6 +6,7 @@
 
 static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 700;
+static constexpr uint16_t DEBOUNCE_RANGE_MM = 10;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
@@ -141,7 +142,7 @@ void setup() {
         // increase timing budget to 200 ms (default is about 33 ms)
         sensor.setMeasurementTimingBudget(200000);
     }
-    else
+    else if(false)  // high speed not needed
     {
         /*
         // No special increase in speed
@@ -210,6 +211,9 @@ void loop() {
     digitalWrite(J2, 0);
     uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
     //this creates an "always on" region at the plus end of the poti
+    if(!over_threshold)
+        switching_distance += 10;
+
     over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
 
     if(has_serial && Serial)
