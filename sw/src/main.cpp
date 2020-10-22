@@ -150,7 +150,16 @@ void setup() {
         */
 
         // lower timing budget to absoulte minimum (default is about 33 ms)
-        sensor.setMeasurementTimingBudget(10000);
+        if(!sensor.setMeasurementTimingBudget(20000))
+        {
+            while(true)
+            {
+                digitalWrite(LED, 1);
+                delay(250);
+                digitalWrite(LED, 0);
+                delay(100);
+            }
+        }
         //increase SignalRateLimit
         sensor.setSignalRateLimit(0.5);
     }
