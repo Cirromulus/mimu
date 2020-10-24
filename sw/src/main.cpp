@@ -1,13 +1,19 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
-
+#include <avr/sleep.h>
 #include <pins.hpp>
 
 static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 700;
 static constexpr uint16_t DEBOUNCE_RANGE_MM = 10;
+static constexpr uint32_t IDLE_TIMEOUT_S = 60*60;
+static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 60;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
+static constexpr float    BATT_BLINK_S = 0.25;
+static constexpr uint16_t BATT_MEASURE_S = 60;
+static constexpr uint16_t BATT_MEASURE_CYCLES = BATT_MEASURE_S/BATT_BLINK_S;
+static constexpr uint8_t  MEASUREMENT_DELAY_MS = 20;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
@@ -15,9 +21,35 @@ static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
 static constexpr uint8_t  batt_low_num_blinks = 4*2;  //important: needs to be dividable by 2
 
 VL53L0X sensor;
-static volatile uint8_t blink = batt_low_num_blinks;
+static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
+static volatile uint16_t blink_cycles = 0;
 static volatile bool needBatteryCheck = false;
 static volatile uint8_t over_threshold = false;
+static uint32_t last_unmute;
+
+
+void switchOnBlink()
+{
+    for(uint8_t i = 0; i < 2; i++)  // Switch-on blink
+    {
+        digitalWrite(LED, 1);
+        digitalWrite(J2, 1);
+        delay(100);
+        digitalWrite(LED, 0);
+        digitalWrite(J2, 0);
+        delay(50);
+    }
+}
+
+void readyBlink()
+{
+    digitalWrite(LED, 1);
+    digitalWrite(J2, 1);
+    delay(100);
+    digitalWrite(LED, 0);
+    digitalWrite(J2, 0);
+    delay(50);
+}
 
 void initBattCheckTimer()
 {
@@ -33,51 +65,26 @@ void initBattCheckTimer()
     TCCR1B |= (1 << CS12) | (1 << CS10);
 
     // set compare match register
-    OCR1A = static_cast<uint16_t>((20*CPU_FREQ)/1024); //(20 sec * 1MHz)/1024 = 0x5000
+    OCR1A = static_cast<uint8_t>((BATT_BLINK_S*CPU_FREQ)/1024); //(x sec * 1MHz)/1024 = 244
 
     // enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
     sei();	//allow interrupts
 }
 
-ISR(TIMER1_COMPA_vect){
-	needBatteryCheck = true;
-}
-
-void initBlinkTimer()
+ISR(TIMER1_COMPA_vect)
 {
-    cli();	//disable interrupts
-    //set timer1 interrupt
-    TCCR0A = 0;// set entire TCCR1A register to 0
-    TCNT0  = 0;//initialize counter value to 0
-
-    // turn on CTC mode
-    TCCR0A |= (1 << WGM12);
-    // Set CS12 and CS10 bits for 1024 prescaler
-    TCCR0A |= (1 << CS02) | (1 << CS00);
-
-    // set compare match register
-    OCR0A = static_cast<uint8_t>((CPU_FREQ/4)/1024); //(0.25 sec * 1MHz)/1024 = 244
-    if(has_serial && Serial)
+    if(blink < batt_low_num_blinks)
     {
-        Serial.print("OCR0A = ");
-        Serial.println((CPU_FREQ/4)/1024);
+        digitalWrite(LED, over_threshold ^ (blink & 1));
+        blink ++;
     }
 
-
-    // enable timer compare interrupt
-    TIMSK0 |= (1 << OCIE0A);
-    sei();	//allow interrupts
-}
-
-ISR(TIMER0_COMPA_vect){
-    if(blink >= batt_low_num_blinks)
+    if(blink_cycles++ >= BATT_MEASURE_CYCLES)
     {
-        TIMSK0 |= (0 << OCIE0A);        //deactivate Interrupt
-        return;
+        needBatteryCheck = true;
+        blink_cycles = 0;
     }
-    digitalWrite(LED, over_threshold ^ (blink & 1));
-    blink ++;
 }
 
 void setup() {
@@ -89,7 +96,7 @@ void setup() {
     pinMode(POT, INPUT);
 
     Wire.begin();
-    Wire.setClock(400000);  // MORE GAIN
+    //Wire.setClock(400000);  // MORE GAIN
 
     if(has_serial)
     {
@@ -103,22 +110,13 @@ void setup() {
     }
     else
     {
-        for(uint8_t i = 0; i < 2; i++)
-        {
-            digitalWrite(LED, 1);
-            digitalWrite(J2, 1);
-            delay(100);
-            digitalWrite(LED, 0);
-            digitalWrite(J2, 0);
-            delay(100);
-        }
+        switchOnBlink();
     }
-
 
     if(has_serial && Serial) Serial.println("initing Sensor...");
 
     digitalWrite(J0, 1);
-    sensor.setTimeout(25);
+    sensor.setTimeout(100);
     while (!sensor.init())
     {
         digitalWrite(LED, 1);
@@ -142,7 +140,7 @@ void setup() {
         // increase timing budget to 200 ms (default is about 33 ms)
         sensor.setMeasurementTimingBudget(200000);
     }
-    else if(false)  // high speed not needed
+    else
     {
         /*
         // No special increase in speed
@@ -162,10 +160,10 @@ void setup() {
             }
         }
         //increase SignalRateLimit
-        sensor.setSignalRateLimit(0.5);
+        //sensor.setSignalRateLimit(0.5);   //no significant speedup
     }
-
-    sensor.startContinuous(0);
+    last_unmute = millis();
+    sensor.startContinuous(MEASUREMENT_DELAY_MS);
     digitalWrite(J1, 0);
 
     if(has_serial && Serial)
@@ -180,8 +178,9 @@ void setup() {
     if(use_batt_check)
     {
         initBattCheckTimer();
-        initBlinkTimer();
     }
+
+    readyBlink();
 }
 
 long readVcc_mV() {
@@ -210,11 +209,15 @@ void loop() {
     uint16_t distance = sensor.readRangeContinuousMillimeters();
     digitalWrite(J2, 0);
     uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    //this creates an "always on" region at the plus end of the poti
-    if(!over_threshold)
+    if(!over_threshold) //debounce
         switching_distance += 10;
 
+    //this creates an "always on" region at the plus end of the poti
     over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
+    if(!over_threshold)
+    {   // save last time we measured something near
+        last_unmute = millis();
+    }
 
     if(has_serial && Serial)
     {
@@ -240,9 +243,30 @@ void loop() {
     if(blink >= batt_low_num_blinks)    //we are not blinking right now
         digitalWrite(LED, over_threshold);
 
+    if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
+    {
+        blink = 0;
+        if(millis() - last_unmute > IDLE_TIMEOUT_S*1000)
+        {
+            sensor.stopContinuous();
+            digitalWrite(MUTE, 0);
+            digitalWrite(LED, 0);
+            set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+            ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
+            sleep_enable();
+            sleep_cpu();
+            while(true)
+            {
+                digitalWrite(LED, 1);
+                delay(10);
+                digitalWrite(LED, 0);
+                delay(200);
+            }
+        }
+    }
+
     if(needBatteryCheck && !isBatteryOk())
     {
-    	blink = 0;                      //starts blinking
-        TIMSK0 |= (1 << OCIE0A);        //start blink ISR
+        blink = 0;                      //starts blinking
     }
 }
