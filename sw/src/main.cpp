@@ -7,8 +7,9 @@
 static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 700;
 static constexpr uint16_t DEBOUNCE_RANGE_MM = 10;
-static constexpr uint32_t IDLE_TIMEOUT_S = 60*60;
-static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 60;
+static constexpr uint32_t IDLE_TIMEOUT_S = 2*60*60;     // two hours
+static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 30*60;  // thirty minutes before
+static constexpr bool     IDLE_MUTE_STATE = false;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr float    BATT_BLINK_S = 0.25;
 static constexpr uint16_t BATT_MEASURE_S = 60;
@@ -249,13 +250,13 @@ void loop() {
         if(millis() - last_unmute > IDLE_TIMEOUT_S*1000)
         {
             sensor.stopContinuous();
-            digitalWrite(MUTE, 0);
+            digitalWrite(MUTE, IDLE_MUTE_STATE);
             digitalWrite(LED, 0);
             set_sleep_mode(SLEEP_MODE_PWR_DOWN);
             ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
             sleep_enable();
             sleep_cpu();
-            while(true)
+            while(true)     // TODO: Is this code reachable? Probably not.
             {
                 digitalWrite(LED, 1);
                 delay(10);
