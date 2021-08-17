@@ -130,36 +130,16 @@ F 3 "~" H 4300 5600 50  0001 C CNN
 	1    4300 5600
 	1    0    0    -1  
 $EndComp
-Connection ~ 5150 2550
 Wire Wire Line
 	4550 2600 5150 2600
 Wire Wire Line
 	5150 2600 5150 2550
 Wire Wire Line
-	5650 2550 5650 1850
-Wire Wire Line
-	5150 2550 5650 2550
-Wire Wire Line
-	5450 2250 5500 2250
-Wire Wire Line
-	4850 2250 4800 2250
+	5150 2550 5150 1850
 Wire Wire Line
 	5500 1450 5500 1700
 Wire Wire Line
 	4800 1450 4800 1850
-Wire Wire Line
-	5150 1850 5650 1850
-$Comp
-L Connector:XLR3 OUTPUT1
-U 1 1 5E6D3630
-P 5150 2250
-F 0 "OUTPUT1" H 5150 2500 50  0000 C CNN
-F 1 "XLR3" H 5350 2000 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5150 2250 50  0001 C CNN
-F 3 "" H 5150 2250 50  0001 C CNN
-	1    5150 2250
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3950 3050 3950 2800
 $Comp
@@ -478,21 +458,16 @@ Wire Wire Line
 	4550 1800 4550 1850
 Wire Wire Line
 	4550 1850 4800 1850
-Connection ~ 4800 1850
-Wire Wire Line
-	4800 1850 4800 2250
 Wire Wire Line
 	6000 1600 6000 1700
 Wire Wire Line
 	6000 1700 5500 1700
 Connection ~ 5500 1700
 Wire Wire Line
-	5500 1700 5500 2250
-Wire Wire Line
 	6200 1600 6200 1850
 Wire Wire Line
-	6200 1850 5650 1850
-Connection ~ 5650 1850
+	6200 1850 5150 1850
+Connection ~ 5150 1850
 $Comp
 L Connector:TestPoint TP5
 U 1 1 5E6DA51D
@@ -514,8 +489,7 @@ Text Notes 2850 2050 0    50   ~ 0
 Text Notes 4000 2700 2    50   ~ 0
 I_Fon = 1.2mA-3mA
 Wire Wire Line
-	5500 2800 5500 2250
-Wire Wire Line
 	4550 2800 5500 2800
-Connection ~ 5500 2250
+Wire Wire Line
+	5500 1700 5500 2800
 $EndSCHEMATC

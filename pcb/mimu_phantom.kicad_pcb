@@ -34,7 +34,7 @@
   )
 
   (setup
-    (last_trace_width 0.75)
+    (last_trace_width 0.25)
     (user_trace_width 0.25)
     (user_trace_width 0.5)
     (user_trace_width 0.75)
@@ -1415,7 +1415,7 @@
     (descr "4-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
     (tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
     (path /5E6CC751/5E6D35B7)
-    (fp_text reference U1 (at 3.81 -2.33) (layer F.SilkS)
+    (fp_text reference U1 (at 3.8 1.2) (layer F.SilkS)
       (effects (font (size 0.7 0.7) (thickness 0.15)))
     )
     (fp_text value AQY211EH (at 3.81 4.87) (layer F.Fab)

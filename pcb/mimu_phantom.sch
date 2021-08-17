@@ -305,7 +305,7 @@ L Device:R R3
 U 1 1 5E6CFBA0
 P 2150 1350
 F 0 "R3" H 2000 1400 50  0000 L CNN
-F 1 "6.8Ohm 0.1%" H 1600 1300 50  0000 L CNN
+F 1 "6.8kOhm 0.1%" H 1600 1300 50  0000 L CNN
 F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2080 1350 50  0001 C CNN
 F 3 "e.g. KOA Speer RS73 High-Precision Flat Chip Resistors" H 2150 1350 50  0001 C CNN
 	1    2150 1350
@@ -316,7 +316,7 @@ L Device:R R4
 U 1 1 5E6D0E42
 P 2400 1350
 F 0 "R4" H 2470 1396 50  0000 L CNN
-F 1 "6.8Ohm 0.1%" H 2470 1305 50  0000 L CNN
+F 1 "6.8kOhm 0.1%" H 2470 1305 50  0000 L CNN
 F 2 "Resistors_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2330 1350 50  0001 C CNN
 F 3 "e.g. KOA Speer RS73 High-Precision Flat Chip Resistors" H 2400 1350 50  0001 C CNN
 	1    2400 1350
