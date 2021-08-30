@@ -11,15 +11,16 @@ static constexpr uint32_t IDLE_TIMEOUT_S = 2*60*60;     // two hours
 static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 30*60;  // thirty minutes before
 static constexpr bool     IDLE_MUTE_STATE = false;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
-static constexpr float    BATT_BLINK_S = 0.25;
-static constexpr uint16_t BATT_MEASURE_S = 60;
-static constexpr uint16_t BATT_MEASURE_CYCLES = BATT_MEASURE_S/BATT_BLINK_S;
+static constexpr float    BATT_BLINK_CYCLE_DURATION_S = 0.25;
+static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;
+static constexpr uint16_t BATT_MEASURE_CYCLES = BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
 static constexpr uint8_t  MEASUREMENT_DELAY_MS = 20;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
 static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
-static constexpr uint8_t  batt_low_num_blinks = 4*2;  //important: needs to be dividable by 2
+//important: needs to be dividable by 2, includes the "off" switches as well
+static constexpr uint8_t  batt_low_num_blinks = 8*2;
 
 VL53L0X sensor;
 static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
@@ -66,7 +67,8 @@ void initBattCheckTimer()
     TCCR1B |= (1 << CS12) | (1 << CS10);
 
     // set compare match register
-    OCR1A = static_cast<uint8_t>((BATT_BLINK_S*CPU_FREQ)/1024); //(x sec * 1MHz)/1024 = 244
+    static_assert((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024 < (uint32_t(1) << 17), "battery check timer would overflow");
+    OCR1A = static_cast<uint16_t>((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024); //(x sec * 1MHz)/1024 = 244
 
     // enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
@@ -81,6 +83,8 @@ ISR(TIMER1_COMPA_vect)
         blink ++;
     }
 
+    // time between battery checks is measured in blink cycles
+    // (to save timers)
     if(blink_cycles++ >= BATT_MEASURE_CYCLES)
     {
         needBatteryCheck = true;
@@ -244,6 +248,7 @@ void loop() {
     if(blink >= batt_low_num_blinks)    //we are not blinking right now
         digitalWrite(LED, over_threshold);
 
+    // Warn if going to shut down
     if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
     {
         blink = 0;
@@ -268,6 +273,7 @@ void loop() {
 
     if(needBatteryCheck && !isBatteryOk())
     {
-        blink = 0;                      //starts blinking
+        blink = 0;                      // starts blinking
+        needBatteryCheck = false;       // reset time for next check
     }
 }
