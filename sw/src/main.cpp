@@ -17,13 +17,13 @@ static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;
 static constexpr uint8_t  BATT_MEASURE_CYCLES =
         BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
 // Default: 33ms. Min 20ms, Max ~200ms
-static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 250000;
+static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 100000;
 static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 5;   // to save battery
 static constexpr uint16_t TOT_MEAS_CYCLE_MS =
         MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS;
 static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
         max(100, 2*TOT_MEAS_CYCLE_MS);
-static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 1;
+static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 2;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
@@ -148,10 +148,10 @@ void setup() {
 
     digitalWrite(J1, 1);
     // (default is 0.25 MCPS)
-    sensor.setSignalRateLimit(0.1);
+    //sensor.setSignalRateLimit(0.1);
     // (defaults are 14 and 10 PCLKs)
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
+    //sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
+    //sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
     // increase timing budget to 200 ms (default is about 33 ms)
     if(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
