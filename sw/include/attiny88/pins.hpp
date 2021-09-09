@@ -8,4 +8,3 @@ static constexpr uint8_t J2   = 2;
 
 static constexpr bool has_serial = false;
 static constexpr bool use_batt_check = true;
-static constexpr bool hi_range = true;

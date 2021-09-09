@@ -7,6 +7,7 @@
 static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 700;
 static constexpr uint16_t DEBOUNCE_RANGE_MM = 10;
+static constexpr uint16_t DEADZONE_LOW_MM = 40;         // How long is the average microphone? :D
 static constexpr uint32_t IDLE_TIMEOUT_S = 2*60*60;     // two hours
 static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 30*60;  // thirty minutes before
 static constexpr bool     IDLE_MUTE_STATE = false;
@@ -16,13 +17,13 @@ static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;
 static constexpr uint8_t  BATT_MEASURE_CYCLES =
         BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
 // Default: 33ms. Min 20ms, Max ~200ms
-static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 22000;
-static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 2;   // to save battery
+static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 250000;
+static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 5;   // to save battery
 static constexpr uint16_t TOT_MEAS_CYCLE_MS =
         MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS;
 static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
-        max(100, TOT_MEAS_CYCLE_MS);
-static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 2;
+        max(100, 2*TOT_MEAS_CYCLE_MS);
+static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 1;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
@@ -38,6 +39,7 @@ static volatile uint8_t blink_cycles = 0;
 static volatile bool needBatteryCheck = false;
 static volatile bool over_threshold = false;
 static uint32_t last_unmute;
+static uint8_t  consecutive_equal_measurements = 0;
 
 
 void switchOnBlink()
@@ -145,38 +147,23 @@ void setup() {
     digitalWrite(J0, 0);
 
     digitalWrite(J1, 1);
-    if(hi_range)
+    // (default is 0.25 MCPS)
+    sensor.setSignalRateLimit(0.1);
+    // (defaults are 14 and 10 PCLKs)
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
+    // increase timing budget to 200 ms (default is about 33 ms)
+    if(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
-        // lower the return signal rate limit (default is 0.25 MCPS)
-        sensor.setSignalRateLimit(0.1);
-        // increase laser pulse periods (defaults are 14 and 10 PCLKs)
-        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
-        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
-        // increase timing budget to 200 ms (default is about 33 ms)
-        sensor.setMeasurementTimingBudget(200000);
-    }
-    else
-    {
-        /*
-        // No special increase in speed
-        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
-        sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-        */
-
-        // lower timing budget to absoulte minimum (default is about 33 ms)
-        if(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
+        while(true)
         {
-            while(true)
-            {
-                digitalWrite(LED, 1);
-                delay(250);
-                digitalWrite(LED, 0);
-                delay(100);
-            }
+            digitalWrite(LED, 1);
+            delay(350);
+            digitalWrite(LED, 0);
+            delay(100);
         }
-        //increase SignalRateLimit
-        //sensor.setSignalRateLimit(0.5);   //no significant speedup
     }
+
     last_unmute = millis();
     sensor.startContinuous(TOT_MEAS_CYCLE_MS);
     digitalWrite(J1, 0);
@@ -230,8 +217,24 @@ void loop() {
     if(!over_threshold) //debounce
         switching_distance += DEBOUNCE_RANGE_MM;
 
-    //this creates an "always on" region at the plus end of the poti
-    over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
+    bool previous_measurement_over_threshold = over_threshold;
+
+
+    if(switching_distance >= MAX_RANGE_MM-1) {
+        // this creates an "always on / unmute" region
+        // at the plus end of the poti
+        over_threshold = false;
+    } else if (distance > DEADZONE_LOW_MM) {
+        // if lower than deadzone, no update happens
+        over_threshold =  distance > switching_distance;
+    }
+
+    if(previous_measurement_over_threshold != over_threshold) {
+        consecutive_equal_measurements = 1;
+    } else {
+        if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
+            consecutive_equal_measurements++;
+    }
     if(!over_threshold)
     {   // save last time we measured something near
         last_unmute = millis();
@@ -245,8 +248,8 @@ void loop() {
     }
     if (sensor.timeoutOccurred())
     {
+        // Communication with Sensor did not succeed
         if(has_serial && Serial) Serial.println("Timeout.");
-
         for(uint8_t i = 0; i < 2; i++)
         {
             digitalWrite(LED, 1);
@@ -257,9 +260,14 @@ void loop() {
         return;
     }
 
-    digitalWrite(MUTE, over_threshold);
-    if(blink >= batt_low_num_blinks)    //we are not blinking right now
-        digitalWrite(LED, over_threshold);
+    if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED) {
+        // not yet enough equal measurements, stick to the "old" value
+        //digitalWrite(MUTE, !over_threshold); // not needed, GPIO has memory!
+    } else {
+        digitalWrite(MUTE, over_threshold);
+        if(blink >= batt_low_num_blinks)    //we are not blinking right now
+            digitalWrite(LED, over_threshold);
+    }
 
     // Warn if going to shut down
     if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
@@ -274,13 +282,6 @@ void loop() {
             ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
             sleep_enable();
             sleep_cpu();
-            while(true)     // TODO: Is this code reachable? Probably not.
-            {
-                digitalWrite(LED, 1);
-                delay(10);
-                digitalWrite(LED, 0);
-                delay(200);
-            }
         }
     }
 
