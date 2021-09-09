@@ -13,20 +13,25 @@ static constexpr bool     IDLE_MUTE_STATE = false;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr float    BATT_BLINK_CYCLE_DURATION_S = 0.25;
 static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;
-static constexpr uint16_t BATT_MEASURE_CYCLES = BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
-static constexpr uint8_t  MEASUREMENT_DELAY_MS = 20;
+static constexpr uint8_t  BATT_MEASURE_CYCLES = BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
+// Default: 33ms. Min 20ms, Max ~200ms
+static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 22000;
+static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 2;   // to save battery
+static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 2;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
 static constexpr uint16_t WRN_VOLTAGE_ALKALINE_mV = 1100;
 static constexpr uint16_t MIN_VOLTAGE_ALKALINE_mV = 1000;
-//important: needs to be dividable by 2, includes the "off" switches as well
 static constexpr uint8_t  batt_low_num_blinks = 8*2;
+static_assert(batt_low_num_blinks % 2 == 0,
+    "needs to be dividable by 2, "
+    "because it includes the \"off \" switches as well");
 
 VL53L0X sensor;
 static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
-static volatile uint16_t blink_cycles = 0;
+static volatile uint8_t blink_cycles = 0;
 static volatile bool needBatteryCheck = false;
-static volatile uint8_t over_threshold = false;
+static volatile bool over_threshold = false;
 static uint32_t last_unmute;
 
 
@@ -154,7 +159,7 @@ void setup() {
         */
 
         // lower timing budget to absoulte minimum (default is about 33 ms)
-        if(!sensor.setMeasurementTimingBudget(20000))
+        if(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
         {
             while(true)
             {
@@ -168,7 +173,7 @@ void setup() {
         //sensor.setSignalRateLimit(0.5);   //no significant speedup
     }
     last_unmute = millis();
-    sensor.startContinuous(MEASUREMENT_DELAY_MS);
+    sensor.startContinuous(MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS);
     digitalWrite(J1, 0);
 
     if(has_serial && Serial)
@@ -188,8 +193,11 @@ void setup() {
     readyBlink();
 }
 
-long readVcc_mV() {
-  long result;
+/*
+@return values 0 - ~5000
+*/
+uint16_t readVcc_mV() {
+  uint16_t result;
   // Read 1.1V reference against AVcc
   ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
   delay(2); // Wait for Vref to settle
@@ -215,7 +223,7 @@ void loop() {
     digitalWrite(J2, 0);
     uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
     if(!over_threshold) //debounce
-        switching_distance += 10;
+        switching_distance += DEBOUNCE_RANGE_MM;
 
     //this creates an "always on" region at the plus end of the poti
     over_threshold = switching_distance >= MAX_RANGE_MM-1 ? 0 : distance > switching_distance;
