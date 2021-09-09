@@ -13,10 +13,15 @@ static constexpr bool     IDLE_MUTE_STATE = false;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr float    BATT_BLINK_CYCLE_DURATION_S = 0.25;
 static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;
-static constexpr uint8_t  BATT_MEASURE_CYCLES = BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
+static constexpr uint8_t  BATT_MEASURE_CYCLES =
+        BATT_MEASURE_EVERY_S/BATT_BLINK_CYCLE_DURATION_S;
 // Default: 33ms. Min 20ms, Max ~200ms
 static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 22000;
 static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 2;   // to save battery
+static constexpr uint16_t TOT_MEAS_CYCLE_MS =
+        MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS;
+static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
+        max(100, TOT_MEAS_CYCLE_MS);
 static constexpr uint8_t  FILTER_EQUAL_MEASUREMENTS_NEEDED = 2;
 static constexpr uint8_t  NUM_BATTERIES = 3;
 static constexpr uint16_t MAX_VOLTAGE_ALKALINE_mV = 1500;
@@ -126,7 +131,7 @@ void setup() {
     if(has_serial && Serial) Serial.println("initing Sensor...");
 
     digitalWrite(J0, 1);
-    sensor.setTimeout(100);
+    sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
     while (!sensor.init())
     {
         digitalWrite(LED, 1);
@@ -173,7 +178,7 @@ void setup() {
         //sensor.setSignalRateLimit(0.5);   //no significant speedup
     }
     last_unmute = millis();
-    sensor.startContinuous(MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS);
+    sensor.startContinuous(TOT_MEAS_CYCLE_MS);
     digitalWrite(J1, 0);
 
     if(has_serial && Serial)
