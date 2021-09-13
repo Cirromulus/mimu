@@ -123,15 +123,12 @@ void setup() {
     // (defaults are 14 and 10 PCLKs)
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-    if(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
+    while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
-        while(true)
-        {
-            digitalWrite(LED, 1);
-            delay(350);
-            digitalWrite(LED, 0);
-            delay(100);
-        }
+        digitalWrite(LED, 1);
+        delay(350);
+        digitalWrite(LED, 0);
+        delay(100);
     }
 
     last_unmute = millis();
