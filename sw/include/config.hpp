@@ -5,9 +5,13 @@ static constexpr uint32_t CPU_FREQ = F_CPU;
 static constexpr uint16_t MAX_RANGE_MM = 700;
 static constexpr uint16_t DEBOUNCE_RANGE_MM = 10;
 static constexpr uint16_t DEADZONE_LOW_MM = 40;         // How long is the average microphone? :D
-static constexpr uint32_t IDLE_TIMEOUT_S = 2*60*60;     // two hours
+#ifdef BATTERY_POWERED
+    static constexpr uint32_t IDLE_TIMEOUT_S = 2*60*60;     // two hours
+#else
+    static constexpr uint32_t IDLE_TIMEOUT_S = 0;
+#endif
 static constexpr uint32_t IDLE_TIMEOUT_WARN_S = 30*60;  // thirty minutes before
-static constexpr bool     IDLE_MUTE_STATE = false;
+static constexpr bool     IDLE_MUTE_STATE = true;
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 static constexpr float    BATT_BLINK_CYCLE_DURATION_S = 0.25;
 static constexpr uint16_t BATT_MEASURE_EVERY_S = 20;

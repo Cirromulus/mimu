@@ -50,13 +50,39 @@ void initBattCheckTimer()
     TCCR1B |= (1 << CS12) | (1 << CS10);
 
     // set compare match register
-    static_assert((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024 < (uint32_t(1) << 17), "battery check timer would overflow");
+    static_assert((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024 < (uint32_t(1) << 17),
+        "battery check timer would overflow");
     OCR1A = static_cast<uint16_t>((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024); //(x sec * 1MHz)/1024 = 244
 
     // enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
     sei();	//allow interrupts
 }
+
+
+/*
+//38 kHz PWM frequency. Equation on page 103 of Attiny88 datasheet
+static constexpr uint8_t PWM_MAX = 25;
+
+void initFastPWM() {
+    //using PB1
+    PORTB &= ~(1 << PB1);    //pulldown
+    DDRB |= (1<<DDB1);    //Set PB1 as output
+
+    // PWM output to OC1A
+    TCCR1A |= (1 << COM1A1);
+    //Waveform Generation Mode 14, fast PWM, TOP = ICR1
+    TCCR1A |= (1<< WGM11);
+    TCCR1B |= (1<< WGM12) | (1<< WGM13);
+
+    //prescaler = 1
+    TCCR1B |= (1 << CS10);
+
+    OCR1B = 0;     // initially: Zero output
+    ICR1 = PWM_MAX; // set when to reset counter
+
+}
+*/
 
 ISR(TIMER1_COMPA_vect)
 {
@@ -240,18 +266,20 @@ void loop() {
     }
 
     // Warn if going to shut down
-    if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
-    {
-        blink = 0;
-        if(millis() - last_unmute > IDLE_TIMEOUT_S*1000)
+    if(IDLE_TIMEOUT_S > 0) {
+        if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
         {
-            sensor.stopContinuous();
-            digitalWrite(MUTE, IDLE_MUTE_STATE);
-            digitalWrite(LED, 0);
-            set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-            ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
-            sleep_enable();
-            sleep_cpu();
+            blink = 0;
+            if(millis() - last_unmute > IDLE_TIMEOUT_S*1000)
+            {   // actually start shutdown
+                sensor.stopContinuous();
+                digitalWrite(MUTE, IDLE_MUTE_STATE);
+                digitalWrite(LED, 0);
+                set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+                ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
+                sleep_enable();
+                sleep_cpu();
+            }
         }
     }
 
