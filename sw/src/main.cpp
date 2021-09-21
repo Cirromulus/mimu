@@ -8,7 +8,7 @@ VL53L0X sensor;
 static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
 static volatile uint8_t blink_cycles = 0;
 static volatile bool needBatteryCheck = false;
-static volatile bool over_threshold = false;
+static volatile bool should_mute = false;
 static uint32_t last_unmute;
 static uint8_t  consecutive_equal_measurements = 0;
 
@@ -88,7 +88,7 @@ ISR(TIMER1_COMPA_vect)
 {
     if(blink < batt_low_num_blinks)
     {
-        digitalWrite(LED, over_threshold ^ (blink & 1));
+        digitalWrite(LED, should_mute ^ (blink & 1));
         blink ++;
     }
 
@@ -142,10 +142,9 @@ void setup() {
 
     if(has_serial && Serial) Serial.println("done");
     digitalWrite(J0, 0);
-
     digitalWrite(J1, 1);
-    // (default is 0.25 MCPS)
-    //sensor.setSignalRateLimit(0.1);
+    //minimum MCPS to report valid reading (default is 0.25 MCPS)
+    sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
     // (defaults are 14 and 10 PCLKs)
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
@@ -207,38 +206,37 @@ void loop() {
     if(has_serial && Serial) Serial.println("Measuring...");
 
     digitalWrite(J2, 1);
-    uint16_t distance = sensor.readRangeContinuousMillimeters();
+    uint16_t measured_distance = sensor.readRangeContinuousMillimeters();
     digitalWrite(J2, 0);
     uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    if(!over_threshold) //debounce
+    if(!should_mute) //debounce
         switching_distance += DEBOUNCE_RANGE_MM;
 
-    bool previous_measurement_over_threshold = over_threshold;
-
+    bool previous_measurement_was_muted = should_mute;
 
     if(switching_distance >= MAX_RANGE_MM-1) {
         // this creates an "always on / unmute" region
         // at the plus end of the poti
-        over_threshold = false;
-    } else if (distance > DEADZONE_LOW_MM) {
+        should_mute = false;
+    } else if (measured_distance  > DEADZONE_LOW_MM) {
         // if lower than deadzone, no update happens
-        over_threshold =  distance > switching_distance;
+        should_mute =  measured_distance > switching_distance;
     }
 
-    if(previous_measurement_over_threshold != over_threshold) {
+    if(previous_measurement_was_muted != should_mute) {
         consecutive_equal_measurements = 1;
     } else {
         if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
             consecutive_equal_measurements++;
     }
-    if(!over_threshold)
+    if(!should_mute)
     {   // save last time we measured something near
         last_unmute = millis();
     }
 
     if(has_serial && Serial)
     {
-        Serial.print(distance);
+        Serial.print(measured_distance);
         Serial.print(" > ");
         Serial.print((static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ);
     }
@@ -258,11 +256,11 @@ void loop() {
 
     if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
-        //digitalWrite(MUTE, !over_threshold); // not needed, GPIO has memory!
+        //digitalWrite(MUTE, !should_mute); // not needed, GPIO has memory!
     } else {
-        digitalWrite(MUTE, over_threshold);
+        digitalWrite(MUTE, should_mute);
         if(blink >= batt_low_num_blinks)    //we are not blinking right now
-            digitalWrite(LED, over_threshold);
+            digitalWrite(LED, should_mute);
     }
 
     // Warn if going to shut down
