@@ -3,6 +3,7 @@
 #include <VL53L0X.h>
 #include <avr/sleep.h>
 #include <config.hpp>
+#include <max5395.h>
 
 VL53L0X sensor;
 static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
@@ -60,30 +61,6 @@ void initBattCheckTimer()
 }
 
 
-/*
-//38 kHz PWM frequency. Equation on page 103 of Attiny88 datasheet
-static constexpr uint8_t PWM_MAX = 25;
-
-void initFastPWM() {
-    //using PB1
-    PORTB &= ~(1 << PB1);    //pulldown
-    DDRB |= (1<<DDB1);    //Set PB1 as output
-
-    // PWM output to OC1A
-    TCCR1A |= (1 << COM1A1);
-    //Waveform Generation Mode 14, fast PWM, TOP = ICR1
-    TCCR1A |= (1<< WGM11);
-    TCCR1B |= (1<< WGM12) | (1<< WGM13);
-
-    //prescaler = 1
-    TCCR1B |= (1 << CS10);
-
-    OCR1B = 0;     // initially: Zero output
-    ICR1 = PWM_MAX; // set when to reset counter
-
-}
-*/
-
 ISR(TIMER1_COMPA_vect)
 {
     if(blink < batt_low_num_blinks)
@@ -111,6 +88,21 @@ void setup() {
 
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
+
+    Max5395 digipot{Max5395::ADDR_GND};
+    digipot.clear();
+    bool reverse  = false;
+    uint8_t i = 0;
+    while(true) {
+      if(reverse)
+        digipot.setWiper(255 - i);
+      else
+        digipot.setWiper(i);
+      i++;
+      if(i == 0)
+        reverse = !reverse;
+      delay(100);
+    }
 
     if(has_serial)
     {
