@@ -1,3 +1,9 @@
 [submodule ".\\sw\\lib\\vl53l0x"]
 	path = .\\sw\\lib\\vl53l0x
 	url = git@github.com:Cirromulus/vl53l0x-arduino.git
+[submodule "pcb/digikey-kicad-library"]
+	path = pcb/digikey-kicad-library
+	url = https://github.com/Digi-Key/digikey-kicad-library.git
+[submodule "pcb/Measurement_Points.pretty"]
+	path = pcb/Measurement_Points.pretty
+	url = https://github.com/KiCad/Measurement_Points.pretty
