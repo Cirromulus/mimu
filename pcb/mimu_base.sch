@@ -146,8 +146,6 @@ Wire Wire Line
 	2300 1400 2300 1300
 Text GLabel 2300 1300 1    50   Input ~ 0
 MUTE
-Wire Wire Line
-	6950 4800 6950 4150
 Text GLabel 7550 4150 1    50   Input ~ 0
 BUTT
 Wire Wire Line
@@ -156,8 +154,6 @@ Text GLabel 7050 4150 1    50   Input ~ 0
 LED_R
 Text GLabel 2250 5100 1    50   Input ~ 0
 LED_R
-Wire Wire Line
-	2250 4850 2250 5200
 $Comp
 L power:GND #PWR05
 U 1 1 5E6D3602
@@ -260,7 +256,7 @@ AR Path="/5E6D35B1" Ref="SENS1"  Part="1"
 AR Path="/5E6CC751/5E6D35B1" Ref="SENS1"  Part="1" 
 F 0 "SENS1" H 9468 3675 50  0000 C CNN
 F 1 "Sens" H 9468 3766 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal" H 9550 4100 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 9550 4100 50  0001 C CNN
 F 3 "~" H 9550 4100 50  0001 C CNN
 	1    9550 4100
 	-1   0    0    1   
@@ -409,12 +405,12 @@ $EndComp
 Wire Wire Line
 	2450 5200 2450 5100
 Wire Wire Line
-	3700 5800 3700 6150
+	3700 5800 3700 5900
 Text GLabel 7150 4150 1    50   Input ~ 0
 LED_G
 Wire Wire Line
 	7150 4800 7150 4150
-Text GLabel 6950 4150 1    50   Input ~ 0
+Text GLabel 3150 4200 0    50   Input ~ 0
 ATT
 Wire Wire Line
 	7550 4800 7550 4150
@@ -558,4 +554,59 @@ F 3 "" H 5150 3600 50  0001 C CNN
 	1    5150 3600
 	1    0    0    -1  
 $EndComp
+$Comp
+L Switch:SW_SPDT SW2
+U 1 1 616EBE4E
+P 3650 4200
+F 0 "SW2" H 3650 4485 50  0000 C CNN
+F 1 "SW_SPDT" H 3650 4394 50  0000 C CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels" H 3650 4200 50  0001 C CNN
+F 3 "~" H 3650 4200 50  0001 C CNN
+	1    3650 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3150 4200 3450 4200
+Text GLabel 6050 4650 1    50   Input ~ 0
+OC1A
+Text GLabel 6150 4650 1    50   Input ~ 0
+OC1B
+Text GLabel 4000 4100 2    50   Input ~ 0
+OC1A
+Text GLabel 4000 4300 2    50   Input ~ 0
+OC1B
+Wire Wire Line
+	3850 4100 4000 4100
+Wire Wire Line
+	4000 4300 3850 4300
+Wire Wire Line
+	6150 4800 6150 4650
+Wire Wire Line
+	6050 4650 6050 4800
+NoConn ~ 8450 4800
+NoConn ~ 8350 4800
+NoConn ~ 8250 4800
+NoConn ~ 8150 4800
+NoConn ~ 8050 4800
+NoConn ~ 6950 4800
+NoConn ~ 6550 4800
+NoConn ~ 6650 4800
+NoConn ~ 5950 4800
+NoConn ~ 5750 4800
+NoConn ~ 5650 4800
+NoConn ~ 5550 4800
+NoConn ~ 5450 4800
+Wire Wire Line
+	3700 5300 3800 5300
+Wire Wire Line
+	3800 5300 3800 5400
+Wire Wire Line
+	3800 5800 3800 5900
+Wire Wire Line
+	3800 5900 3700 5900
+Connection ~ 3700 5900
+Wire Wire Line
+	3700 5900 3700 6150
+Wire Wire Line
+	2250 5100 2250 5200
 $EndSCHEMATC

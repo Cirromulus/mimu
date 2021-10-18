@@ -1,4 +1,4 @@
-19461506531290669
+19487658523398559
 Arduino
 Arduino_101_Shield
 https://store.arduino.cc/genuino-101
@@ -50721,6 +50721,13 @@ Adafruit SSD1306 OLED 1.3 inch 128x64 I2C & SPI
 0
 7
 7
+Display_custom
+SolderJumper-3_P1.0mm_Bridged12_RoundedPad0.8x1mm_NumberLabels
+SMD Solder 3-pad Jumper, 1x1.5mm rounded Pads, 0.3mm gap, pads 1-2 bridged with 1 copper strip, labeled with numbers
+solder jumper open
+0
+3
+3
 Ferrite_THT
 LairdTech_28C0236-0JW-10
 Ferrite, vertical, LairdTech 28C0236-0JW-10, https://assets.lairdtech.com/home/brandworld/files/28C0236-0JW-10.pdf, JW Miller core https://www.bourns.com/products/magnetic-products/j.w.-miller-through-hole-ferrite-beads-emi-filters
@@ -56216,6 +56223,111 @@ Yellow 5381 Series LED
 0
 2
 2
+Measurement_Points
+Measurement_Point_Round-SMD-Pad_Big
+Mesurement Point, Round, SMD Pad, DM 3mm,
+Mesurement Point Round SMD Pad 3mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Round-SMD-Pad_Small
+Mesurement Point, Round, SMD Pad, DM 1.5mm,
+Mesurement Point Round SMD Pad 1.5mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Round-TH_Big
+Mesurement Point, Round, Trough Hole,  DM 3mm, Drill 1.5mm,
+Mesurement Point Round Trough Hole 3mm 1.5mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Round-TH_Small
+Mesurement Point, Square, Trough Hole,  DM 1.5mm, Drill 0.8mm,
+Mesurement Point Round Trough Hole 1.5mm Drill 0.8mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Square-SMD-Pad_Big
+Mesurement Point, Square, SMD Pad,  3mm x 3mm,
+Mesurement Point Square SMD Pad 3x3mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Square-SMD-Pad_Small
+Mesurement Point, Square, SMD Pad,  1.5mm x 1.5mm,
+Mesurement Point Square SMD Pad 1.5x1.5mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Square-TH_Big
+Mesurement Point, Square, Trough Hole,  3mm x 3mm, Drill 1.5mm,
+Mesurement Point Square Trough Hole 3x3mm Drill 1.5mm
+0
+1
+1
+Measurement_Points
+Measurement_Point_Square-TH_Small
+Mesurement Point, Square, Trough Hole,  1.5mm x 1.5mm, Drill 0.8mm,
+Mesurement Point Square Trough Hole 1.5x1.5mm Drill 0.8mm
+0
+1
+1
+Measurement_Points
+Test_Point
+Connecteurs 2 pins
+CONN DEV
+0
+2
+1
+Measurement_Points
+Test_Point_2Pads
+Connecteurs 2 pins
+CONN DEV
+0
+2
+2
+Measurement_Points
+Test_Point_Keystone_5000-5004_Miniature
+Keystone Miniature THM Test Point 5000-5004, http://www.keyelco.com/product-pdf.cfm?p=1309
+Through Hole Mount Test Points
+0
+1
+1
+Measurement_Points
+Test_Point_Keystone_5005-5009_Compact
+Keystone Miniature THM Test Point 5005-5009, http://www.keyelco.com/product-pdf.cfm?p=1314
+Through Hole Mount Test Points
+0
+1
+1
+Measurement_Points
+Test_Point_Keystone_5010-5014_Multipurpose
+Keystone Miniature THM Test Point 5010-5014, http://www.keyelco.com/product-pdf.cfm?p=1319
+Through Hole Mount Test Points
+0
+1
+1
+Measurement_Points
+Test_Point_Keystone_5015_Micro-Minature
+SMT Test Point- Micro Miniature 5015, http://www.keyelco.com/product-pdf.cfm?p=1353
+Test Point
+0
+1
+1
+Measurement_Points
+Test_Point_Keystone_5019_Minature
+SMT Test Point- Micro Miniature 5019, http://www.keyelco.com/product-pdf.cfm?p=1357
+Test Point
+0
+1
+1
 Module
 A20_OLINUXINO_LIME2
 A20 Olinuxino LIME2, 1.2GHz, 512-1024MB RAM, Micro-SD, NAND or eMMC, 1000Mbit Ethernet
