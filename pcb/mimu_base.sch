@@ -404,8 +404,6 @@ F 3 "~" H 2450 5350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2450 5200 2450 5100
-Wire Wire Line
-	3700 5800 3700 5900
 Text GLabel 7150 4150 1    50   Input ~ 0
 LED_G
 Wire Wire Line
@@ -597,6 +595,10 @@ NoConn ~ 5650 4800
 NoConn ~ 5550 4800
 NoConn ~ 5450 4800
 Wire Wire Line
+	2250 5100 2250 5200
+Wire Wire Line
+	3700 5800 3700 5900
+Wire Wire Line
 	3700 5300 3800 5300
 Wire Wire Line
 	3800 5300 3800 5400
@@ -607,6 +609,4 @@ Wire Wire Line
 Connection ~ 3700 5900
 Wire Wire Line
 	3700 5900 3700 6150
-Wire Wire Line
-	2250 5100 2250 5200
 $EndSCHEMATC
