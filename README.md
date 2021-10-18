@@ -18,5 +18,6 @@ Two Variants exist: Battery powered (see top image), and an experimental phantom
 Main Features:
 - ATtiny88 Processor
 - GY-530 IR TOF Distance Sensor (VL53L0X)
-- AQY211EHAX DIP4 Optocoupler
-For complete list, see [bom](pcb/mimu3000.csv)
+- AQY211EHAX DIP4 Optocoupler as Switch
+- H11F1W Opto-FET as Attenuator
+For complete list, see [BOM](pcb/mimu_phantom_bom.html)
