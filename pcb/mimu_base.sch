@@ -459,7 +459,7 @@ Wire Wire Line
 Wire Wire Line
 	5250 2200 5150 2200
 Wire Wire Line
-	5150 2400 5350 2400
+	5150 2400 5200 2400
 Text Notes 6200 2100 0    50   ~ 0
 (4,5V-1,5V)/30mA = 100R\n(  3V-1,5V)/30mA = 50R
 $Comp
@@ -609,4 +609,35 @@ Wire Wire Line
 Connection ~ 3700 5900
 Wire Wire Line
 	3700 5900 3700 6150
+Text Notes 5000 2900 2    50   ~ 0
+F = 1/(2*pi*R*C)\nWith F = 100kHz/2, R = 100Ohm\nC = 31nF
+$Comp
+L Device:C C3
+U 1 1 61755C2F
+P 5200 2700
+F 0 "C3" H 5315 2746 50  0000 L CNN
+F 1 "47nF" H 5315 2655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5238 2550 50  0001 C CNN
+F 3 "~" H 5200 2700 50  0001 C CNN
+	1    5200 2700
+	1    0    0    -1  
+$EndComp
+Connection ~ 5200 2400
+Wire Wire Line
+	5200 2400 5350 2400
+$Comp
+L power:GND #PWR011
+U 1 1 61758742
+P 5200 2950
+F 0 "#PWR011" H 5200 2700 50  0001 C CNN
+F 1 "GND" H 5205 2777 50  0000 C CNN
+F 2 "" H 5200 2950 50  0001 C CNN
+F 3 "" H 5200 2950 50  0001 C CNN
+	1    5200 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 2550 5200 2400
+Wire Wire Line
+	5200 2950 5200 2850
 $EndSCHEMATC
