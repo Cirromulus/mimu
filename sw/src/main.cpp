@@ -11,6 +11,8 @@ enum Instr : uint8_t {
 };
 static constexpr uint8_t max_wiper_val = 0b00111111;
 
+static constexpr auto additional_drive_pin = 6;
+
 static constexpr uint16_t ramptime_ms = 20;
 static constexpr uint16_t delay_microseconds_for_ramptime = (1000*ramptime_ms)/max_wiper_val;
 
@@ -25,8 +27,19 @@ void writeWiper(uint8_t val) {
     }
 }
 
+void setAdditionalDrivePin(bool val) {
+    if(val) {
+        pinMode(additional_drive_pin, OUTPUT);
+        digitalWrite(additional_drive_pin, 1);
+    } else {
+        digitalWrite(additional_drive_pin, 0);
+        pinMode(additional_drive_pin, INPUT_PULLDOWN);
+    }
+}
+
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
+    setAdditionalDrivePin(false);
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
 
@@ -46,14 +59,20 @@ void loop() {
     static uint8_t val = 0;
     static bool fast = false;
     static bool up = true;
+
     writeWiper(val);
+    if(val == 0) {
+        setAdditionalDrivePin(true);
+    } else {
+        setAdditionalDrivePin(false);
+    }
 
     if(fast) {
         delayMicroseconds(delay_microseconds_for_ramptime);
     } else {
         //Serial.print("Wrote val ");
         //Serial.println(val);
-        delay(10);
+        delay(5);
     }
 
     if(up)
