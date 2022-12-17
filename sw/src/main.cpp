@@ -1,289 +1,81 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <VL53L0X.h>
-#include <avr/sleep.h>
-#include <config.hpp>
 
-VL53L0X sensor;
-static volatile uint8_t  blink = batt_low_num_blinks;   //blink activated with = 0
-static volatile uint8_t blink_cycles = 0;
-static volatile bool needBatteryCheck = false;
-static volatile bool should_mute = false;
-static uint32_t last_unmute;
-static uint8_t  consecutive_equal_measurements = 0;
+static constexpr bool ad5258_ad1 = false;
+static constexpr bool ad5258_ad2 = false;
+static constexpr uint8_t ad5258_addr = 
+    0b0011000 + (ad5258_ad1 ? 0b10 : 0) + (ad5258_ad2 ? 0b1000000 : 0);
+enum Instr : uint8_t {
+    wiper = 0b00000000,
+    eeprom = 0b00100000
+};
+static constexpr uint8_t max_wiper_val = 0b00111111;
 
+static constexpr uint16_t ramptime_ms = 20;
+static constexpr uint16_t delay_microseconds_for_ramptime = (1000*ramptime_ms)/max_wiper_val;
 
-void switchOnBlink()
-{
-    for(uint8_t i = 0; i < 2; i++)  // Switch-on blink
-    {
-        digitalWrite(LED, 1);
-        digitalWrite(J2, 1);
-        delay(100);
-        digitalWrite(LED, 0);
-        digitalWrite(J2, 0);
-        delay(50);
-    }
-}
-
-void readyBlink()
-{
-    digitalWrite(LED, 1);
-    digitalWrite(J2, 1);
-    delay(100);
-    digitalWrite(LED, 0);
-    digitalWrite(J2, 0);
-    delay(50);
-}
-
-void initBattCheckTimer()
-{
-    cli();	//disable interrupts
-    //set timer1 interrupt
-    TCCR1A = 0;// set entire TCCR1A register to 0
-    TCCR1B = 0;// same for TCCR1B
-    TCNT1  = 0;//initialize counter value to 0
-
-    // turn on CTC mode
-    TCCR1B |= (1 << WGM12);
-    // Set CS12 and CS10 bits for 1024 prescaler
-    TCCR1B |= (1 << CS12) | (1 << CS10);
-
-    // set compare match register
-    static_assert((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024 < (uint32_t(1) << 17),
-        "battery check timer would overflow");
-    OCR1A = static_cast<uint16_t>((BATT_BLINK_CYCLE_DURATION_S*CPU_FREQ)/1024); //(x sec * 1MHz)/1024 = 244
-
-    // enable timer compare interrupt
-    TIMSK1 |= (1 << OCIE1A);
-    sei();	//allow interrupts
-}
-
-
-/*
-//38 kHz PWM frequency. Equation on page 103 of Attiny88 datasheet
-static constexpr uint8_t PWM_MAX = 25;
-
-void initFastPWM() {
-    //using PB1
-    PORTB &= ~(1 << PB1);    //pulldown
-    DDRB |= (1<<DDB1);    //Set PB1 as output
-
-    // PWM output to OC1A
-    TCCR1A |= (1 << COM1A1);
-    //Waveform Generation Mode 14, fast PWM, TOP = ICR1
-    TCCR1A |= (1<< WGM11);
-    TCCR1B |= (1<< WGM12) | (1<< WGM13);
-
-    //prescaler = 1
-    TCCR1B |= (1 << CS10);
-
-    OCR1B = 0;     // initially: Zero output
-    ICR1 = PWM_MAX; // set when to reset counter
-
-}
-*/
-
-ISR(TIMER1_COMPA_vect)
-{
-    if(blink < batt_low_num_blinks)
-    {
-        digitalWrite(LED, should_mute ^ (blink & 1));
-        blink ++;
-    }
-
-    // time between battery checks is measured in blink cycles
-    // (to save timers)
-    if(blink_cycles++ >= BATT_MEASURE_CYCLES)
-    {
-        needBatteryCheck = true;
-        blink_cycles = 0;
+void writeWiper(uint8_t val) {
+    Wire.beginTransmission(ad5258_addr);
+    Wire.write(Instr::wiper);
+    Wire.write(val);
+    uint8_t status = Wire.endTransmission();
+    if(status != 0) {
+        Serial.print("Oh noez, write was not successful: ");
+        Serial.println(status);
     }
 }
 
 void setup() {
-    pinMode(J0, OUTPUT);
-    pinMode(J1, OUTPUT);
-    pinMode(J2, OUTPUT);
-    pinMode(MUTE, OUTPUT);
-    pinMode(LED, OUTPUT);
-    pinMode(POT, INPUT);
-
+    pinMode(LED_BUILTIN, OUTPUT);
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
 
-    if(has_serial)
-    {
-        Serial.begin(115200);
-        while (!Serial) {
-            digitalWrite(LED, 1);
-            delay(250);
-            digitalWrite(LED, 0);
-            delay(25);
-        }
-    }
-    else
-    {
-        switchOnBlink();
+    Serial.begin(115200);
+    while (!Serial) {
+        digitalWrite(LED_BUILTIN, 1);
+        delay(250);
+        digitalWrite(LED_BUILTIN, 0);
+        delay(25);
     }
 
-    if(has_serial && Serial) Serial.println("initing Sensor...");
-
-    digitalWrite(J0, 1);
-    sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
-    while (!sensor.init())
-    {
-        digitalWrite(LED, 1);
-        delay(50);
-        digitalWrite(LED, 0);
-        delay(50);
-        if(has_serial && Serial) Serial.println("...");
-    };
-
-    if(has_serial && Serial) Serial.println("done");
-    digitalWrite(J0, 0);
-    digitalWrite(J1, 1);
-    //minimum MCPS to report valid reading (default is 0.25 MCPS)
-    sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
-    // (defaults are 14 and 10 PCLKs)
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-    while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
-    {
-        digitalWrite(LED, 1);
-        delay(350);
-        digitalWrite(LED, 0);
-        delay(100);
-    }
-
-    last_unmute = millis();
-    sensor.startContinuous(TOT_MEAS_CYCLE_MS);
-    digitalWrite(J1, 0);
-
-    if(has_serial && Serial)
-    {
-        Serial.println("Configured Sensor.");
-        Serial.print("SignalRateLimit: ");
-        Serial.println(sensor.getSignalRateLimit());
-        Serial.print("MeasurementTimingBudget: ");
-        Serial.println(sensor.getMeasurementTimingBudget());
-    }
-
-    if(NUM_BATTERIES > 0)
-    {
-        initBattCheckTimer();
-    }
-
-    readyBlink();
-}
-
-/*
-@return values 0 - ~5000
-*/
-uint16_t readVcc_mV() {
-  uint16_t result;
-  // Read 1.1V reference against AVcc
-  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-  delay(2); // Wait for Vref to settle
-  ADCSRA |= _BV(ADSC); // Convert
-  while (bit_is_set(ADCSRA,ADSC));
-  result = ADCL;
-  result |= ADCH<<8;
-  result = 1126400L / result; // Back-calculate AVcc in mV
-  return result;
-}
-
-bool isBatteryOk()
-{
-    if(NUM_BATTERIES > 0)
-        return readVcc_mV() > WRN_VOLTAGE_ALKALINE_mV*NUM_BATTERIES;
-    else
-        return true;
+    Serial.print("AD5258 I2C Addr: ");
+    Serial.println(ad5258_addr);
 }
 
 void loop() {
+    static uint8_t val = 0;
+    static bool fast = false;
+    static bool up = true;
+    writeWiper(val);
 
-    if(has_serial && Serial) Serial.println("Measuring...");
-
-    digitalWrite(J2, 1);
-    uint16_t measured_distance = sensor.readRangeContinuousMillimeters();
-    digitalWrite(J2, 0);
-    uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    if(!should_mute) //debounce
-        switching_distance += DEBOUNCE_RANGE_MM;
-
-    bool previous_measurement_was_muted = should_mute;
-
-    if(switching_distance >= MAX_RANGE_MM-1) {
-        // this creates an "always on / unmute" region
-        // at the plus end of the poti
-        should_mute = false;
-    } else if (measured_distance  > DEADZONE_LOW_MM) {
-        // if lower than deadzone, no update happens
-        should_mute =  measured_distance > switching_distance;
-    }
-
-    if(previous_measurement_was_muted != should_mute) {
-        consecutive_equal_measurements = 1;
+    if(fast) {
+        delayMicroseconds(delay_microseconds_for_ramptime);
     } else {
-        if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
-            consecutive_equal_measurements++;
-    }
-    if(!should_mute)
-    {   // save last time we measured something near
-        last_unmute = millis();
+        //Serial.print("Wrote val ");
+        //Serial.println(val);
+        delay(10);
     }
 
-    if(has_serial && Serial)
-    {
-        Serial.print(measured_distance);
-        Serial.print(" > ");
-        Serial.print((static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ);
-    }
-    if (sensor.timeoutOccurred())
-    {
-        // Communication with Sensor did not succeed
-        if(has_serial && Serial) Serial.println("Timeout.");
-        for(uint8_t i = 0; i < 2; i++)
-        {
-            digitalWrite(LED, 1);
-            delay(100);
-            digitalWrite(LED, 0);
-            delay(100);
+    if(up)
+        val++;
+    else
+        val--;
+    digitalWrite(LED_BUILTIN, val % 2);
+    
+    if(val > max_wiper_val) {
+        delay(1000);
+        up = !up;
+        if(up) {
+            fast = !fast;
         }
-        return;
-    }
-
-    if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED) {
-        // not yet enough equal measurements, stick to the "old" value
-        //digitalWrite(MUTE, !should_mute); // not needed, GPIO has memory!
-    } else {
-        digitalWrite(MUTE, should_mute);
-        if(blink >= batt_low_num_blinks)    //we are not blinking right now
-            digitalWrite(LED, should_mute);
-    }
-
-    // Warn if going to shut down
-    if(IDLE_TIMEOUT_S > 0) {
-        if(millis() - last_unmute > (IDLE_TIMEOUT_S-IDLE_TIMEOUT_WARN_S)*1000)
-        {
-            blink = 0;
-            if(millis() - last_unmute > IDLE_TIMEOUT_S*1000)
-            {   // actually start shutdown
-                sensor.stopContinuous();
-                digitalWrite(MUTE, IDLE_MUTE_STATE);
-                digitalWrite(LED, 0);
-                set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-                ADCSRA &= ~(1<<ADEN); // disable ADC (before power-off)
-                sleep_enable();
-                sleep_cpu();
-            }
-        }
-    }
-
-    if(needBatteryCheck && !isBatteryOk())
-    {
-        blink = 0;                      // starts blinking
-        needBatteryCheck = false;       // reset time for next check
+        
+        if(up)
+            val = 0;
+        else
+            val = max_wiper_val;
+        
+        Serial.print("Now ");
+        Serial.print(up ? "Up" : "Down");
+        Serial.println(fast ? " fast" : "");
     }
 }
