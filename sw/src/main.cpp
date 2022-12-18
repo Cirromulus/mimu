@@ -29,16 +29,15 @@ void writeWiper(uint8_t val) {
 
 void setAdditionalDrivePin(bool val) {
     if(val) {
-        pinMode(additional_drive_pin, OUTPUT);
-        digitalWrite(additional_drive_pin, 1);
-    } else {
         digitalWrite(additional_drive_pin, 0);
-        pinMode(additional_drive_pin, INPUT_PULLDOWN);
+    } else {
+        digitalWrite(additional_drive_pin, 1);
     }
 }
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(additional_drive_pin, OUTPUT);
     setAdditionalDrivePin(false);
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
