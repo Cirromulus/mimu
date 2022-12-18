@@ -1,0 +1,73 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/pp/dev/mimu/sw/include",
+                "/home/pp/dev/mimu/sw/src",
+                "/home/pp/dev/mimu/sw/.pio/libdeps/mimu_batt/VL53L0X",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Wire/src",
+                "/home/pp/dev/mimu/sw/include/attiny88",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/cores/tiny",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/variants/tinyX8",
+                "/home/pp/dev/mimu/sw/.pio/libdeps/mimu_batt/Unity/src",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/ATTinyCore/src",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/EEPROM",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/SPI",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo/src",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo_ATTinyCore/src",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/SoftwareSerial",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel",
+                "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel_Static",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/pp/dev/mimu/sw/include",
+                    "/home/pp/dev/mimu/sw/src",
+                    "/home/pp/dev/mimu/sw/.pio/libdeps/mimu_batt/VL53L0X",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Wire/src",
+                    "/home/pp/dev/mimu/sw/include/attiny88",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/cores/tiny",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/variants/tinyX8",
+                    "/home/pp/dev/mimu/sw/.pio/libdeps/mimu_batt/Unity/src",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/ATTinyCore/src",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/EEPROM",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/SPI",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo/src",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo_ATTinyCore/src",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/SoftwareSerial",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel",
+                    "/home/pp/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel_Static",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60105",
+                "ARDUINO_AVR_ATTINYX8",
+                "BATTERY_POWERED=1",
+                "F_CPU=8000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "CLOCK_SOURCE=0",
+                "NEOPIXELPORT=PORTA",
+                "__AVR_ATtiny88__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/pp/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=attiny88",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
