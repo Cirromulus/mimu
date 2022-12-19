@@ -1,33 +1,26 @@
-#include <Arduino.h>
-#include <Wire.h>
-#include <VL53L0X.h>
-#include <avr/sleep.h>
 #include <config.hpp>
 #include "userInterface.hpp"
 #include "peripherals.hpp"
 #include "mutehandling.hpp"
+#include "sensorhandling.hpp"
 
-VL53L0X sensor;
+#include <Arduino.h>
+
 static volatile bool should_mute = false;
-static uint8_t  consecutive_equal_measurements = 0;
-static uint16_t switching_distance_mm = 20;
+static uint8_t  consecutive_equal_decisions = 0;
+// TODO: Read/Write from EEPROM
+static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
 
 void setup() {
-    pinMode(J0, OUTPUT);
-    pinMode(J1, OUTPUT);
-    pinMode(J2, OUTPUT);
     ui::init();
-    initUnmuted();
-
-
-    Wire.begin();
-    //Wire.setClock(400000);  // MORE GAIN
+    initButton();
+    initDebugLines();
 
     if(has_serial)
     {
         Serial.begin(115200);
         while (!Serial) {
-            ui::waiting();
+            ui::waitingForSerial();
         }
     }
     else
@@ -35,41 +28,11 @@ void setup() {
         ui::switchOn();
     }
 
-    if(has_serial && Serial) Serial.println("initing Sensor...");
-
-    digitalWrite(J0, 1);
-    sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
-    while (!sensor.init())
-    {
-        ui::waitingForSensor();
-        if(has_serial && Serial) Serial.println("...");
-    };
-
-    if(has_serial && Serial) Serial.println("done");
-    digitalWrite(J0, 0);
-    digitalWrite(J1, 1);
-    //minimum MCPS to report valid reading (default is 0.25 MCPS)
-    sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
-    // (defaults are 14 and 10 PCLKs)
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-    while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
-    {
-        ui::settingTimingBudget();
-    }
-
-    sensor.startContinuous(TOT_MEAS_CYCLE_MS);
-    digitalWrite(J1, 0);
-
-    if(has_serial && Serial)
-    {
-        Serial.println("Configured Sensor.");
-        Serial.print("SignalRateLimit: ");
-        Serial.println(sensor.getSignalRateLimit());
-        Serial.print("MeasurementTimingBudget: ");
-        Serial.println(sensor.getMeasurementTimingBudget());
-    }
-
+    Wire.begin();
+    //Wire.setClock(400000);  // MORE GAIN
+    initUnmuted();
+    startMeasuring();
+ 
     ui::ready();
 }
 
@@ -78,49 +41,57 @@ void loop() {
 
     if(has_serial && Serial) Serial.println("Measuring...");
 
-    digitalWrite(J2, 1);
-    uint16_t measured_distance = sensor.readRangeContinuousMillimeters();
-    digitalWrite(J2, 0);
+    setDebugLine(2, true);
+    Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
+    setDebugLine(2, false);
     if (sensor.timeoutOccurred())
     {
         // Communication with Sensor did not succeed
-        if(has_serial && Serial) Serial.println("Timeout.");
         ui::sensorCommunicationError();
         return;
     }
 
+    // Button handling
+    if(getButton()) {
+        ui::settingDistance();
+        switching_distance_mm = measured_distance_mm;
+    } else {
+        ui::settingDistance(false);
+    }
+
     if(!previous_measurement_was_muted) {
         // was "on"
-        if (measured_distance > DEADZONE_LOW_MM) {
+        if (measured_distance_mm > DEADZONE_LOW_MM) {
             //debounce
-            should_mute = measured_distance >  switching_distance_mm + DEBOUNCE_RANGE_MM;
+            should_mute = measured_distance_mm >  switching_distance_mm + DEBOUNCE_RANGE_MM;
         } else {
             // if lower than deadzone, no update happens
         }
     } else {
         // was "off"
-        should_mute = measured_distance < switching_distance_mm;
+        should_mute = measured_distance_mm < switching_distance_mm;
     }
 
     if(previous_measurement_was_muted != should_mute) {
-        consecutive_equal_measurements = 1;
+        consecutive_equal_decisions = 1;
     } else {
-        if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
-            consecutive_equal_measurements++;
+        if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED)
+            consecutive_equal_decisions++;
     }
 
     if(has_serial && Serial)
     {
-        Serial.print(measured_distance);
+        Serial.print(measured_distance_mm);
         Serial.print(" > ");
         Serial.print(switching_distance_mm);
     }
 
-    if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED) {
+    if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
-        //digitalWrite(MUTE, !should_mute); // not needed, GPIO has memory!
     } else {
-        setMute(should_mute);
-        ui::muted(should_mute);
+        if(previous_measurement_was_muted != should_mute) {
+            setMute(should_mute);
+            ui::muted(should_mute);
+        }
     }
 }

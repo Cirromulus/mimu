@@ -1,3 +1,4 @@
+#pragma once
 #include "config.hpp"
 
 #include <Arduino.h>
@@ -53,7 +54,6 @@ bool initUnmuted(){
 }
 
 void setMute(const bool mute) {
-    // FIXME: has no memory, so multiple same mutings will jump!
     // Assumption: High value -> High resistance -> Low optocoupler -> low dampening -> microphone "on"
     if(mute){
         for(AD5258::Value val = calculated_mute_profile.value_when_microphone_on;

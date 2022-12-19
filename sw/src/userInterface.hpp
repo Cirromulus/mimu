@@ -1,5 +1,6 @@
-#include <Arduino.h>
+#pragma once
 #include <config.hpp>
+#include <Arduino.h>
 
 namespace ui {
 
@@ -10,10 +11,14 @@ void init() {
     digitalWrite(LEDG, 0);
 }
 
-void waiting(){
+void waitingForSerial(){
     digitalWrite(LEDR, 1);
     delay(250);
     digitalWrite(LEDR, 0);
+    delay(25);
+    digitalWrite(LEDG, 1);
+    delay(250);
+    digitalWrite(LEDG, 0);
     delay(25);
 }
 
@@ -55,13 +60,18 @@ void ready()
 }
 
 void sensorCommunicationError() {
+    if(has_serial && Serial) Serial.println("Timeout.");
     for(uint8_t i = 0; i < 2; i++)
     {
         digitalWrite(LEDR, 1);
-        delay(100);
+        delay(200);
         digitalWrite(LEDR, 0);
         delay(100);
     }
+}
+
+void settingDistance(const bool is_setting = true) {
+    digitalWrite(LEDG, is_setting && (millis() % 512) > 256);
 }
 
 void muted(const bool muted){

@@ -1,3 +1,6 @@
+#include <inttypes.h>
+#include <Arduino.h>
+
 static constexpr uint8_t MUTE_DRIVE = 10;
 static constexpr uint8_t BUTTON     = A1;   //PC1
 static constexpr uint8_t LEDR       = 19;   //PC2
