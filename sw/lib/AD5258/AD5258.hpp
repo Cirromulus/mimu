@@ -6,6 +6,8 @@ class AD5258 {
 public:
     typedef uint8_t Address;
     typedef uint8_t Value;
+    typedef int8_t SignedValue; // for convenience in counting
+
     typedef uint8_t Status;
     typedef uint32_t Resistance_Ohms;
     enum Resistance : Resistance_Ohms {
@@ -20,6 +22,11 @@ public:
     static constexpr FixedPoint256ths fractional_base = 256;
 
     static constexpr Value max_wiper_val = 0b00111111;
+    /* FIXME: Arduino has no numeric_limits
+    static_assert(std::numeric_limits<SignedValue>::max() >= max_wiper_val,
+        "SignedValue counter can't handle max_wiper_val, increase its size"
+    );
+    */
 
 private:
     static constexpr Address base_addr = 0b0011000;

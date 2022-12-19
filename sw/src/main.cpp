@@ -1,24 +1,24 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
-#include <AD5258.hpp>
 #include <avr/sleep.h>
 #include <config.hpp>
 #include "userInterface.hpp"
 #include "peripherals.hpp"
+#include "mutehandling.hpp"
 
 VL53L0X sensor;
 static volatile bool should_mute = false;
-static uint32_t last_unmute;
 static uint8_t  consecutive_equal_measurements = 0;
+static uint16_t switching_distance_mm = 20;
 
 void setup() {
     pinMode(J0, OUTPUT);
     pinMode(J1, OUTPUT);
     pinMode(J2, OUTPUT);
-    pinMode(MUTE, OUTPUT);
-    pinMode(LED, OUTPUT);
-    pinMode(POT, INPUT);
+    ui::init();
+    initUnmuted();
+
 
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
@@ -58,7 +58,6 @@ void setup() {
         ui::settingTimingBudget();
     }
 
-    last_unmute = millis();
     sensor.startContinuous(TOT_MEAS_CYCLE_MS);
     digitalWrite(J1, 0);
 
@@ -75,44 +74,13 @@ void setup() {
 }
 
 void loop() {
+    bool previous_measurement_was_muted = should_mute;
 
     if(has_serial && Serial) Serial.println("Measuring...");
 
     digitalWrite(J2, 1);
     uint16_t measured_distance = sensor.readRangeContinuousMillimeters();
     digitalWrite(J2, 0);
-    uint16_t switching_distance = (static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ;
-    if(!should_mute) //debounce
-        switching_distance += DEBOUNCE_RANGE_MM;
-
-    bool previous_measurement_was_muted = should_mute;
-
-    if(switching_distance >= MAX_RANGE_MM-1) {
-        // this creates an "always on / unmute" region
-        // at the plus end of the poti
-        should_mute = false;
-    } else if (measured_distance  > DEADZONE_LOW_MM) {
-        // if lower than deadzone, no update happens
-        should_mute =  measured_distance > switching_distance;
-    }
-
-    if(previous_measurement_was_muted != should_mute) {
-        consecutive_equal_measurements = 1;
-    } else {
-        if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
-            consecutive_equal_measurements++;
-    }
-    if(!should_mute)
-    {   // save last time we measured something near
-        last_unmute = millis();
-    }
-
-    if(has_serial && Serial)
-    {
-        Serial.print(measured_distance);
-        Serial.print(" > ");
-        Serial.print((static_cast<uint32_t>(analogRead(POT)) * MAX_RANGE_MM)/MAX_ANALOG_READ);
-    }
     if (sensor.timeoutOccurred())
     {
         // Communication with Sensor did not succeed
@@ -121,11 +89,38 @@ void loop() {
         return;
     }
 
+    if(!previous_measurement_was_muted) {
+        // was "on"
+        if (measured_distance > DEADZONE_LOW_MM) {
+            //debounce
+            should_mute = measured_distance >  switching_distance_mm + DEBOUNCE_RANGE_MM;
+        } else {
+            // if lower than deadzone, no update happens
+        }
+    } else {
+        // was "off"
+        should_mute = measured_distance < switching_distance_mm;
+    }
+
+    if(previous_measurement_was_muted != should_mute) {
+        consecutive_equal_measurements = 1;
+    } else {
+        if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED)
+            consecutive_equal_measurements++;
+    }
+
+    if(has_serial && Serial)
+    {
+        Serial.print(measured_distance);
+        Serial.print(" > ");
+        Serial.print(switching_distance_mm);
+    }
+
     if (consecutive_equal_measurements < FILTER_EQUAL_MEASUREMENTS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
         //digitalWrite(MUTE, !should_mute); // not needed, GPIO has memory!
     } else {
-        digitalWrite(MUTE, should_mute);
+        setMute(should_mute);
         ui::muted(should_mute);
     }
 }
