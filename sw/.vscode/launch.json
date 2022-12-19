@@ -12,8 +12,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/home/pp/dev/mimu/sw/.pio/build/mimu_batt/firmware.elf",
-            "projectEnvName": "mimu_batt",
+            "executable": "/home/pp/dev/mimu/sw/.pio/build/testing_pro_micro/firmware.elf",
+            "projectEnvName": "testing_pro_micro",
             "toolchainBinDir": "/home/pp/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
@@ -25,8 +25,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "/home/pp/dev/mimu/sw/.pio/build/mimu_batt/firmware.elf",
-            "projectEnvName": "mimu_batt",
+            "executable": "/home/pp/dev/mimu/sw/.pio/build/testing_pro_micro/firmware.elf",
+            "projectEnvName": "testing_pro_micro",
             "toolchainBinDir": "/home/pp/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -34,8 +34,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "/home/pp/dev/mimu/sw/.pio/build/mimu_batt/firmware.elf",
-            "projectEnvName": "mimu_batt",
+            "executable": "/home/pp/dev/mimu/sw/.pio/build/testing_pro_micro/firmware.elf",
+            "projectEnvName": "testing_pro_micro",
             "toolchainBinDir": "/home/pp/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"
