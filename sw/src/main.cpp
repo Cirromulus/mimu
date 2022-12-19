@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <VL53L0X.h>
+#include <AD5258.hpp>
 #include <avr/sleep.h>
 #include <config.hpp>
 
