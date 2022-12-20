@@ -1,5 +1,8 @@
 (sym_lib_table
-  (lib (name mimu_phantom-rescue)(type Legacy)(uri ${KIPRJMOD}/mimu_phantom-rescue.lib)(options "")(descr ""))
-  (lib (name digikey)(type Legacy)(uri ${KIPRJMOD}/digikey-kicad-library/digikey-symbols)(options "")(descr ""))
-  (lib (name dk_Optoisolators-Transistor-Photovoltaic-Output)(type Legacy)(uri ${KIPRJMOD}/digikey-kicad-library/digikey-symbols/dk_Optoisolators-Transistor-Photovoltaic-Output.lib)(options "")(descr ""))
+  (lib (name "mimu_phantom-rescue")(type "Legacy")(uri "${KIPRJMOD}/mimu_phantom-rescue.lib")(options "")(descr ""))
+  (lib (name "digikey")(type "Legacy")(uri "${KIPRJMOD}/digikey-kicad-library/digikey-symbols/dk_LED-Indication-Discrete.lib")(options "")(descr ""))
+  (lib (name "dk_Optoisolators-Transistor-Photovoltaic-Output")(type "Legacy")(uri "${KIPRJMOD}/digikey-kicad-library/digikey-symbols/dk_Optoisolators-Transistor-Photovoltaic-Output.lib")(options "")(descr ""))
+  (lib (name "mimu_phantom-cache")(type "Legacy")(uri "${KIPRJMOD}/mimu_phantom-cache.lib")(options "")(descr ""))
+  (lib (name "mimu_phantom-rescue2")(type "KiCad")(uri "${KIPRJMOD}/mimu_phantom-rescue.kicad_sym")(options "")(descr ""))
+  (lib (name "custom")(type "KiCad")(uri "${KIPRJMOD}/custom.kicad_sym")(options "")(descr ""))
 )

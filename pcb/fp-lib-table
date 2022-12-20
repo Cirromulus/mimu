@@ -1,4 +1,6 @@
 (fp_lib_table
-  (lib (name digikey)(type KiCad)(uri ${KIPRJMOD}/digikey-kicad-library/digikey-footprints.pretty)(options "")(descr ""))
-  (lib (name Measurement_Points)(type KiCad)(uri ${KIPRJMOD}/Measurement_Points.pretty)(options "")(descr ""))
+  (lib (name "digikey")(type "KiCad")(uri "${KIPRJMOD}/digikey-kicad-library/digikey-footprints.pretty")(options "")(descr ""))
+  (lib (name "Measurement_Points")(type "KiCad")(uri "${KIPRJMOD}/Measurement_Points.pretty")(options "")(descr ""))
+  (lib (name "project")(type "KiCad")(uri "${KIPRJMOD}/project.kicad_mod")(options "")(descr ""))
+  (lib (name "ProjectLibrary")(type "KiCad")(uri "${KIPRJMOD}/ProjectLibrary.pretty")(options "")(descr ""))
 )
