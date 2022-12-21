@@ -7,38 +7,40 @@
         <title>KiCad BOM Example 5</title>
     </head>
     <body>
-    <h1>/home/pp/shitgit/mimu/pcb/mimu_phantom.sch</h1>
-    <p>Mo 25 Okt 2021 16:52:24 CEST</p>
-    <p>Eeschema 5.1.5+dfsg1-2build2</p>
+    <h1>/home/dwd/dev/mimu/pcb/mimu_phantom.kicad_sch</h1>
+    <p>Mi 21 Dez 2022 16:47:02 CET</p>
+    <p>Eeschema 6.0.9-1.fc36</p>
     <p><b>Component Count:</b>35</p>
     <table>
     <tr><th style='width:640px'>Ref</th><th>Qnty</th><th>Value</th><th>Part</th><th>Footprint</th><th>Description</th><th>Vendor</th></tr>
-    <tr><td>C1, C2</td><td>2</td><td>0.1uF</td><td>Device:C</td><td>Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
-    <tr><td>C3</td><td>1</td><td>47nF</td><td>Device:C</td><td>Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
+    <tr><td>C1, C2</td><td>2</td><td>0.1uF</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
+    <tr><td>C3</td><td>1</td><td>50-100uF</td><td>Device:C_Polarized</td><td>Capacitor_THT:CP_Radial_D5.0mm_P2.00mm</td><td>Polarized capacitor</td><td></td></tr>
     <tr><td>C_B1</td><td>1</td><td>100nF</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
-    <tr><td>C_IN1, C_IN2, C_out1, C_out2</td><td>4</td><td>10uF</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
-    <tr><td>C_pre1</td><td>1</td><td>100uF</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
+    <tr><td>C_IN1, C_IN2</td><td>2</td><td>10uF @ 24v</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
+    <tr><td>C_out1, C_out2</td><td>2</td><td>10uF</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
+    <tr><td>C_pre1, C_pre2</td><td>2</td><td>3-4uF @24V</td><td>Device:C</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td>Unpolarized capacitor</td><td></td></tr>
     <tr><td>D1</td><td>1</td><td>B1100</td><td>Device:D_Schottky</td><td>Diodes_SMD:D_SMA</td><td>Schottky diode</td><td></td></tr>
-    <tr><td>D2</td><td>1</td><td>LED_Dual_ACA</td><td>Device:LED_Dual_ACA</td><td>LED_THT:LED_Rectangular_W5.0mm_H2.0mm-3Pins</td><td>Dual LED, common cathode on pin 2</td><td></td></tr>
+    <tr><td>D2</td><td>1</td><td>LED_Dual_KAK</td><td>Device:LED_Dual_KAK</td><td>LED_THT:LED_D3.0mm-3</td><td>Dual LED, common anode on pin 2</td><td></td></tr>
     <tr><td>D_B1</td><td>1</td><td>1N4148</td><td>Device:D</td><td>Diodes_SMD:D_SOD-323_HandSoldering</td><td>Diode</td><td></td></tr>
     <tr><td>INPUT1</td><td>1</td><td>XLR3</td><td>Connector:XLR3</td><td>Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical</td><td>XLR Connector, Male or Female, 3 Pins</td><td></td></tr>
-    <tr><td>ISP1</td><td>1</td><td>AVR-ISP-6</td><td>Connector:AVR-ISP-6</td><td>Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical</td><td>Atmel 6-pin ISP connector</td><td></td></tr>
+    <tr><td>ISP1</td><td>1</td><td>AVR-ISP-6</td><td>Connector:AVR-ISP-6</td><td>ProjectLibrary:PinHeader_2x03_P2.54mm_Vertical_pogo</td><td>Atmel 6-pin ISP connector</td><td></td></tr>
     <tr><td>J1</td><td>1</td><td>OPT</td><td>Connector:Conn_01x05_Male</td><td>Connector_PinHeader_1.27mm:PinHeader_1x05_P1.27mm_Vertical</td><td>Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)</td><td></td></tr>
     <tr><td>L1</td><td>1</td><td>15uH</td><td>Device:L</td><td>Inductors_SMD:L_7.3x7.3_H4.5</td><td>Inductor</td><td></td></tr>
-    <tr><td>R1, R5</td><td>2</td><td>390R</td><td>Device:R</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td>Resistor</td><td></td></tr>
-    <tr><td>R2</td><td>1</td><td>1k</td><td>mimu_phantom-rescue:R-mimu3000-rescue-mimu_phantom-rescue</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td></td><td></td></tr>
-    <tr><td>R3, R4</td><td>2</td><td>6.8kOhm 0.1%</td><td>Device:R</td><td>Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder</td><td>Resistor</td><td></td></tr>
-    <tr><td>R6</td><td>1</td><td>100R</td><td>mimu_phantom-rescue:R-mimu3000-rescue-mimu_phantom-rescue</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td></td><td></td></tr>
-    <tr><td>R7</td><td>1</td><td>1k</td><td>mimu_phantom-rescue:R-mimu3000-rescue-mimu_phantom-rescue</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td></td><td></td></tr>
+    <tr><td>Q1</td><td>1</td><td>BSS84</td><td>Transistor_FET:BSS84</td><td>Package_TO_SOT_SMD:SOT-23</td><td>-0.13A Id, -50V Vds, P-Channel MOSFET, SOT-23</td><td></td></tr>
+    <tr><td>R1</td><td>1</td><td>390R</td><td>Device:R</td><td>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</td><td>Resistor</td><td></td></tr>
+    <tr><td>R2</td><td>1</td><td>390R</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
+    <tr><td>R3, R4</td><td>2</td><td>6.8kOhm 0.1%</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
+    <tr><td>R5</td><td>1</td><td>12R</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
+    <tr><td>R6</td><td>1</td><td>68R</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
     <tr><td>R_BOT1</td><td>1</td><td>10k</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
     <tr><td>R_TOP1</td><td>1</td><td>31.2k</td><td>Device:R</td><td>Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder</td><td>Resistor</td><td></td></tr>
     <tr><td>SENS1</td><td>1</td><td>Sens</td><td>mimu_phantom-rescue:Conn_TOF_flipped-custom</td><td>Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical</td><td></td><td></td></tr>
-    <tr><td>SW1</td><td>1</td><td>SW_Push</td><td>mimu_phantom-rescue:SW_MEC_5E-Switch</td><td>digikey:Switch_Tactile_SMD_6x6mm_PTS645</td><td></td><td></td></tr>
-    <tr><td>SW2</td><td>1</td><td>SW_SPDT</td><td>Switch:SW_SPDT</td><td>Jumper:SolderJumper-3_P1.3mm_Bridged12_RoundedPad1.0x1.5mm_NumberLabels</td><td>Switch, single pole double throw</td><td></td></tr>
-    <tr><td>U1</td><td>1</td><td>AQY211EH</td><td>mimu_phantom-rescue:H11F1M-custom</td><td>custom:DIP-4_bubble_W7.62mm</td><td></td><td></td></tr>
-    <tr><td>U2</td><td>1</td><td>ATTINY88AU</td><td>MCU_Microchip_ATtiny:ATtiny48-AU</td><td>Package_QFP:TQFP-32_7x7mm_P0.8mm</td><td>12MHz, 4kB Flash, 256B SRAM, 64B EEPROM, TQFP-32</td><td></td></tr>
+    <tr><td>SW1</td><td>1</td><td>SW_Push</td><td>Switch:SW_MEC_5E</td><td>digikey:Switch_Tactile_SMD_6x6mm_PTS645</td><td>MEC 5E single pole normally-open tactile switch</td><td></td></tr>
+    <tr><td>TP1, TP3, TP4</td><td>3</td><td>TestPoint</td><td>Connector:TestPoint</td><td>Measurement_Points:Measurement_Point_Round-SMD-Pad_Small</td><td>test point</td><td></td></tr>
+    <tr><td>U1</td><td>1</td><td>PC817</td><td>mimu_phantom-rescue:H11F1M-custom</td><td>custom:DIP-4_bubble_W7.62mm</td><td></td><td></td></tr>
+    <tr><td>U2</td><td>1</td><td>ATTINY88AU</td><td>mimu_phantom-cache:ATtiny88-AU</td><td>Package_QFP:TQFP-32_7x7mm_P0.8mm</td><td></td><td></td></tr>
     <tr><td>U3</td><td>1</td><td>MCP16331CH</td><td>Regulator_Switching:MCP16331CH</td><td>Package_TO_SOT_SMD:SOT-23-6</td><td>High-Voltage Input Integrated Switch Step-Down Regulator, VDD +4.4V to 50V, Out +2.0V to +24V, SOT-23</td><td></td></tr>
-    <tr><td>U4</td><td>1</td><td>H11F1M</td><td>mimu_phantom-rescue:H11F1M</td><td>Package_DIP:DIP-6_W7.62mm</td><td></td><td></td></tr><!--TABLEROW-->
+    <tr><td>U4</td><td>1</td><td>AD5258</td><td>custom:AD5258</td><td>Package_SO:MSOP-10_3x3mm_P0.5mm</td><td>Digital potentiometer, 64 position, 4 output, I2C interface, TSSOP-20</td><td></td></tr><!--TABLEROW-->
     </table>
     </body>
 </html>
