@@ -1597,6 +1597,9 @@
     (path "/00000000-0000-0000-0000-00005e6cc751/00000000-0000-0000-0000-0000616f2647"
       (reference "SW1") (unit 1) (value "SW_Push") (footprint "digikey:Switch_Tactile_SMD_6x6mm_PTS645")
     )
+    (path "/00000000-0000-0000-0000-00005e6cc751/11340e42-6e9f-48f4-8da9-db64aa1fb623"
+      (reference "SW2") (unit 1) (value "In case mosfet does not work as expected") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
+    )
     (path "/00000000-0000-0000-0000-00005e6d2d69"
       (reference "TP1") (unit 1) (value "TestPoint") (footprint "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small")
     )
