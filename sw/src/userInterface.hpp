@@ -53,14 +53,16 @@ void ready()
 {
     digitalWrite(LEDG, 1);
     digitalWrite(J2, 1);
-    delay(100);
+    delay(200);
     digitalWrite(LEDG, 0);
     digitalWrite(J2, 0);
     delay(50);
 }
 
 void sensorCommunicationError() {
-    if(has_serial && Serial) Serial.println("Timeout.");
+    if constexpr (has_serial)
+        if (Serial) Serial.println("ToF Timeout.");
+    
     for(uint8_t i = 0; i < 2; i++)
     {
         digitalWrite(LEDR, 1);
@@ -68,6 +70,19 @@ void sensorCommunicationError() {
         digitalWrite(LEDR, 0);
         delay(100);
     }
+}
+
+void digipotCommunicationError() {
+    if constexpr (has_serial)
+        if (Serial) Serial.println("Digipot comm error.");
+    for(uint8_t i = 0; i < 3; i++)
+    {
+        digitalWrite(LEDR, 1);
+        delay(300);
+        digitalWrite(LEDR, 0);
+        delay(100);
+    }
+    delay(200);
 }
 
 void settingDistance(const bool is_setting = true) {

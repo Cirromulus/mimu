@@ -47,7 +47,7 @@ void enableExtraOptoDriver(const bool on){
 }
 
 // @return isOk
-bool initUnmuted(){
+bool initDigipotUnmuted(){
     pinMode(MUTE_DRIVE, OUTPUT);
     enableExtraOptoDriver(false);
     return digipot.writeWiper(0) == 0;

@@ -16,7 +16,7 @@ void setup() {
     initButton();
     initDebugLines();
 
-    if(has_serial)
+    if constexpr (has_serial)
     {
         Serial.begin(115200);
         while (!Serial) {
@@ -30,16 +30,25 @@ void setup() {
 
     Wire.begin();
     //Wire.setClock(400000);  // MORE GAIN
-    initUnmuted();
+
+    while(!initDigipotUnmuted()) {
+        ui::digipotCommunicationError();
+    }
+
+    initSensor();
     startMeasuring();
  
-    ui::ready();
+    while(true) {
+        ui::ready();
+        delay(500);
+    }
 }
 
 void loop() {
     bool previous_measurement_was_muted = should_mute;
 
-    if(has_serial && Serial) Serial.println("Measuring...");
+    if constexpr (has_serial)
+        if (Serial) Serial.println("Measuring...");
 
     setDebugLine(2, true);
     Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
@@ -79,11 +88,13 @@ void loop() {
             consecutive_equal_decisions++;
     }
 
-    if(has_serial && Serial)
-    {
-        Serial.print(measured_distance_mm);
-        Serial.print(" > ");
-        Serial.print(switching_distance_mm);
+    if constexpr (has_serial) {
+        if (Serial) Serial.println("Measuring...");
+        {
+            Serial.print(measured_distance_mm);
+            Serial.print(" > ");
+            Serial.print(switching_distance_mm);
+        }
     }
 
     if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {

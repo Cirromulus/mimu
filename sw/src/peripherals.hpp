@@ -27,6 +27,28 @@ inline bool getButton() {
     return !digitalRead(BUTTON);
 }
 
+void waitForButtonPress(uint8_t num = 0) {
+    while(!getButton()) {
+        digitalWrite(LEDR, 1);
+        delay(400);
+        digitalWrite(LEDR, 0);
+        delay(100);
+    }
+    for(; num > 0; num--) {
+        digitalWrite(LEDG, 1);
+        delay(200);
+        digitalWrite(LEDG, 0);
+        delay(200);
+    }
+
+    while(getButton()) {
+        digitalWrite(LEDR, 1);
+        delay(100);
+        digitalWrite(LEDR, 0);
+        delay(400);
+    }
+}
+
 inline void initDebugLines(){
     pinMode(J0, OUTPUT);
     pinMode(J1, OUTPUT);

@@ -9,41 +9,61 @@
 VL53L0X sensor;
 
 inline void initSensor() {
-    setDebugLine(0, true);
+    
+    waitForButtonPress(1);
+
     sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
+
+    waitForButtonPress(2);
+
     while (!sensor.init())
     {
         ui::waitingForSensor();
-        if(has_serial && Serial) Serial.println("...");
+        if constexpr (has_serial)
+            if (Serial) Serial.println("Initing Sensor...");
     };
 
-    if(has_serial && Serial) Serial.println("done");
-    setDebugLine(0, false);
-    setDebugLine(1, true);
+    waitForButtonPress(3);
+
+    if constexpr (has_serial)
+        if (Serial) Serial.println("done");
+    
     //minimum MCPS to report valid reading (default is 0.25 MCPS)
     sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
+
+    waitForButtonPress(4);
+
     // (defaults are 14 and 10 PCLKs)
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
+
+    waitForButtonPress(5);
+
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
+
+    waitForButtonPress(5);
+
     while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
         ui::settingTimingBudget();
     }
+
+    waitForButtonPress(6);
 }
 
 inline void startMeasuring(){
-    if(has_serial && Serial) Serial.println("initing Sensor...");
+    if constexpr (has_serial)
+        if (Serial) Serial.println("Start Measuring...");
 
     sensor.startContinuous(TOT_MEAS_CYCLE_MS);
     setDebugLine(1, false);
 
-    if(has_serial && Serial)
-    {
-        Serial.println("Configured Sensor.");
-        Serial.print("SignalRateLimit: ");
-        Serial.println(sensor.getSignalRateLimit());
-        Serial.print("MeasurementTimingBudget: ");
-        Serial.println(sensor.getMeasurementTimingBudget());
+    if constexpr (has_serial) {
+        if( Serial) {
+            Serial.println("Configured Sensor.");
+            Serial.print("SignalRateLimit: ");
+            Serial.println(sensor.getSignalRateLimit());
+            Serial.print("MeasurementTimingBudget: ");
+            Serial.println(sensor.getMeasurementTimingBudget());
+        }
     }
-
 }
