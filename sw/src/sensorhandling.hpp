@@ -9,12 +9,7 @@
 VL53L0X sensor;
 
 inline void initSensor() {
-    
-    waitForButtonPress(1);
-
     sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
-
-    waitForButtonPress(2);
 
     while (!sensor.init())
     {
@@ -23,31 +18,20 @@ inline void initSensor() {
             if (Serial) Serial.println("Initing Sensor...");
     };
 
-    waitForButtonPress(3);
-
     if constexpr (has_serial)
         if (Serial) Serial.println("done");
     
     //minimum MCPS to report valid reading (default is 0.25 MCPS)
     sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
 
-    waitForButtonPress(4);
-
     // (defaults are 14 and 10 PCLKs)
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
-
-    waitForButtonPress(5);
-
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-
-    waitForButtonPress(5);
 
     while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
         ui::settingTimingBudget();
     }
-
-    waitForButtonPress(6);
 }
 
 inline void startMeasuring(){

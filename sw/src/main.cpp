@@ -50,16 +50,14 @@ void loop() {
     if constexpr (has_serial)
         if (Serial) Serial.println("Measuring...");
 
-    setDebugLine(2, true);
     Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
-    setDebugLine(2, false);
     if (sensor.timeoutOccurred())
     {
         // Communication with Sensor did not succeed
         ui::sensorCommunicationError();
         return;
     }
-
+    /*
     // Button handling
     if(getButton()) {
         ui::settingDistance();
@@ -67,6 +65,7 @@ void loop() {
     } else {
         ui::settingDistance(false);
     }
+    */
 
     if(!previous_measurement_was_muted) {
         // was "on"
