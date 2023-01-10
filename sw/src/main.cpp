@@ -38,10 +38,6 @@ void setup() {
     initSensor();
     startMeasuring();
  
-    while(true) {
-        ui::ready();
-        delay(500);
-    }
 }
 
 void loop() {
@@ -57,15 +53,15 @@ void loop() {
         ui::sensorCommunicationError();
         return;
     }
-    /*
+
     // Button handling
     if(getButton()) {
         ui::settingDistance();
         switching_distance_mm = measured_distance_mm;
+        return;
     } else {
         ui::settingDistance(false);
     }
-    */
 
     if(!previous_measurement_was_muted) {
         // was "on"
@@ -100,8 +96,8 @@ void loop() {
         // not yet enough equal measurements, stick to the "old" value
     } else {
         if(previous_measurement_was_muted != should_mute) {
-            setMute(should_mute);
             ui::muted(should_mute);
+            setMute(should_mute);
         }
     }
 }
