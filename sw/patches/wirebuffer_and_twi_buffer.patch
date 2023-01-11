@@ -1,0 +1,84 @@
+diff --git a/libraries/Wire/src/Wire.h b/libraries/Wire/src/Wire.h
+index 6ed8598..1ea22f6 100644
+--- a/framework-arduino-avr-attiny_original/libraries/Wire/src/Wire.h
++++ b/framework-arduino-avr-attiny/libraries/Wire/src/Wire.h
+@@ -47,7 +47,11 @@
+ #include <inttypes.h>
+ #include "Stream.h"
+ 
+-#define BUFFER_LENGTH 32
++#ifndef WIRE_BUFFER_LENGTH
++  #define WIRE_BUFFER_LENGTH 32
++#endif
++
++#define BUFFER_LENGTH WIRE_BUFFER_LENGTH
+ 
+ // WIRE_HAS_END means Wire has end()
+ #define WIRE_HAS_END 1
+diff --git a/libraries/Wire/src/twi.c b/libraries/Wire/src/twi.c
+index 7d0ecdc..c52a664 100644
+--- a/framework-arduino-avr-attiny_original/libraries/Wire/src/twi.c
++++ b/framework-arduino-avr-attiny/libraries/Wire/src/twi.c
+@@ -48,7 +48,7 @@ static volatile uint8_t twi_inRepStart;     // in the middle of a repeated start
+ static void (*twi_onSlaveTransmit)(void);
+ static void (*twi_onSlaveReceive)(uint8_t*, int);
+ 
+-static uint8_t twi_masterBuffer[TWI_BUFFER_LENGTH];
++static uint8_t *twi_masterBuffer;
+ static volatile uint8_t twi_masterBufferIndex;
+ static volatile uint8_t twi_masterBufferLength;
+ 
+@@ -142,8 +142,6 @@ void twi_setFrequency(uint32_t frequency)
+  */
+ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop)
+ {
+-  uint8_t i;
+-
+   // ensure data will fit into buffer
+   if(TWI_BUFFER_LENGTH < length){
+     return 0;
+@@ -159,6 +157,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
+   twi_error = 0xFF;
+ 
+   // initialize buffer iteration vars
++  twi_masterBuffer = data;
+   twi_masterBufferIndex = 0;
+   twi_masterBufferLength = length-1;  // This is not intuitive, read on...
+   // On receive, the previously configured ACK/NACK setting is transmitted in
+@@ -196,11 +195,6 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
+   if (twi_masterBufferIndex < length)
+     length = twi_masterBufferIndex;
+ 
+-  // copy twi buffer to data
+-  for(i = 0; i < length; ++i){
+-    data[i] = twi_masterBuffer[i];
+-  }
+-
+   return length;
+ }
+ 
+@@ -221,8 +215,6 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
+  */
+ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop)
+ {
+-  uint8_t i;
+-
+   // ensure data will fit into buffer
+   if(TWI_BUFFER_LENGTH < length){
+     return 1;
+@@ -238,14 +230,10 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
+   twi_error = 0xFF;
+ 
+   // initialize buffer iteration vars
++  twi_masterBuffer = data;
+   twi_masterBufferIndex = 0;
+   twi_masterBufferLength = length;
+ 
+-  // copy data to twi buffer
+-  for(i = 0; i < length; ++i){
+-    twi_masterBuffer[i] = data[i];
+-  }
+-
+   // build sla+w, slave device address + w bit
+   twi_slarw = TW_WRITE;
+   twi_slarw |= address << 1;
