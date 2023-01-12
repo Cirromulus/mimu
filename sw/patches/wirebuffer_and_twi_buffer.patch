@@ -1,7 +1,7 @@
 diff --git a/libraries/Wire/src/Wire.h b/libraries/Wire/src/Wire.h
 index 6ed8598..1ea22f6 100644
---- a/framework-arduino-avr-attiny_original/libraries/Wire/src/Wire.h
-+++ b/framework-arduino-avr-attiny/libraries/Wire/src/Wire.h
+--- a/libraries/Wire/src/Wire.h
++++ b/libraries/Wire/src/Wire.h
 @@ -47,7 +47,11 @@
  #include <inttypes.h>
  #include "Stream.h"
@@ -17,8 +17,8 @@ index 6ed8598..1ea22f6 100644
  #define WIRE_HAS_END 1
 diff --git a/libraries/Wire/src/twi.c b/libraries/Wire/src/twi.c
 index 7d0ecdc..c52a664 100644
---- a/framework-arduino-avr-attiny_original/libraries/Wire/src/twi.c
-+++ b/framework-arduino-avr-attiny/libraries/Wire/src/twi.c
+--- a/libraries/Wire/src/twi.c
++++ b/libraries/Wire/src/twi.c
 @@ -48,7 +48,7 @@ static volatile uint8_t twi_inRepStart;     // in the middle of a repeated start
  static void (*twi_onSlaveTransmit)(void);
  static void (*twi_onSlaveReceive)(uint8_t*, int);
