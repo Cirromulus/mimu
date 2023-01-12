@@ -1,9 +1,6 @@
 #pragma once
 #include "config.hpp"
-
-#include <Arduino.h>
 #include <AD5258.hpp>
-#include <Wire.h>
 
 // TODO: namespace/class?
 struct DeviceSpecificMuteProfile {
@@ -39,39 +36,8 @@ static constexpr DeviceSpecificMuteProfile calculateValuesFromMuteProfile(const 
 
 static constexpr DeviceSpecificMuteProfile calculated_mute_profile = calculateValuesFromMuteProfile(default_mute_profile);
 
-static AD5258 digipot{AD5258::calculateAddress(), Wire};
-
-void enableExtraOptoDriver(const bool on){
-    // Active low, as we are high side switching
-    digitalWrite(MUTE_DRIVE, !on);
-}
+void enableExtraOptoDriver(const bool on);
 
 // @return isOk
-bool initDigipotUnmuted(){
-    pinMode(MUTE_DRIVE, OUTPUT);
-    enableExtraOptoDriver(false);
-    return digipot.writeWiper(0) == 0;
-}
-
-void setMute(const bool mute) {
-    // Assumption: High value -> High resistance -> Low optocoupler -> low dampening -> microphone "on"
-    if(mute){
-        for(AD5258::Value val = calculated_mute_profile.value_when_microphone_on;
-            val < calculated_mute_profile.value_when_microphone_off;
-            val++) {
-                digipot.writeWiper(val);
-                delayMicroseconds(calculated_mute_profile.mute_ramp_off_delay_per_step_us);
-        }
-        if(calculated_mute_profile.extra_drive_opto) {
-            enableExtraOptoDriver(true);
-        }
-    } else {
-        enableExtraOptoDriver(false);
-        for(AD5258::SignedValue val = calculated_mute_profile.value_when_microphone_off;
-            val <= calculated_mute_profile.value_when_microphone_on;
-            val--) {
-                digipot.writeWiper(val);
-                delayMicroseconds(calculated_mute_profile.mute_ramp_off_delay_per_step_us);
-        }
-    }
-}
+bool initDigipotUnmuted();
+void setMute(const bool mute);
