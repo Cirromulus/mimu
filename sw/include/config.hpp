@@ -39,3 +39,12 @@ static constexpr MuteProfile default_mute_profile = MuteProfile {
     .dampening_when_microphone_off = MuteProfile::max_dampening,
     .dampening_when_microphone_on = 0
 };
+
+template <auto val>
+constexpr void static_print() {
+    #if !defined(__GNUC__) || defined(__clang__)
+        int static_print_is_implemented_only_for_gcc = 0;
+    #else
+        int unused = 0;
+    #endif
+};

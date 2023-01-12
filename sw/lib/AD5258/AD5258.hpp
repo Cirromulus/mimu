@@ -6,7 +6,7 @@ class AD5258 {
 public:
     typedef uint8_t Address;
     typedef uint8_t Value;
-    typedef int8_t SignedValue; // for convenience in counting
+    typedef int16_t SignedValue; // for convenience in counting
 
     typedef uint8_t Status;
     typedef uint32_t Resistance_Ohms;
