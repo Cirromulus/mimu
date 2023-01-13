@@ -1,4 +1,5 @@
 #include "mutehandling.hpp"
+#include "userInterface.hpp"
 
 static AD5258 digipot{AD5258::calculateAddress(), Wire};
 
@@ -11,7 +12,13 @@ void enableExtraOptoDriver(const bool on){
 bool initDigipotUnmuted(){
     pinMode(MUTE_DRIVE, OUTPUT);
     enableExtraOptoDriver(false);
-    return digipot.writeWiper(0) == 0;
+    const AD5258::TwiReturnStatus ret = digipot.writeWiper(calculated_mute_profile.value_when_microphone_on);
+    if(ret != AD5258::TwiReturnStatus::success) {
+        ui::digipotCommunicationError(ret);
+        return false;
+    } else {
+        return true;
+    }
 }
 
 void setMute(const bool mute) {
@@ -32,7 +39,11 @@ void setMute(const bool mute) {
         for(AD5258::SignedValue val = calculated_mute_profile.value_when_microphone_on;
             val != calculated_mute_profile.value_when_microphone_off;
             val--) {
-                digipot.writeWiper(val);
+                const auto ret = digipot.writeWiper(val);
+                if(ret != AD5258::TwiReturnStatus::success) {
+                    ui::digipotCommunicationError(ret);
+                    return;
+                }
                 delayMicroseconds(calculated_mute_profile.mute_ramp_off_delay_per_step_us);
         }
         if(calculated_mute_profile.extra_drive_opto) {
@@ -43,7 +54,11 @@ void setMute(const bool mute) {
         for(AD5258::SignedValue val = calculated_mute_profile.value_when_microphone_off;
             val != calculated_mute_profile.value_when_microphone_on;
             val++) {
-                digipot.writeWiper(val);
+                const auto ret = digipot.writeWiper(val);
+                if(ret != AD5258::TwiReturnStatus::success) {
+                    ui::digipotCommunicationError(ret);
+                    return;
+                }
                 delayMicroseconds(calculated_mute_profile.mute_ramp_off_delay_per_step_us);
         }
     }

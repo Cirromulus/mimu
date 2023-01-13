@@ -8,13 +8,22 @@ public:
     typedef uint8_t Value;
     typedef int16_t SignedValue; // for convenience in counting
 
-    typedef uint8_t Status;
     typedef uint32_t Resistance_Ohms;
     enum Resistance : Resistance_Ohms {
         option1k = 1000,
         option10k = 10000,
         option50k = 50000,
         option100k = 100000
+    };
+
+    enum TwiReturnStatus : uint8_t {
+        // see twi.c:246
+        success = 0,
+        msg_too_long_for_buffer,
+        nack_during_address,
+        nack_during_data,
+        other_twi_error,
+        timeout
     };
 
     // Measured in 256ths, so divide by 256 to get "1s"
@@ -62,7 +71,7 @@ public:
                                                     );
 
     AD5258(Address, TwoWire&);
-    Status writeWiper(Value);
+    TwiReturnStatus writeWiper(Value);
     // TODO: How to report status?
     Value readWiper();
     FixedPoint256ths readDeviation();

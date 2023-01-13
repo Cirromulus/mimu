@@ -20,17 +20,22 @@ inline void initSensor() {
 
     if constexpr (has_serial)
         if (Serial) Serial.println("done");
-    
+
     //minimum MCPS to report valid reading (default is 0.25 MCPS)
-    sensor.setSignalRateLimit(1);     // increase to reduce stray measurements
+    if(!sensor.setSignalRateLimit(1)) {     // increase to reduce stray measurements
+        ui::errorSettingSensorSetting();
+    }
 
     // (defaults are 14 and 10 PCLKs)
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8);
-
+    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12)){
+        ui::errorSettingSensorSetting();
+    }
+    if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 8)){
+        ui::errorSettingSensorSetting();
+    }
     while(!sensor.setMeasurementTimingBudget(MEASUREMENT_TIMING_BUDGET_US))
     {
-        ui::settingTimingBudget();
+        ui::errorSettingSensorSetting();
     }
 }
 

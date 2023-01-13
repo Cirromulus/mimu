@@ -1,12 +1,14 @@
 #include "AD5258.hpp"
+//#include <type_traits>
 
 AD5258::AD5258(AD5258::Address address, TwoWire& bus) : m_address(address), m_bus(bus){};
 
-AD5258::Status AD5258::writeWiper(AD5258::Value val) {
+AD5258::TwiReturnStatus AD5258::writeWiper(AD5258::Value val) {
     m_bus.beginTransmission(m_address);
     m_bus.write(Instr::wiper);
     m_bus.write(val);
-    return m_bus.endTransmission();
+    //static_assert(std::is_same<TwiReturnStatus,std::result_of<m_bus.endTransmission()>::type>::value, "TwiReturnStatus is not compatible?!");
+    return static_cast<TwiReturnStatus>(m_bus.endTransmission());
 }
 
 // Untested as of yet

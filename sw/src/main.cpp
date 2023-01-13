@@ -6,7 +6,7 @@
 
 #include <Arduino.h>
 
-static volatile bool should_mute = false;
+static bool should_mute = false;
 static uint8_t  consecutive_equal_decisions = 0;
 // TODO: Read/Write from EEPROM
 static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
@@ -37,7 +37,7 @@ void setup() {
 
     initSensor();
     startMeasuring();
- 
+
 }
 
 void loop() {
@@ -63,6 +63,7 @@ void loop() {
         ui::settingDistance(false);
     }
 
+    // Decide if we should mute
     if(!previous_measurement_was_muted) {
         // was "on"
         if (measured_distance_mm > DEADZONE_LOW_MM) {
@@ -76,6 +77,7 @@ void loop() {
         should_mute = measured_distance_mm < switching_distance_mm;
     }
 
+    // handle filtering counter
     if(previous_measurement_was_muted != should_mute) {
         consecutive_equal_decisions = 1;
     } else {
@@ -92,6 +94,7 @@ void loop() {
         }
     }
 
+    // execute muting decision
     if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
     } else {
