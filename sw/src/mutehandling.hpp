@@ -4,7 +4,7 @@
 
 // TODO: namespace/class?
 struct DeviceSpecificMuteProfile {
-    typedef uint16_t Time_us;
+    typedef uint32_t Time_us;
 
     Time_us mute_ramp_on_delay_per_step_us;
     Time_us mute_ramp_off_delay_per_step_us;
@@ -14,9 +14,9 @@ struct DeviceSpecificMuteProfile {
 };
 
 static constexpr AD5258::Value dampeningToAD5258WiperPos(const MuteProfile::Dampening dampening) {
-    // Invert and scale to max val
+    // scale to max val
     // FIXME: Float is ugly. How to do completely in integer?
-    return (MuteProfile::max_dampening - dampening) * ((1.0 * AD5258::max_wiper_val) / MuteProfile::max_dampening);
+    return (dampening) * ((1.0 * AD5258::max_wiper_val) / MuteProfile::max_dampening);
 }
 
 static constexpr DeviceSpecificMuteProfile calculateValuesFromMuteProfile(const MuteProfile& profile){
@@ -27,9 +27,9 @@ static constexpr DeviceSpecificMuteProfile calculateValuesFromMuteProfile(const 
     bool extra_drive_opto = profile.dampening_when_microphone_off == MuteProfile::max_dampening;
 
     DeviceSpecificMuteProfile::Time_us mute_ramp_on_delay_per_step_us =
-                        (profile.mute_ramp_on_time_ms * 1000) / on_off_diff;
+                        (static_cast<DeviceSpecificMuteProfile::Time_us>(profile.mute_ramp_on_time_ms) * 1000) / on_off_diff;
     DeviceSpecificMuteProfile::Time_us mute_ramp_off_delay_per_step_us =
-                        (profile.mute_ramp_off_time_ms * 1000) / on_off_diff;
+                        (static_cast<DeviceSpecificMuteProfile::Time_us>(profile.mute_ramp_off_time_ms) * 1000) / on_off_diff;
 
     // error: non-constant condition for static assertion
     // error: the value of 'value_when_microphone_on' is not usable in a constant expression

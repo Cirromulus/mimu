@@ -40,7 +40,6 @@ void waitForButtonPress(uint8_t num = 0) {
         digitalWrite(LEDG, 0);
         delay(200);
     }
-
     while(getButton()) {
         digitalWrite(LEDR, 1);
         delay(100);

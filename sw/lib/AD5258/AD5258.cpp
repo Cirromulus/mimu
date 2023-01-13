@@ -14,7 +14,7 @@ AD5258::TwiReturnStatus AD5258::writeWiper(AD5258::Value val) {
 // Untested as of yet
 AD5258::Value AD5258::readWiper(){
     m_bus.beginTransmission(m_address);
-    // this read can be avoided if previously was writing to this register
+    // this write can be avoided if previously was writing to this register
     m_bus.write(Instr::wiper);
     const Value ret = m_bus.read();
     // FIXME: Discarding return value

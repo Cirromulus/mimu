@@ -6,7 +6,7 @@
 
 #include <Arduino.h>
 
-static bool should_mute = false;
+static volatile bool should_mute = false;
 static uint8_t  consecutive_equal_decisions = 0;
 // TODO: Read/Write from EEPROM
 static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
@@ -37,7 +37,6 @@ void setup() {
 
     initSensor();
     startMeasuring();
-
 }
 
 void loop() {
@@ -65,14 +64,16 @@ void loop() {
 
     // Decide if we should mute
     if(!previous_measurement_was_muted) {
+        //waitForButtonPress(1);
         // was "on"
         if (measured_distance_mm > DEADZONE_LOW_MM) {
             //debounce
-            should_mute = measured_distance_mm >  switching_distance_mm + DEBOUNCE_RANGE_MM;
+            should_mute = measured_distance_mm > (switching_distance_mm + DEBOUNCE_RANGE_MM);
         } else {
             // if lower than deadzone, no update happens
         }
     } else {
+        //waitForButtonPress(2);
         // was "off"
         should_mute = measured_distance_mm < switching_distance_mm;
     }
@@ -86,8 +87,8 @@ void loop() {
     }
 
     if constexpr (has_serial) {
-        if (Serial) Serial.println("Measuring...");
-        {
+        if (Serial)  {
+            Serial.println("Measuring...");
             Serial.print(measured_distance_mm);
             Serial.print(" > ");
             Serial.print(switching_distance_mm);
@@ -98,9 +99,11 @@ void loop() {
     if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
     } else {
+        //waitForButtonPress(3);
         if(previous_measurement_was_muted != should_mute) {
-            ui::muted(should_mute);
+            //waitForButtonPress(4);
             setMute(should_mute);
+            delay(1000);
         }
     }
 }
