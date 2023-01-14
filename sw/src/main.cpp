@@ -6,8 +6,8 @@
 
 #include <Arduino.h>
 
-static volatile bool should_mute = false;
-static uint8_t  consecutive_equal_decisions = 0;
+static bool should_mute = false;
+static uint8_t consecutive_equal_decisions = 0;
 // TODO: Read/Write from EEPROM
 static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
 
@@ -29,7 +29,7 @@ void setup() {
     }
 
     Wire.begin();
-    //Wire.setClock(400000);  // MORE GAIN
+    Wire.setClock(100000);  // or 400000
 
     while(!initDigipotUnmuted()) {
         ui::digipotCommunicationError();
@@ -75,15 +75,17 @@ void loop() {
     } else {
         //waitForButtonPress(2);
         // was "off"
-        should_mute = measured_distance_mm < switching_distance_mm;
+        should_mute = measured_distance_mm > switching_distance_mm;
     }
 
     // handle filtering counter
-    if(previous_measurement_was_muted != should_mute) {
-        consecutive_equal_decisions = 1;
-    } else {
-        if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED)
-            consecutive_equal_decisions++;
+    if constexpr (FILTER_EQUAL_DECISIONS_NEEDED > 1) {
+        if(previous_measurement_was_muted != should_mute) {
+            consecutive_equal_decisions = 1;
+        } else {
+            if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED)
+                consecutive_equal_decisions++;
+        }
     }
 
     if constexpr (has_serial) {
@@ -96,14 +98,13 @@ void loop() {
     }
 
     // execute muting decision
-    if (consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {
+    if (FILTER_EQUAL_DECISIONS_NEEDED > 1 && consecutive_equal_decisions < FILTER_EQUAL_DECISIONS_NEEDED) {
         // not yet enough equal measurements, stick to the "old" value
     } else {
         //waitForButtonPress(3);
         if(previous_measurement_was_muted != should_mute) {
             //waitForButtonPress(4);
             setMute(should_mute);
-            delay(1000);
         }
     }
 }

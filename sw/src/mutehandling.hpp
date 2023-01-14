@@ -1,6 +1,7 @@
 #pragma once
 #include "config.hpp"
 #include <AD5258.hpp>
+//#include <limits>
 
 // TODO: namespace/class?
 struct DeviceSpecificMuteProfile {
@@ -25,6 +26,10 @@ static constexpr DeviceSpecificMuteProfile calculateValuesFromMuteProfile(const 
     AD5258::Value value_when_microphone_on = dampeningToAD5258WiperPos(profile.dampening_when_microphone_on);
     AD5258::Value on_off_diff = abs(value_when_microphone_off - value_when_microphone_on);
     bool extra_drive_opto = profile.dampening_when_microphone_off == MuteProfile::max_dampening;
+
+    // there is no <limits>
+    //static_assert(profile.mute_ramp_on_time_ms * 1000 <= std::numeric_limits<DeviceSpecificMuteProfile::Time_us>::max(),
+    //                "ramp_on_time overflow!");
 
     DeviceSpecificMuteProfile::Time_us mute_ramp_on_delay_per_step_us =
                         (static_cast<DeviceSpecificMuteProfile::Time_us>(profile.mute_ramp_on_time_ms) * 1000) / on_off_diff;

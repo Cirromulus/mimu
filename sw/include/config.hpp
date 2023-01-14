@@ -35,8 +35,8 @@ struct MuteProfile {
 static constexpr MuteProfile default_mute_profile = MuteProfile {
     .trigger_distance_mm = 250,
     .mute_ramp_on_time_ms = 10,
-    .mute_ramp_off_time_ms = 205,
-    .dampening_when_microphone_off = MuteProfile::max_dampening-1,
+    .mute_ramp_off_time_ms = 200,
+    .dampening_when_microphone_off = MuteProfile::max_dampening,
     .dampening_when_microphone_on = 0
 };
 
