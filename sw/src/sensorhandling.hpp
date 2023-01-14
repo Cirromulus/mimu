@@ -7,6 +7,7 @@
 #include <VL53L0X.h>
 
 VL53L0X sensor;
+static constexpr uint16_t VL53L0X_ERROR_RANGE = 65535;  // VL53L0X.cpp:821
 
 inline void initSensor() {
     sensor.setTimeout(SENSOR_COMM_TIMEOUT_MS);
@@ -22,11 +23,12 @@ inline void initSensor() {
         if (Serial) Serial.println("done");
 
     //minimum MCPS to report valid reading (default is 0.25 MCPS)
-    if(!sensor.setSignalRateLimit(1)) {     // increase to reduce stray measurements
+    if(!sensor.setSignalRateLimit(1)) {     // increased to reduce stray measurements
         ui::errorSettingSensorSetting();
     }
 
     // (defaults are 14 and 10 PCLKs)
+    // Decreased for faster measurement
     if(!sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 12)){
         ui::errorSettingSensorSetting();
     }

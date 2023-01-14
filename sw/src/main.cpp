@@ -6,11 +6,6 @@
 
 #include <Arduino.h>
 
-static bool should_mute = false;
-static uint8_t consecutive_equal_decisions = 0;
-// TODO: Read/Write from EEPROM
-static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
-
 void setup() {
     ui::init();
     initButton();
@@ -40,21 +35,43 @@ void setup() {
 }
 
 void loop() {
+    // Statics
+    static bool should_mute = false;
+    static uint8_t consecutive_equal_decisions = 0;
+    static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
+    static uint8_t previousTimeOuts = 0;
+    // ---
+
     bool previous_measurement_was_muted = should_mute;
 
     if constexpr (has_serial)
         if (Serial) Serial.println("Measuring...");
 
     Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
-    if (sensor.timeoutOccurred())
-    {
+    if (sensor.timeoutOccurred()) {
         // Communication with Sensor did not succeed
-        ui::sensorCommunicationError();
+        if(previousTimeOuts < CONSECUTIVE_TIMEOUTS_WARNING) {
+            // do not blink error code yet
+            previousTimeOuts++;
+        } else {
+            ui::sensorCommunicationError();
+            ui::muted(should_mute); // ui function does not reset LED state
+        }
+        // Do not use the time-out measurement
         return;
+    } else {
+        // No timeout, so reset counter
+        previousTimeOuts = 0;
     }
 
     // Button handling
     if(getButton()) {
+        // unmute, but only once
+        if(should_mute) {
+            should_mute = false;
+            setMute(should_mute);
+        }
+
         ui::settingDistance();
         switching_distance_mm = measured_distance_mm;
         return;
@@ -64,7 +81,6 @@ void loop() {
 
     // Decide if we should mute
     if(!previous_measurement_was_muted) {
-        //waitForButtonPress(1);
         // was "on"
         if (measured_distance_mm > DEADZONE_LOW_MM) {
             //debounce
@@ -73,7 +89,6 @@ void loop() {
             // if lower than deadzone, no update happens
         }
     } else {
-        //waitForButtonPress(2);
         // was "off"
         should_mute = measured_distance_mm > switching_distance_mm;
     }

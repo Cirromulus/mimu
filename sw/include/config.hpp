@@ -14,8 +14,9 @@ static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 20;   // to save power
 static constexpr uint16_t TOT_MEAS_CYCLE_MS =
         MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS;
 static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
-        max(100, 1.1*TOT_MEAS_CYCLE_MS);
+        max(100, 1.5*TOT_MEAS_CYCLE_MS);
 static constexpr uint8_t  FILTER_EQUAL_DECISIONS_NEEDED = 1;
+static constexpr uint8_t  CONSECUTIVE_TIMEOUTS_WARNING = 2;
 
 // TODO: Make this presets
 struct MuteProfile {
