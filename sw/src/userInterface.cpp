@@ -32,24 +32,27 @@ void ui::errorSettingSensorSetting(){
     delay(100);
 }
 
+// Intentionally delays a bit to let capacitors charge up
 void ui::switchOn() {
-    for(uint8_t i = 0; i < 2; i++)  // Switch-on blink
+    for(uint8_t i = 0; i < 2; i++)
     {
         digitalWrite(LEDG, 1);
-        digitalWrite(J2, 1);
-        delay(100);
+        delay(50);
         digitalWrite(LEDG, 0);
-        digitalWrite(J2, 0);
         delay(50);
     }
+
+    delay(1500);
+
+    digitalWrite(LEDG, 1);
+    delay(100);
+    digitalWrite(LEDG, 0);
 }
 
 void ui::ready() {
     digitalWrite(LEDG, 1);
-    digitalWrite(J2, 1);
     delay(200);
     digitalWrite(LEDG, 0);
-    digitalWrite(J2, 0);
     delay(50);
 }
 

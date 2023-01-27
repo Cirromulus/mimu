@@ -32,6 +32,8 @@ void setup() {
 
     initSensor();
     startMeasuring();
+
+    ui::ready();
 }
 
 void loop() {
