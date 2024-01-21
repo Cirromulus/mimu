@@ -95,7 +95,7 @@ void ui::settingDistance(const bool is_setting) {
 }
 
 void ui::muted(const bool muted){
-    if(default_mute_profile.dampening_when_microphone_off == MuteProfile::max_dampening)
+    if(default_mute_profile.damping_when_microphone_off == MuteProfile::max_damping)
         digitalWrite(LEDR, muted);
     else
         digitalWrite(LEDG, muted);

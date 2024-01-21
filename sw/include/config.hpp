@@ -21,14 +21,14 @@ static constexpr uint8_t  CONSECUTIVE_TIMEOUTS_WARNING = 2;
 // TODO: Make this presets
 struct MuteProfile {
     typedef uint16_t Time_ms;
-    typedef uint8_t Dampening;
-    static constexpr Dampening max_dampening = 0xff;
+    typedef uint8_t Damping;
+    static constexpr Damping max_damping = 0xff;
 
     Distance_mm trigger_distance_mm;
     Time_ms mute_ramp_on_time_ms;
     Time_ms mute_ramp_off_time_ms;
-    Dampening dampening_when_microphone_off;
-    Dampening dampening_when_microphone_on;
+    Damping damping_when_microphone_off;
+    Damping damping_when_microphone_on;
 ;
 };
 
@@ -37,8 +37,8 @@ static constexpr MuteProfile default_mute_profile = MuteProfile {
     .trigger_distance_mm = 250,
     .mute_ramp_on_time_ms = 10,
     .mute_ramp_off_time_ms = 200,
-    .dampening_when_microphone_off = MuteProfile::max_dampening,
-    .dampening_when_microphone_on = 0
+    .damping_when_microphone_off = MuteProfile::max_damping,
+    .damping_when_microphone_on = 0
 };
 
 template <auto val>
