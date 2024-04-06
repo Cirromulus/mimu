@@ -2298,7 +2298,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10uF @ 24v"
+		(property "Value" "10uF @ 48v"
 			(at 27.94 130.81 0)
 			(effects
 				(font
@@ -2433,7 +2433,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10uF @ 24v"
+		(property "Value" "10uF @ 48v"
 			(at 56.261 130.683 0)
 			(effects
 				(font
@@ -3905,7 +3905,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3-4uF @24V"
+		(property "Value" "3-4uF @48V"
 			(at 58.42 73.66 0)
 			(effects
 				(font
@@ -4239,7 +4239,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3-4uF @24V"
+		(property "Value" "3-4uF @48v"
 			(at 33.02 73.66 0)
 			(effects
 				(font
