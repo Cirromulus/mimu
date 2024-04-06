@@ -30,6 +30,11 @@ void setup() {
         ui::digipotCommunicationError();
     }
 
+    while (getButton())
+    {
+        ui::waitingForUserInput();
+    }
+
     initSensor();
     startMeasuring();
 
