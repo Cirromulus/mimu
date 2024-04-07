@@ -1505,6 +1505,12 @@
 		(uuid "01848c14-94f2-4853-b09f-64256c249cd9")
 	)
 	(junction
+		(at 147.32 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0c4eead4-4157-4043-a4a7-f38e0b5318dc")
+	)
+	(junction
 		(at 92.71 128.27)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1527,6 +1533,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "35926e5b-103a-430a-be45-6f555c6f34a4")
+	)
+	(junction
+		(at 162.56 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4b13ed48-3fda-49ea-a1d7-59d0a236d608")
 	)
 	(junction
 		(at 92.71 118.11)
@@ -1577,12 +1589,6 @@
 		(uuid "abfc5d66-dc0c-4150-b68d-c0d6e24e6d1c")
 	)
 	(junction
-		(at 149.86 128.27)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b309d3f7-c17c-4dba-992d-813725c4dc9c")
-	)
-	(junction
 		(at 71.12 62.23)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1626,16 +1632,6 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 147.32) (xy 88.9 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "15325a4b-bfae-4d59-b54f-6bc7a5436b49")
-	)
-	(wire
-		(pts
 			(xy 73.66 58.42) (xy 73.66 54.61)
 		)
 		(stroke
@@ -1653,6 +1649,16 @@
 			(type default)
 		)
 		(uuid "170b6d34-8a21-4396-9f79-133f2b97b68d")
+	)
+	(wire
+		(pts
+			(xy 92.71 128.27) (xy 92.71 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d04f509-a383-48fa-b49e-1c24c087f70e")
 	)
 	(wire
 		(pts
@@ -1696,6 +1702,16 @@
 	)
 	(wire
 		(pts
+			(xy 88.9 147.32) (xy 134.62 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "26f96ea8-2ea4-41ae-aec2-7e970f13cb65")
+	)
+	(wire
+		(pts
 			(xy 115.57 135.89) (xy 121.92 135.89)
 		)
 		(stroke
@@ -1706,7 +1722,17 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 138.43) (xy 149.86 139.7)
+			(xy 147.32 128.27) (xy 162.56 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2f5ebbfd-5cb1-45e4-b5ef-c6a71c26736d")
+	)
+	(wire
+		(pts
+			(xy 162.56 138.43) (xy 162.56 139.7)
 		)
 		(stroke
 			(width 0)
@@ -1766,6 +1792,16 @@
 	)
 	(wire
 		(pts
+			(xy 134.62 157.48) (xy 134.62 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5217cbec-61b9-47f5-aa9d-6c570ea7c3d9")
+	)
+	(wire
+		(pts
 			(xy 55.88 62.23) (xy 71.12 62.23)
 		)
 		(stroke
@@ -1806,13 +1842,13 @@
 	)
 	(wire
 		(pts
-			(xy 92.71 128.27) (xy 92.71 130.81)
+			(xy 147.32 147.32) (xy 134.62 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6185635c-f7db-4814-991a-1bb65bb9e0c4")
+		(uuid "5e596bef-0c0b-4f67-8df2-677c9fdd74ba")
 	)
 	(wire
 		(pts
@@ -1866,7 +1902,7 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 147.32) (xy 134.62 146.05)
+			(xy 134.62 147.32) (xy 134.62 140.97)
 		)
 		(stroke
 			(width 0)
@@ -1886,13 +1922,23 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 128.27) (xy 149.86 128.27)
+			(xy 134.62 128.27) (xy 147.32 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "82b00c45-303a-48d2-a3a0-b4f4e534d4e5")
+	)
+	(wire
+		(pts
+			(xy 147.32 128.27) (xy 147.32 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "86c331e7-f066-426f-a7a5-2016f8fe282d")
 	)
 	(wire
 		(pts
@@ -1926,27 +1972,27 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 128.27) (xy 154.94 128.27)
+			(xy 147.32 140.97) (xy 147.32 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9e25c2c7-5800-4a7e-9a8a-e792d94c8db8")
+		(uuid "a2b92f04-1f3a-41e5-9c25-52063de69a80")
 	)
 	(wire
 		(pts
-			(xy 134.62 158.75) (xy 134.62 157.48)
+			(xy 162.56 128.27) (xy 167.64 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a25381fc-249f-4ae8-9d7b-e1f80819c21d")
+		(uuid "a5abc1fe-7d37-4b8c-8301-2ee6f44f49c4")
 	)
 	(wire
 		(pts
-			(xy 149.86 128.27) (xy 149.86 130.81)
+			(xy 162.56 128.27) (xy 162.56 130.81)
 		)
 		(stroke
 			(width 0)
@@ -2006,7 +2052,7 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 128.27) (xy 134.62 138.43)
+			(xy 134.62 128.27) (xy 134.62 133.35)
 		)
 		(stroke
 			(width 0)
@@ -2136,6 +2182,16 @@
 			(justify right bottom)
 		)
 		(uuid "c8d9ba2d-4a33-48e2-8d1c-df672de273bf")
+	)
+	(text "(Optional)"
+		(exclude_from_sim no)
+		(at 152.654 140.208 0)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+		)
+		(uuid "e9b78871-b51e-47f8-91c3-cca1f8add1e3")
 	)
 	(global_label "XLR_GND"
 		(shape input)
@@ -2298,7 +2354,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10uF @ 48v"
+		(property "Value" "4uF @48v (X5R?)"
 			(at 27.94 130.81 0)
 			(effects
 				(font
@@ -2351,7 +2407,7 @@
 	)
 	(symbol
 		(lib_id "power:VCC")
-		(at 154.94 128.27 270)
+		(at 167.64 128.27 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2359,7 +2415,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005e6a55a0")
 		(property "Reference" "#PWR015"
-			(at 151.13 128.27 0)
+			(at 163.83 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2368,7 +2424,7 @@
 			)
 		)
 		(property "Value" "VCC"
-			(at 158.1658 128.7272 90)
+			(at 170.8658 128.7272 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2377,7 +2433,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 154.94 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2386,7 +2442,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 154.94 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2395,7 +2451,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 154.94 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2433,7 +2489,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10uF @ 48v"
+		(property "Value" "100nF @48v"
 			(at 56.261 130.683 0)
 			(effects
 				(font
@@ -2850,7 +2906,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diodes_SMD:D_SMA"
+		(property "Footprint" "Diode_SMD:D_SMA"
 			(at 92.71 134.62 0)
 			(effects
 				(font
@@ -2961,7 +3017,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 134.62 142.24 0)
+		(at 134.62 137.16 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2969,7 +3025,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005e6af9af")
 		(property "Reference" "R_TOP1"
-			(at 136.398 141.0716 0)
+			(at 136.398 135.9916 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2978,7 +3034,7 @@
 			)
 		)
 		(property "Value" "31.2k"
-			(at 136.398 143.383 0)
+			(at 136.398 138.303 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2987,7 +3043,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder"
-			(at 132.842 142.24 90)
+			(at 132.842 137.16 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2996,7 +3052,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 134.62 142.24 0)
+			(at 134.62 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3005,7 +3061,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 134.62 142.24 0)
+			(at 134.62 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3294,7 +3350,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 134.62 158.75 0)
+		(at 134.62 162.56 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3302,7 +3358,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005e6cd38c")
 		(property "Reference" "#PWR013"
-			(at 134.62 165.1 0)
+			(at 134.62 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3311,7 +3367,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 134.747 163.1442 0)
+			(at 134.747 166.9542 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3319,7 +3375,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 134.62 158.75 0)
+			(at 134.62 162.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3328,7 +3384,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 134.62 158.75 0)
+			(at 134.62 162.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3337,7 +3393,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 134.62 158.75 0)
+			(at 134.62 162.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3506,7 +3562,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "6.8kOhm 0.1%"
+		(property "Value" "~4kOhm 0.1%"
 			(at 52.07 52.07 0)
 			(effects
 				(font
@@ -3575,7 +3631,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "6.8kOhm 0.1%"
+		(property "Value" "~4kOhm 0.1%"
 			(at 75.438 51.943 0)
 			(effects
 				(font
@@ -3905,7 +3961,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3-4uF @48V"
+		(property "Value" "4uF @48v (X5R?)"
 			(at 58.42 73.66 0)
 			(effects
 				(font
@@ -4022,17 +4078,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C_Polarized")
-		(at 149.86 134.62 0)
+		(lib_id "Device:C")
+		(at 147.32 137.16 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "108fa6a7-bc8c-478f-94da-d7d6f62a48b1")
-		(property "Reference" "C3"
-			(at 152.781 132.8963 0)
+		(uuid "08604cb6-74f3-44cf-b958-08bb514767ac")
+		(property "Reference" "C_Top"
+			(at 150.241 135.9916 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4040,8 +4095,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50-100uF"
-			(at 152.781 135.4332 0)
+		(property "Value" "20pF"
+			(at 150.241 138.303 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4049,8 +4104,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
-			(at 150.8252 138.43 0)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder"
+			(at 148.2852 140.97 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4058,8 +4113,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.digikey.de/de/products/detail/rubycon/6-3MS7100MEFCTZ5X7/3566526"
-			(at 149.86 134.62 0)
+		(property "Datasheet" "~"
+			(at 147.32 137.16 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4068,7 +4123,77 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 134.62 0)
+			(at 147.32 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4f6193fc-a880-4041-a5cc-b81c4aa29801")
+		)
+		(pin "2"
+			(uuid "08ab7536-eff6-4d46-ae64-a8c23b149579")
+		)
+		(instances
+			(project "mimu_phantom"
+				(path "/beda30ef-2166-4b91-a39a-11db5243d23f"
+					(reference "C_Top")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 162.56 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "108fa6a7-bc8c-478f-94da-d7d6f62a48b1")
+		(property "Reference" "C3"
+			(at 166.37 132.4609 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Optional, 20-50uF"
+			(at 166.37 135.0009 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
+			(at 163.5252 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.digikey.de/de/products/detail/rubycon/6-3MS7100MEFCTZ5X7/3566526"
+			(at 162.56 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 162.56 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4093,7 +4218,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 149.86 139.7 0)
+		(at 162.56 139.7 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4101,7 +4226,7 @@
 		(dnp no)
 		(uuid "3e1e8f3d-d21f-4e03-9248-ee9893511266")
 		(property "Reference" "#PWR02"
-			(at 149.86 146.05 0)
+			(at 162.56 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4110,7 +4235,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 149.987 144.0942 0)
+			(at 162.687 144.0942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4118,7 +4243,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 149.86 139.7 0)
+			(at 162.56 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4127,7 +4252,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 139.7 0)
+			(at 162.56 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4136,7 +4261,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 139.7 0)
+			(at 162.56 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4239,7 +4364,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3-4uF @48v"
+		(property "Value" "100nF @48v"
 			(at 33.02 73.66 0)
 			(effects
 				(font
