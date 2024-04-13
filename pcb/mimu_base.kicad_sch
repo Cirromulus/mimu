@@ -4825,6 +4825,16 @@
 		)
 		(uuid "eb5e4435-2695-4e8b-9ae2-0e7cdcd2ab5c")
 	)
+	(text "TODO: Low side switch as well?"
+		(exclude_from_sim no)
+		(at 82.296 69.596 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "faddc8d5-91ec-4ebd-9e86-28ea67ed4c5d")
+	)
 	(global_label "XLR_GND"
 		(shape input)
 		(at 161.29 25.4 180)

@@ -2150,14 +2150,14 @@
 		)
 		(uuid "fdab61be-b65d-455d-ad3f-e288c510ad16")
 	)
-	(text "31.2/10 = 3.12v"
+	(text "V_out = V_s * R_2 / (R_1 + R_2)\n\nwith V_FB = 0.8v\nand V_s target ~3v\n\nR_top = (R_bot * ( V_s - V_out)) / V_out\nR_top = (10k * (3v - 0.8v)) / 0.8v\nR_top = 27.5k\n"
 		(exclude_from_sim no)
-		(at 129.54 140.97 90)
+		(at 107.188 159.004 0)
 		(effects
 			(font
-				(size 1.27 1.27)
+				(size 0.762 0.762)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "4d82fa91-95f2-497b-9653-66cd2e68097e")
 	)
@@ -2172,7 +2172,7 @@
 		)
 		(uuid "798eb47d-610e-459e-8928-50c7401f31ca")
 	)
-	(text "V_FB =~ 1v"
+	(text "V_FB = 0.8v"
 		(exclude_from_sim no)
 		(at 87.63 133.35 90)
 		(effects
@@ -3033,8 +3033,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "31.2k"
-			(at 136.398 138.303 0)
+		(property "Value" "27.5k - 31.2k"
+			(at 127.508 138.176 0)
 			(effects
 				(font
 					(size 1.27 1.27)
