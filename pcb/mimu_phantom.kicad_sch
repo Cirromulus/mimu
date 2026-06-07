@@ -4165,7 +4165,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Optional, 20-50uF"
+		(property "Value" "Optional, ~20uF"
 			(at 166.37 135.0009 0)
 			(effects
 				(font

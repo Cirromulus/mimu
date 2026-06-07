@@ -28,6 +28,12 @@ void setup() {
 
     while(!initDigipotUnmuted()) {
         ui::digipotCommunicationError();
+        break; // FIXME: Debug only, should be tried more than once!
+    }
+
+    while (getButton())
+    {
+        ui::waitingForUserInput();
     }
 
     initSensor();
@@ -122,6 +128,13 @@ void loop() {
         if(previous_measurement_was_muted != should_mute) {
             //waitForButtonPress(4);
             setMute(should_mute);
+        }
+        else
+        {
+            // FIXME: Only for testing whether I2C-Communication
+            // uses too much current.
+            // Probably just go back to commanded single measurements
+            delayMicroseconds(90000);
         }
     }
 }

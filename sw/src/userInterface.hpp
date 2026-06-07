@@ -7,6 +7,8 @@ namespace ui {
 
 void init();
 
+void waitingForUserInput();
+
 void waitingForSerial();
 
 void waitingForSensor();

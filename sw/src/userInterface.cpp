@@ -7,6 +7,17 @@ void ui::init() {
     digitalWrite(LEDG, 0);
 }
 
+void ui::waitingForUserInput(){
+    digitalWrite(LEDG, 1);
+    delay(250);
+    digitalWrite(LEDR, 1);
+    delay(25);
+    digitalWrite(LEDG, 0);
+    delay(250);
+    digitalWrite(LEDR, 0);
+    delay(250);
+}
+
 void ui::waitingForSerial(){
     digitalWrite(LEDR, 1);
     delay(250);
