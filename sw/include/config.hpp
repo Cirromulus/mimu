@@ -1,9 +1,11 @@
 #pragma once
 #include <pins.hpp>
+#include <inttypes.h>
 
-typedef uint16_t Distance_mm;
+using Distance_mm = uint16_t;
 
 static constexpr uint32_t CPU_FREQ = F_CPU;
+static constexpr Distance_mm MIN_RANGE_MM = 10;
 static constexpr Distance_mm MAX_RANGE_MM = 700;
 static constexpr Distance_mm DEBOUNCE_RANGE_MM = 10;
 static constexpr Distance_mm DEADZONE_LOW_MM = 40;         // How long is the average microphone? :D
@@ -17,29 +19,6 @@ static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
         max(100, 1.5*TOT_MEAS_CYCLE_MS);
 static constexpr uint8_t  FILTER_EQUAL_DECISIONS_NEEDED = 1;
 static constexpr uint8_t  CONSECUTIVE_TIMEOUTS_WARNING = 2;
-
-// TODO: Make this presets
-struct MuteProfile {
-    typedef uint16_t Time_ms;
-    typedef uint8_t Damping;
-    static constexpr Damping max_damping = 0xff;
-
-    Distance_mm trigger_distance_mm;
-    Time_ms mute_ramp_on_time_ms;
-    Time_ms mute_ramp_off_time_ms;
-    Damping damping_when_microphone_off;
-    Damping damping_when_microphone_on;
-;
-};
-
-// TODO: Read/Write from EEPROM
-static constexpr MuteProfile default_mute_profile = MuteProfile {
-    .trigger_distance_mm = 250,
-    .mute_ramp_on_time_ms = 10,
-    .mute_ramp_off_time_ms = 200,
-    .damping_when_microphone_off = MuteProfile::max_damping,
-    .damping_when_microphone_on = 0
-};
 
 template <auto val>
 constexpr void static_print() {

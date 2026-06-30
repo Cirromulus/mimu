@@ -3,13 +3,13 @@
 
 static AD5258 digipot{AD5258::calculateAddress(), Wire};
 
-void enableExtraOptoDriver(const bool on){
+void Mutehandling::enableExtraOptoDriver(const bool on){
     // Active low, as we are high side switching
     digitalWrite(MUTE_DRIVE, !on);
 }
 
 // @return isOk
-bool initDigipotUnmuted(){
+bool Mutehandling::initDigipotUnmuted(){
     pinMode(MUTE_DRIVE, OUTPUT);
     enableExtraOptoDriver(false);
     const AD5258::TwiReturnStatus ret = digipot.writeWiper(calculated_mute_profile.value_when_microphone_on);
@@ -21,7 +21,7 @@ bool initDigipotUnmuted(){
     }
 }
 
-void setMute(const bool mute) {
+void Mutehandling::setMute(const bool mute) {
     ui::muted(mute);
     // Print calculated values of mute profile
     //static_print<calculated_mute_profile.mute_ramp_on_delay_per_step_us>();
@@ -31,8 +31,9 @@ void setMute(const bool mute) {
     //static_print<calculated_mute_profile.value_when_microphone_on>();
     //static_print<calculated_mute_profile.value_when_microphone_off>();
 
-    static_assert(calculated_mute_profile.value_when_microphone_on < calculated_mute_profile.value_when_microphone_off,
-                  "The loop expects the value of _off to be bigger than _on");
+    //// See "isProfileValid!"
+    // static_assert(calculated_mute_profile.value_when_microphone_on < calculated_mute_profile.value_when_microphone_off,
+    //               "The loop expects the value of _off to be bigger than _on");
 
     if(mute){
         for(AD5258::SignedValue val = calculated_mute_profile.value_when_microphone_on;
