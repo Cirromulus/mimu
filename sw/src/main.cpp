@@ -3,8 +3,16 @@
 #include "peripherals.hpp"
 #include "mutehandling.hpp"
 #include "sensorhandling.hpp"
+#include "distanceStorage.hpp"
 
 #include <Arduino.h>
+
+static Mutehandling mute{};
+static DistanceStorage switchingDistance;
+static bool should_mute = false;
+static bool isSettingDistance = false;
+static uint8_t consecutive_equal_decisions = 0;
+static uint8_t previousTimeOuts = 0;
 
 void setup() {
     ui::init();
@@ -23,10 +31,12 @@ void setup() {
         ui::switchOn();
     }
 
+    switchingDistance.loadFromEeprom();
+
     Wire.begin();
     Wire.setClock(100000);  // or 400000
 
-    while(!initDigipotUnmuted()) {
+    while(!mute.initDigipotUnmuted()) {
         ui::digipotCommunicationError();
     }
 
@@ -37,19 +47,12 @@ void setup() {
 }
 
 void loop() {
-    // Statics
-    static bool should_mute = false;
-    static uint8_t consecutive_equal_decisions = 0;
-    static uint16_t switching_distance_mm = default_mute_profile.trigger_distance_mm;
-    static uint8_t previousTimeOuts = 0;
-    // ---
-
     bool previous_measurement_was_muted = should_mute;
 
     if constexpr (has_serial)
         if (Serial) Serial.println("Measuring...");
 
-    Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
+    const Distance_mm measured_distance_mm = sensor.readRangeContinuousMillimeters();
     if (sensor.timeoutOccurred()) {
         // Communication with Sensor did not succeed
         if(previousTimeOuts < CONSECUTIVE_TIMEOUTS_WARNING) {
@@ -66,33 +69,43 @@ void loop() {
         previousTimeOuts = 0;
     }
 
-    // Button handling
-    if(getButton()) {
+    // ---- set distance ----
+
+    if (getButton()) {
         // unmute, but only once
         if(should_mute) {
             should_mute = false;
-            setMute(should_mute);
+            mute.setMute(should_mute);
         }
-
+        
         ui::settingDistance();
-        switching_distance_mm = measured_distance_mm;
+        isSettingDistance = true;
         return;
     } else {
-        ui::settingDistance(false);
+        if (isSettingDistance)
+        {
+            // button pressing ended. Store to eeprom.
+            switchingDistance.set(measured_distance_mm);
+            isSettingDistance = false;
+            // "restore" state to be overwitten by whatever is going on down there.
+            ui::settingDistance(false);
+        }
     }
+
+    // ----
 
     // Decide if we should mute
     if(!previous_measurement_was_muted) {
         // was "on"
         if (measured_distance_mm > DEADZONE_LOW_MM) {
             //debounce
-            should_mute = measured_distance_mm > (switching_distance_mm + DEBOUNCE_RANGE_MM);
+            should_mute = measured_distance_mm > (switchingDistance.get_mm() + DEBOUNCE_RANGE_MM);
         } else {
             // if lower than deadzone, no update happens
         }
     } else {
         // was "off"
-        should_mute = measured_distance_mm > switching_distance_mm;
+        should_mute = measured_distance_mm > switchingDistance.get_mm();
     }
 
     // handle filtering counter
@@ -110,7 +123,7 @@ void loop() {
             Serial.println("Measuring...");
             Serial.print(measured_distance_mm);
             Serial.print(" > ");
-            Serial.print(switching_distance_mm);
+            Serial.print(switchingDistance.get_mm());
         }
     }
 
@@ -121,7 +134,7 @@ void loop() {
         //waitForButtonPress(3);
         if(previous_measurement_was_muted != should_mute) {
             //waitForButtonPress(4);
-            setMute(should_mute);
+            mute.setMute(should_mute);
         }
     }
 }

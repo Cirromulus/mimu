@@ -94,9 +94,7 @@ void ui::settingDistance(const bool is_setting) {
     digitalWrite(LEDG, is_setting && ((millis() % 512) > 256));
 }
 
-void ui::muted(const bool muted){
-    if(default_mute_profile.damping_when_microphone_off == MuteProfile::max_damping)
-        digitalWrite(LEDR, muted);
-    else
-        digitalWrite(LEDG, muted);
+void ui::muted(const bool muted) {
+    // might be green on "soft mute" someday
+    digitalWrite(LEDR, muted);
 }
