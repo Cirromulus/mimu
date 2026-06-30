@@ -91,7 +91,18 @@ void ui::digipotCommunicationError(const AD5258::TwiReturnStatus return_status) 
 }
 
 void ui::settingDistance(const bool is_setting) {
-    digitalWrite(LEDG, is_setting && ((millis() % 512) > 256));
+    if (is_setting) {
+        digitalWrite(LEDG, (millis() % 512) > 256);
+    }
+    else {
+        // Success we saved it (probably)
+        for(uint8_t i = 2; i > 0; i--) {
+            digitalWrite(LEDG, 1);
+            delay(100);
+            digitalWrite(LEDG, 0);
+            delay(100);
+        }
+    }
 }
 
 void ui::muted(const bool muted) {

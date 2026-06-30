@@ -88,7 +88,7 @@ void loop() {
             // button pressing ended. Store to eeprom.
             switchingDistance.storeToEeprom();
             isSettingDistance = false;
-            // "restore" state to be overwitten by whatever is going on down there.
+            // "restore" state and also blink "success"
             ui::settingDistance(false);
         }
     }
