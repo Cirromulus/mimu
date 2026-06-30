@@ -10,8 +10,8 @@ static constexpr Distance_mm DEBOUNCE_RANGE_MM = 10;
 static constexpr Distance_mm DEADZONE_LOW_MM = 40;         // How long is the average microphone? :D
 static constexpr uint16_t MAX_ANALOG_READ = 0x3FF;	//10 bit
 // Default: 33ms. Min 20ms, Max ~200ms
-static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 80000;
-static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 20;   // to save power
+static constexpr uint32_t MEASUREMENT_TIMING_BUDGET_US = 60000;
+static constexpr uint8_t  MEASUREMENT_EXTRA_DELAY_MS = 10;   // to save power
 static constexpr uint16_t TOT_MEAS_CYCLE_MS =
         MEASUREMENT_TIMING_BUDGET_US / 1000 + MEASUREMENT_EXTRA_DELAY_MS;
 static constexpr uint16_t SENSOR_COMM_TIMEOUT_MS =
