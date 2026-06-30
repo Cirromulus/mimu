@@ -10,6 +10,7 @@
 static Mutehandling mute{};
 static DistanceStorage switchingDistance;
 static bool should_mute = false;
+static bool isSettingDistance = false;
 static uint8_t consecutive_equal_decisions = 0;
 static uint8_t previousTimeOuts = 0;
 
@@ -68,20 +69,30 @@ void loop() {
         previousTimeOuts = 0;
     }
 
-    // Button handling
-    if(getButton()) {
+    // ---- set distance ----
+
+    if (getButton()) {
         // unmute, but only once
         if(should_mute) {
             should_mute = false;
             mute.setMute(should_mute);
         }
-
+        
         ui::settingDistance();
-        switchingDistance.set(measured_distance_mm);
+        isSettingDistance = true;
         return;
     } else {
-        ui::settingDistance(false);
+        if (isSettingDistance)
+        {
+            // button pressing ended. Store to eeprom.
+            switchingDistance.set(measured_distance_mm);
+            isSettingDistance = false;
+            // "restore" state to be overwitten by whatever is going on down there.
+            ui::settingDistance(false);
+        }
     }
+
+    // ----
 
     // Decide if we should mute
     if(!previous_measurement_was_muted) {

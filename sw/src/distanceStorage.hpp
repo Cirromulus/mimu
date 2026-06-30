@@ -2,7 +2,7 @@
 
 class DistanceStorage
 {
-    static constexpr Distance_mm defaultDistance = 40;
+    static constexpr Distance_mm defaultDistance = DEADZONE_LOW_MM;
     static constexpr size_t storageAddr = 0;
 public:
     constexpr

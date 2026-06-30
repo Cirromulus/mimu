@@ -6,7 +6,7 @@ void
 DistanceStorage::loadFromEeprom()
 {
     EEPROM.get(storageAddr, mCurrentDistance);
-    if (mCurrentDistance < MIN_RANGE_MM || mCurrentDistance > MAX_RANGE_MM)
+    if (mCurrentDistance < DEADZONE_LOW_MM || mCurrentDistance > MAX_RANGE_MM)
     {
         mCurrentDistance = defaultDistance;
     }

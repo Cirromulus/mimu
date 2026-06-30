@@ -5,7 +5,6 @@
 using Distance_mm = uint16_t;
 
 static constexpr uint32_t CPU_FREQ = F_CPU;
-static constexpr Distance_mm MIN_RANGE_MM = 10;
 static constexpr Distance_mm MAX_RANGE_MM = 700;
 static constexpr Distance_mm DEBOUNCE_RANGE_MM = 10;
 static constexpr Distance_mm DEADZONE_LOW_MM = 40;         // How long is the average microphone? :D
