@@ -80,12 +80,13 @@ void loop() {
         
         ui::settingDistance();
         isSettingDistance = true;
+        switchingDistance.set(measured_distance_mm);
         return;
     } else {
         if (isSettingDistance)
         {
             // button pressing ended. Store to eeprom.
-            switchingDistance.set(measured_distance_mm);
+            switchingDistance.storeToEeprom();
             isSettingDistance = false;
             // "restore" state to be overwitten by whatever is going on down there.
             ui::settingDistance(false);
